@@ -1,0 +1,6 @@
+export * from "./Home"
+export * from "./Modules"
+export * from "./About"
+export * from "./Discussion"
+export * from "./FAQ"
+export * from "./Sdg11"

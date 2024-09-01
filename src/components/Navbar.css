@@ -1,0 +1,42 @@
+.active{
+    background-color:  #f86f03;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    z-index: 1000
+}
+
+nav .title {
+    font-size: 1.5rem;
+    margin: 1rem;
+    margin-left: 3rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #1a1a19
+}
+
+nav ul {
+    display: flex;
+    justify-content: centre
+}
+
+nav ul li {
+    list-style: none
+}
+
+nav ul li a {
+    display: block;
+    text-decoration: none;
+    color: #1a1a19;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem
+}
