@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { images, imagesLocked } from './images'
+import { images, imagesLocked } from './buildingImages'
 //import QuizStartPopup from './QuizStartPopup'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -8,12 +8,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 function ImageComponent({ imageName, top, left, width, height, target}) {
     const sourceLocked = imagesLocked[imageName]
     const sourceUnlocked = images[imageName]
-    const [source, setSource] = useState(sourceLocked)
-    //const [popUpOpen, setPopUpOpen] = useState(false)
-    const [show, setShow] = useState(false)
-    //let taskNum = 'x'
-    let moduleDone = false
 
+    const [source, setSource] = useState(sourceLocked)
+
+    const [show, setShow] = useState(false)
+
+    //outsource this logic to a different component and delete this line; 
+    //module done should decided on the actual quiz page not this one boys
+    let moduleDone = false 
 
     const handleClose = () => {
         setShow(false)
@@ -44,10 +46,12 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
         
     }
 
+    //
     useEffect(() => {
         //we're gonna do an API call to the database here boys
         //and define taskNum and the task description. For now,
-        //shall add it to the component params though
+        //shall add it to the component params though\
+
     }, [show])
 
     return(
@@ -74,16 +78,11 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
             </Modal.Title>
 
             <Modal.Body className="custom-modal-body">
-                <img 
-                    src={source} 
-                    alt={imageName} 
-                    style={{position: 'absolute', width:width, height:"auto"}}
-                />
-                
                 <p className="font-bold">
                     Click below when you're ready to {moduleDone ? "redo" : "start"} the quiz
                 </p>
-                <button className="buttonStart" style={{"color": "white"}}>Start</button>
+                    <button className="buttonStart" style={{"color": "white"}}>Start</button>
+                
             </Modal.Body>
 
         </Modal>

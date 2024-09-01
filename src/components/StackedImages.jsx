@@ -1,5 +1,5 @@
 import React from 'react'
-import { images, imagesLocked } from './images'
+import { images, imagesLocked } from './buildingImages'
 import ImageComponent from './ImageComponent'
 
 function StackedImages(){
