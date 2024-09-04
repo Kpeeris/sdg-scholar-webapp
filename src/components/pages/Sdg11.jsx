@@ -1,6 +1,6 @@
 import React from "react";
-import ImageComponent from '../ImageComponent'
-import StackedImages from '../StackedImages'
+import ImageComponent from '../imageComponents/ImageComponent'
+import StackedImages from '../imageComponents/StackedImages'
 
 export const Sdg11 = () => {
     return <>
@@ -8,10 +8,6 @@ export const Sdg11 = () => {
     <>
         <StackedImages />
     </>
-
-    <div>
-
-    </div>
 
     </>
 }
