@@ -1,0 +1,44 @@
+.scrollable-dropdown {
+    max-height: 250px;
+    max-width: 200px;
+    overflow-y: auto;
+}
+
+.scrollable-dropdown .dropdown-item {
+    white-space: normal;
+    word-wrap: break-word;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+}
+
+.dropdown-toggle {
+    background-color: white;
+}
+
+.custom-dropdown-toggle {
+    background: none;
+    border: none;
+    color: #1a1a19;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.custom-dropdown-toggle:hover {
+    background: none;
+    border: none;
+    color: #1a1a19;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.custom-dropdown-toggle:focus {
+    outline: none;
+    box-shadow: none;
+    /* Removes the blue focus glow */
+}
