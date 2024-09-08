@@ -6,7 +6,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 
 import { Route, Routes } from "react-router-dom"
-import { Home, FAQ, About, Modules, Discussion, Sdg11 } from './components/pages'
+import { Home, FAQ, About, Goals, Discussion, Sdg11 } from './components/pages'
 
 function App() {
   return (
@@ -16,12 +16,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/modules" element={<Modules />} />
+        {/* i dont think i need modules in here because its not going to be a seprate page with different url, it is just going to be a drop down */}
+        <Route path="/goals" element={<Goals />} />
         <Route path="/discussion" element={<Discussion />} />
         <Route path="/sdg11" element={<Sdg11 />} />
         {/*<Route path="/award" element={<Awards />}/>*/}
       </Routes>
-      
+
     </>
   )
 }

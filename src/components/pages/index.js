@@ -1,5 +1,5 @@
 export * from "./Home"
-export * from "./Modules"
+export * from "./Goals"
 export * from "./About"
 export * from "./Discussion"
 export * from "./FAQ"

@@ -1,17 +1,24 @@
-import React from "react";
-import {Link, NavLink} from "react-router-dom"
-import './Navbar.css'
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import './Navbar.css';
+import DropdownMenu from "./pages/buttons/Dropdown";
 
 const Navbar = () => {
-    return <nav>
-        <Link to='/' className="title">SDG Scholar</Link>
-        <ul>
-            <li><NavLink to='/about'>About</NavLink></li>
-            <li><NavLink to='/faq'>FAQ</NavLink></li>
-            <li><NavLink to='/modules'>Modules</NavLink></li>
-            <li><NavLink to='/discussion'>Discussion</NavLink></li>
-        </ul>
-    </nav>
+    return (
+        <div>
+            <nav>
+                <Link to='/' className="title">SDG Scholar</Link>
+                <ul>
+                    <li><NavLink to='/about'>About</NavLink></li>
+                    <li><NavLink to='/faq'>FAQ</NavLink></li>
+                    <DropdownMenu />
+                    <li><NavLink to='/discussion'>Discussion</NavLink></li>
+                </ul>
+
+            </nav>
+
+        </div>
+    )
 }
 
 export default Navbar

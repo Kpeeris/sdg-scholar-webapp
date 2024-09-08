@@ -5,7 +5,7 @@ import React from "react";
 //for now, Modules will be a page where all of the quizzes
 //are
 
-export const Modules = () => {
+export const Goals = () => {
     return <div>
         <h2>Modules Page</h2>
     </div>
