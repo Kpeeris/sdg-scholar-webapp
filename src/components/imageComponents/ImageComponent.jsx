@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 import { images, imagesLocked } from './buildingImages'
-//import QuizStartPopup from './QuizStartPopup'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Link, NavLink } from "react-router-dom"
+import QuizPage from '../pages/QuizPage'
 
 function ImageComponent({ imageName, top, left, width, height, target}) {
     const sourceLocked = imagesLocked[imageName]
@@ -13,9 +14,13 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
 
     const [show, setShow] = useState(false)
 
+    //sconst sdgNum = '11'
+
     //outsource this logic to a different component and delete this line; 
     //module done should decided on the actual quiz page not this one boys
-    let moduleDone = false 
+    let moduleDone = false
+
+    const [status, setStatus] = useState('Start')
 
     const handleClose = () => {
         setShow(false)
@@ -31,6 +36,7 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
                 return sourceUnlocked
             } else {
                 if(moduleDone){
+                    setStatus('Redo')
                     return sourceUnlocked
                 }
                 return sourceLocked
@@ -56,14 +62,14 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
 
     return(
         <>
-        <div className="container">
-            <button className="buttonStartSmall">Start</button>
+        <div className="container" style={{position: 'absolute', top: top, left: left, width:width, height:height, padding: '0px'}}>
+            
             <img 
             src={source} 
             alt={imageName} 
-            style={{position: 'absolute', top: top, left: left, width:width, height:"auto"}} 
-            onClick={handleClick}
+            style={{position: 'relative', width: '100%', height: '100%'}}
             />
+            <button className="buttonStart" style={{"color": "white", position: 'relative', top: '-70%', width: '70px', height: '35px', fontSize: '0.8em', backgroundColor: '#16A34A'}} onClick={handleClick}>{status}</button>
         </div>
         
         <Modal 
@@ -81,8 +87,9 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
                 <p className="font-bold">
                     Click below when you're ready to {moduleDone ? "redo" : "start"} the quiz
                 </p>
-                    <button className="buttonStart" style={{"color": "white"}}>Start</button>
-                
+                <Link to={`/sdg11/${target}`} className="current">
+                    <button className="buttonStart" style={{"color": "white", width: '465px', fontSize: '1em', backgroundColor: '#16A34A'}}>{status}</button>
+                </Link>
             </Modal.Body>
 
         </Modal>
