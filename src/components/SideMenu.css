@@ -1,0 +1,36 @@
+/* Style the side panel */
+.side-menu {
+    width: 200px; /* Adjust width as needed */
+    height: 95vh; /* Full viewport height */
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Fixes it to the left side of the page */
+    bottom: 0; /* Aligns it to the top of the page */
+    left: 0; /* Aligns it to the left side of the page */
+    border-right: 1px solid #D6D6D6;
+  }
+  
+  /* Optional: Add some spacing to the content */
+  .main-content {
+    margin-left: 200px; /* Matches the width of the side panel */
+    padding: 20px; /* Optional: adds padding around the content */
+  }
+  
+  /* Style for the heading inside the side panel */
+  .side-menu h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Style for buttons inside the side panel */
+  .side-menu button {
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    color: #263238;
+  }
+  .side-menu button:active {
+    margin-bottom: 10px;
+    background-color: #F2F2F2;
+    color: #263238;
+  }

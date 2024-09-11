@@ -1,9 +1,10 @@
 import React, { useState,useEffect } from 'react'
 import { images, imagesLocked } from './buildingImages'
 //import QuizStartPopup from './QuizStartPopup'
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useNavigate } from 'react-router-dom';
 
 function ImageComponent({ imageName, top, left, width, height, target}) {
     const sourceLocked = imagesLocked[imageName]
@@ -11,8 +12,9 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
 
     const [source, setSource] = useState(sourceLocked)
 
-    const [show, setShow] = useState(false)
+    const navigate = useNavigate();
 
+    const [show, setShow] = useState(false)
     //outsource this logic to a different component and delete this line; 
     //module done should decided on the actual quiz page not this one boys
     let moduleDone = false 
@@ -81,8 +83,10 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
                 <p className="font-bold">
                     Click below when you're ready to {moduleDone ? "redo" : "start"} the quiz
                 </p>
-                    <button className="buttonStart" style={{"color": "white"}}>Start</button>
-                
+                    <button className="buttonStart" 
+                    style={{"color": "white"}}
+                    onClick={() => navigate(`/module/${target}/content`)}>Start</button>
+                {/* kp - added onClick to redirect to quiz content */}
             </Modal.Body>
 
         </Modal>
