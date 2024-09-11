@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Module from './components/pages/buttons/Module'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AuthPage from './components/pages/UserAccounts' // added by kash
 
 
 import { Route, Routes } from "react-router-dom"
@@ -22,8 +23,10 @@ function App() {
 
         <Route path="/module/:moduleId/content" element={<Content />} />
         <Route path="/module/:moduleId/quiz" element={<Quiz />} />
-
-
+          
+        {/* added by kash */}
+        <Route path="/auth" element={<AuthPage />} /> 
+          
       </Routes>
 
     </div>
