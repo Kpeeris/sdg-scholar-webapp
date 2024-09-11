@@ -11,6 +11,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
+    border-bottom: 1px solid #D6D6D6; /* kp - added the line at the bottom of the navbar*/
     z-index: 1000
 }
 

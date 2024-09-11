@@ -7,8 +7,7 @@
 .scrollable-dropdown .dropdown-item {
     white-space: normal;
     word-wrap: break-word;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-
+    border-top: 1px solid #D6D6D6;
 }
 
 .dropdown-toggle {
@@ -29,7 +28,7 @@
 .custom-dropdown-toggle:hover {
     background: none !important;
     border: none !important;
-    color: #ffa631 !important;
+    color: #FF9843 !important;
     padding: 0.5rem !important;
     margin: 0 0.5rem !important;
     border-radius: 0.5rem !important;
