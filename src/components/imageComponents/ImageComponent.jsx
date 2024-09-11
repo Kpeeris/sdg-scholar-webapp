@@ -19,6 +19,8 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
     //module done should decided on the actual quiz page not this one boys
     let moduleDone = false 
 
+    const [status, setStatus] = useState('Start')
+
     const handleClose = () => {
         setShow(false)
     }
@@ -33,6 +35,7 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
                 return sourceUnlocked
             } else {
                 if(moduleDone){
+                    setStatus('Redo')
                     return sourceUnlocked
                 }
                 return sourceLocked
@@ -58,14 +61,14 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
 
     return(
         <>
-        <div className="container">
-            <button className="buttonStartSmall">Start</button>
+        <div className="container" style={{position: 'absolute', top: top, left: left, width:width, height:height, padding: '0px'}}>
+            
             <img 
             src={source} 
             alt={imageName} 
-            style={{position: 'absolute', top: top, left: left, width:width, height:"auto"}} 
-            onClick={handleClick}
+            style={{position: 'relative', width: '100%', height: '100%'}}
             />
+            <button className="buttonStart" style={{"color": "white", position: 'relative', top: '-70%', width: '70px', height: '35px', fontSize: '0.8em', backgroundColor: '#16A34A'}} onClick={handleClick}>{status}</button>
         </div>
         
         <Modal 
@@ -83,9 +86,11 @@ function ImageComponent({ imageName, top, left, width, height, target}) {
                 <p className="font-bold">
                     Click below when you're ready to {moduleDone ? "redo" : "start"} the quiz
                 </p>
+
+                {/*<button className="buttonStart" style={{"color": "white", width: '465px', fontSize: '1em', backgroundColor: '#16A34A'}}>{status}</button>*/}
                     <button className="buttonStart" 
-                    style={{"color": "white"}}
-                    onClick={() => navigate(`/module/${target}/content`)}>Start</button>
+                    style={{"color": "white", width: '465px', fontSize: '1em', backgroundColor: '#16A34A'}}
+                    onClick={() => navigate(`/module/${target}/content`)}>{status}</button>
                 {/* kp - added onClick to redirect to quiz content */}
             </Modal.Body>
 
