@@ -20,16 +20,31 @@
   
   /* Style for the heading inside the side panel */
   .side-menu h2 {
-    margin-bottom: 20px;
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; 
+    letter-spacing: -0.1px;
+    /* margin-bottom: 20px; */
+    text-align: left;
   }
-  
+  .side-menu h4 {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; 
+    letter-spacing: -0.1px;
+    /* margin-bottom: 20px; */
+    text-align: left;
+  }
   /* Style for buttons inside the side panel */
   .side-menu button {
     margin-bottom: 10px;
     background-color: #ffffff;
     color: #263238;
   }
-  .side-menu button:active {
+  .side-menu button.active {
     margin-bottom: 10px;
     background-color: #F2F2F2;
     color: #263238;
