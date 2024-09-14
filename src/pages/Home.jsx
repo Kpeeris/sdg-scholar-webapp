@@ -1,16 +1,17 @@
 import React from "react";
-import Module from './buttons/Module'
+import Module from '../components/buttons/Module'
 import { Link, NavLink } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+
 
 export const Home = () => {
     const name = "TestUser"
 
     return (
         <div>
-
             <h1>Hi {name}</h1>
-            <h2>Your Sustainable Development Goals</h2>
-
+            <Button>primary button</Button>
+            <Button variant="secondary">secondary button</Button>
             <Module />
             <br />
 
@@ -19,6 +20,7 @@ export const Home = () => {
                     Awards
                 </button>
             </Link>
+            
 
         </div>
     )

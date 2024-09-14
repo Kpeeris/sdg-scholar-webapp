@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import './Navbar.css';
-import DropdownMenu from "./pages/buttons/Dropdown";
+import DropdownMenu from "./buttons/Dropdown";
 
 const Navbar = () => {
     return (

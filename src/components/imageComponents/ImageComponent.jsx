@@ -3,7 +3,7 @@ import { images, imagesLocked } from './buildingImages'
 //import QuizStartPopup from './QuizStartPopup'
 // import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from 'react-router-dom';
 
 function ImageComponent({ imageName, top, left, width, height, target}) {
