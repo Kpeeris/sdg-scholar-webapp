@@ -1,18 +1,14 @@
 import { useState } from 'react'
-import './App.css'
-import Navbar from './components/Navbar'
-import Module from './components/pages/buttons/Module'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import AuthPage from './components/pages/UserAccounts' // added by kash
-
+import './index.css'
+import Layout from './Layout'
+import AuthPage from './pages/UserAccounts' // added by kash
 
 import { Route, Routes } from "react-router-dom"
-import { Home, FAQ, About, Goals, Discussion, Sdg11, Quiz, Content } from './components/pages'
+import { Home, FAQ, About, Goals, Discussion, Sdg11, Quiz, Content } from './pages'
 
 function App() {
   return (
-    <div>
-      <Navbar />
+    <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -29,8 +25,8 @@ function App() {
           
       </Routes>
 
-    </div>
+    </Layout>
   )
 }
 
-export default App
+export default App;

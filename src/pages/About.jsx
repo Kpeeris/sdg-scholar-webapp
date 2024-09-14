@@ -1,18 +1,8 @@
-import React from 'react';
-import SideMenu from "../SideMenu";
-import "../SideMenu.css"
-import {useParams} from "react-router-dom"
+import React from "react";
 
-const Content = () => {
-    const { moduleId } = useParams(); // Capture the module ID from the URL
-
-    // You can replace this with logic to dynamically retrieve module info
-    const moduleTitle = `Target 11.${moduleId}`; 
-
-    return <div className="main-content">
-        <h2>Content Page</h2>
-        <SideMenu moduleTitle={moduleTitle} moduleId={moduleId}/>
-
+export const About = () => {
+    return <div>
+        <h2>About Page</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab sunt aliquam suscipit dolor inventore laborum doloribus, aliquid consequuntur laudantium nam ipsa voluptates porro ad est incidunt impedit esse corrupti, necessitatibus accusantium. Qui quam sed beatae dignissimos enim officiis nam, voluptates molestias esse cumque magni similique nobis a magnam perferendis perspiciatis? Eligendi corrupti quod laboriosam maxime velit consequatur, veritatis similique voluptates, dolorem alias impedit ducimus commodi error! Voluptatem fuga adipisci at, nostrum quo rem, quibusdam beatae laborum magni, eaque recusandae? Cumque neque ullam hic, vitae iure nulla similique unde eaque cum omnis? Rerum perferendis culpa tempore, saepe officia mollitia sed!</p>
         <br />
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab sunt aliquam suscipit dolor inventore laborum doloribus, aliquid consequuntur laudantium nam ipsa voluptates porro ad est incidunt impedit esse corrupti, necessitatibus accusantium. Qui quam sed beatae dignissimos enim officiis nam, voluptates molestias esse cumque magni similique nobis a magnam perferendis perspiciatis? Eligendi corrupti quod laboriosam maxime velit consequatur, veritatis similique voluptates, dolorem alias impedit ducimus commodi error! Voluptatem fuga adipisci at, nostrum quo rem, quibusdam beatae laborum magni, eaque recusandae? Cumque neque ullam hic, vitae iure nulla similique unde eaque cum omnis? Rerum perferendis culpa tempore, saepe officia mollitia sed!</p>
@@ -31,5 +21,3 @@ const Content = () => {
         <br />
     </div>
 }
-
-export default Content

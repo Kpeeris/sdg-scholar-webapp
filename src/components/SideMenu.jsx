@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./SideMenu.css"
+import { Button } from "@/components/ui/button"
 
 function SideMenu({moduleTitle, moduleId}){
 
@@ -17,7 +18,6 @@ function SideMenu({moduleTitle, moduleId}){
             <button 
             className={isActive(contentPath) ? 'active' : ''}
             onClick={() => navigate(`/module/${moduleId}/content`)}>Content</button>
-
             <button 
             className={isActive(quizPath) ? 'active' : ''}
             onClick={() => navigate(`/module/${moduleId}/quiz`)}>Quiz</button>

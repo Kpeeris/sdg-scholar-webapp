@@ -1,8 +1,8 @@
-import db from "../../../firebaseFiles/firebaseConfig"; // importing database
+import db from "../../firebaseFiles/firebaseConfig"; // importing database
 import { useEffect, useState, useRef } from 'react';
 // onSnapshot gets data in realtime getData only gets data once, so we use onSnapshot
 import { collection, onSnapshot, setDoc, doc, addDoc, getDocs } from 'firebase/firestore';
-import {signup, useAuth, logout, login} from '../../../firebaseFiles/firebaseAuth.js';
+import {signup, useAuth, logout, login} from '../../firebaseFiles/firebaseAuth.js';
 
 export const AuthPage = () => {
 
