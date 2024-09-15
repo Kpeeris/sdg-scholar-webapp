@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import "./Dropdown.css";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -12,8 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-// import Dropdown from 'react-bootstrap/Dropdown';
 
 function Dropdown() {
   const navigate = useNavigate(); // Hook for navigation
@@ -27,11 +24,11 @@ function Dropdown() {
     <DropdownMenu>
       {/* dropdown button */}
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Goals</Button>
+        <Button variant="ghost">Goals</Button>
       </DropdownMenuTrigger>
 
       {/* dropdown list */}
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 z-50 relative">
         <DropdownMenuLabel>SDG Goals</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <ScrollArea className="h-72">
