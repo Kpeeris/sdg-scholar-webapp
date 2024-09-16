@@ -23,7 +23,7 @@ function Dropdown() {
   return (
     <DropdownMenu>
       {/* dropdown button */}
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className="font-semibold text-base">
         <Button variant="ghost">Goals</Button>
       </DropdownMenuTrigger>
 
