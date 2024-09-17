@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import './index.css'
-import Layout from './Layout'
-import AuthPage from './pages/UserAccounts' // added by kash
+import { useState } from "react";
+import "./index.css";
+import Layout from "./Layout";
+import AuthPage from "./pages/UserAccounts"; // added by kash
 
-import { Route, Routes } from "react-router-dom"
-import { Home, FAQ, About, Goals, Discussion, Sdg11, Quiz, Content } from './pages'
+import { Route, Routes } from "react-router-dom";
+import { Home, FAQ, Discussion, Sdg11, Quiz, Content } from "./pages";
+import { About } from "/src/pages/About/About.jsx";
 
 function App() {
   return (
@@ -19,14 +20,12 @@ function App() {
 
         <Route path="/module/:moduleId/content" element={<Content />} />
         <Route path="/module/:moduleId/quiz" element={<Quiz />} />
-          
-        {/* added by kash */}
-        <Route path="/auth" element={<AuthPage />} /> 
-          
-      </Routes>
 
+        {/* added by kash */}
+        <Route path="/auth" element={<AuthPage />} />
+      </Routes>
     </Layout>
-  )
+  );
 }
 
 export default App;
