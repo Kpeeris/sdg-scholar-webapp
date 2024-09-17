@@ -227,7 +227,7 @@ button:focus-visible {
   }
 
   ul {
-    @apply my-6 ml-6 list-disc [&>li]:mt-2
+    @apply my-6 ml-6 list-disc [&>li]:mt-2 [&>li:last-child]:mb-2
   }
 
   small {
