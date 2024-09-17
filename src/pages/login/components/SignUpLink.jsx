@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export const SignUpLink = () => {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center mt-2">
       <p className="text-center text-base">Don't have an account?</p>
       <Link to="/signup">
         <Button className="p-2 text-base" variant="link">Sign Up Here</Button>

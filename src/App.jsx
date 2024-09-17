@@ -6,6 +6,7 @@ import AuthPage from './pages/UserAccounts' // added by kash
 import { Route, Routes } from "react-router-dom"
 import { Home, FAQ, About, Goals, Discussion, Sdg11, Quiz, Content } from './pages'
 import Login from './pages/login/Login'
+import SignUp from './pages/signup/SignUp'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/auth" element={<AuthPage />} /> 
 
         <Route path="/login" element={<Login />} /> 
+        <Route path="/signup" element={<SignUp />} /> 
           
       </Routes>
 
