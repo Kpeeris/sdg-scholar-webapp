@@ -12,29 +12,32 @@ import {
 
 const SdgCarousel = () => {
   return (
-    <Carousel className="w-full max-w-sm">
+    <Carousel className="w-full max-w-3xl">
       <CarouselContent className="-ml-1">
         {listOfGoals.map((goal) => (
-          <CarouselItem
-            key={goal.id}
-            className="pl-1 md:basis-1/2 lg:basis-1/3"
-          >
+          <CarouselItem key={goal.id} className="p-2 md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <img
-                    src={goal.image}
-                    alt={goal.title}
-                    className="w-full h-full object-contain"
-                  />
+                <CardContent className="flex aspect-square items-center justify-center p-2">
+                  <a
+                    href={goal.path}
+                    target="_blank"
+                    rel="nooopener noreferrer"
+                  >
+                    <img
+                      src={goal.image}
+                      alt={goal.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </a>
                 </CardContent>
               </Card>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="w-12 h-12" />
+      <CarouselNext className="w-12 h-12" />
     </Carousel>
   );
 };

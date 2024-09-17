@@ -72,13 +72,14 @@ export const About = () => {
       </div>
 
       <div
-        className="relative -mt-52 h-screen bg-no-repeat bg-center bg-contain z-0 flex justify-between items-center "
+        className="relative -mt-52 h-screen bg-no-repeat bg-center bg-contain flex justify-center items-center "
         style={{
           backgroundImage: `url(${background})`,
-          zIndex: -1,
+          // zIndex: -1,
+          // pointerEvents: "auto",
         }}
       >
-        <div className="">
+        <div className="mt-10">
           <SdgCarousel />
         </div>
       </div>
