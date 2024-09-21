@@ -52,9 +52,16 @@ export const Home = () => {
         {ListOfGoals.map((goal) => (
           <div
             key={goal.id}
-            className={`relative aspect-square rounded-xl 
-              ${goal.background}`}
+            className={`relative aspect-square rounded-xl `}
             onClick={() => handleNavigation(goal.path)}
+            style={
+              goal.background
+                ? {
+                    backgroundImage: `url(${goal.background})`,
+                    backgroundSize: "cover",
+                  }
+                : { backgroundColor: "#e2e8f0" }
+            }
           >
             <img
               src={goal.image}

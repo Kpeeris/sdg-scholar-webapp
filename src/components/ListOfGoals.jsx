@@ -9,7 +9,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal1",
     image: images["/src/assets/goals/Goal_1.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal2",
     image: images["/src/assets/goals/Goal_2.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal3",
     image: images["/src/assets/goals/Goal_3.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal4",
     image: images["/src/assets/goals/Goal_4.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 5,
@@ -41,7 +41,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal5",
     image: images["/src/assets/goals/Goal_5.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 6,
@@ -49,7 +49,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal6",
     image: images["/src/assets/goals/Goal_6.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 7,
@@ -57,7 +57,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal7",
     image: images["/src/assets/goals/Goal_7.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 8,
@@ -65,7 +65,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal8",
     image: images["/src/assets/goals/Goal_8.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 9,
@@ -73,7 +73,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal9",
     image: images["/src/assets/goals/Goal_9.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 10,
@@ -81,7 +81,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal10",
     image: images["/src/assets/goals/Goal_10.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 11,
@@ -90,6 +90,7 @@ const ListOfGoals = [
     image: images["/src/assets/goals/Goal_11.svg"].default,
     path: "/sdg11",
     background: City,
+    isImage: true,
   },
   {
     id: 12,
@@ -97,7 +98,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal12",
     image: images["/src/assets/goals/Goal_12.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 13,
@@ -105,7 +106,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal13",
     image: images["/src/assets/goals/Goal_13.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 14,
@@ -113,7 +114,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal14",
     image: images["/src/assets/goals/Goal_14.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 15,
@@ -121,7 +122,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal15",
     image: images["/src/assets/goals/Goal_15.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 16,
@@ -129,7 +130,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal16",
     image: images["/src/assets/goals/Goal_16.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
   {
     id: 17,
@@ -137,7 +138,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal17",
     image: images["/src/assets/goals/Goal_17.svg"].default,
     path: "",
-    background: "bg-gray-300",
+    background: "",
   },
 ];
 
