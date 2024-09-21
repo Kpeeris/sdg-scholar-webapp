@@ -9,12 +9,15 @@ import background from "/src/assets/images/plants-background.svg";
 export const About = () => {
   return (
     <div>
-      <div className="flex justify-between items-center ">
+      <div className="flex flex-col md:flex-row">
         {/* LHS */}
-        <div className="max-w-2xl p-10">
-          <h1>About</h1>
-          <img src={logo_horizontal} alt="SDG logo" />
-          <div> Redefining SDG Education, One Goal at a Time </div>
+        <div className="flex flex-col justify-between md:w-1/2 p-10">
+          <div>
+            <h1>About</h1>
+            <img src={logo_horizontal} alt="SDG logo" />
+            <div> Redefining SDG Education, One Goal at a Time </div>
+          </div>
+
           <div className="mt-20">
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -35,7 +38,7 @@ export const About = () => {
         </div>
 
         {/* RHS */}
-        <div className="w-1/2">
+        <div className="md:w-1/2 flex justify-center items-center p-10">
           <img
             src={holding_sdg_wheel}
             alt="SDG wheel"
@@ -44,16 +47,16 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between w-full p-10">
-        <div className="flex flex-col items-center space-y-4 border-r border-gray-300 px-4">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col justify-between md:w-1/2 p-10 border-r border-gray-300 px-4">
           <img
             src={SDG_logo_Square_Transparent}
             alt="Sustainable Development Goals"
-            className="max-w-xl h-auto p-4"
+            className="w-auto h-auto p-4"
           />
         </div>
 
-        <div className="p-4">
+        <div className="md:w-1/2 flex justify-center items-center p-10">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
             ab sunt aliquam suscipit dolor inventore laborum doloribus, aliquid
