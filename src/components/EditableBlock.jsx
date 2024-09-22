@@ -4,6 +4,10 @@ import ReactQuill from 'react-quill'
 
 const EditableBlock = ({block}) => {
     const [textEditorShow, setTextEditorShow] = useState(false)
+
+    let admin = true
+
+    //text editor styling credit to https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
     var modules = {
         toolbar: [
           [{ size: ["small", false, "large", "huge"] }],
@@ -83,8 +87,8 @@ const EditableBlock = ({block}) => {
             }
             <br />
             <br />
+            {admin ? <button onClick={ handleClick }>{ buttonState }</button> : null}
             
-            <button onClick={ handleClick }>{ buttonState }</button>
             
             
             {/*<button onClick={ addBlock }>Add Block</button>*/}
