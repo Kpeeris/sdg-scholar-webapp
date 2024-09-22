@@ -7,6 +7,8 @@ const EditableBlock = ({block}) => {
 
     let admin = true
 
+    //second commit
+
     //text editor styling credit to https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
     var modules = {
         toolbar: [
