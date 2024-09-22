@@ -25,11 +25,11 @@ npm run dev
 # You can type in control-c to stop running the server
 ```
 
-## Deployment
-
 ## Authors and Acknowledgements
 SDG Scholar was developed by Kashmain, Kaylyn, Keerthana, and Sarah.
 
 ### Illustrations
 Illustrations used on the web app are sourced from www.freepik.com
 
+## License
+This project is licensed under the MIT license.
