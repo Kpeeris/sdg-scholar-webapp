@@ -17,7 +17,7 @@ export const TwoColumnLayout = ({ imageSrc, imageAlt, rightContent }) => {
         </div>
 
         {/* Right container */}
-        <div className="flex-1 space-y-4 p-10">
+        <div className="flex-1 p-10">
           {rightContent}
         </div>
       </div>

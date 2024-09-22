@@ -18,22 +18,16 @@ export const Login = () => {
         imageAlt="Login SVG"
 
         rightContent={
-            <div>
+            <div className="space-y-4">
                 <h1>Welcome to SDG Scholar</h1>
                 <p>Redefining SDG Education, One Goal at a Time</p>
-
                 <LoginForm />
-                    
                 <div className="text-right">
                     <Button className="p-0" variant="link">Forgot Password?</Button>
                 </div>
-
                 <LoginButton />
-
                 <hr className="w-full mt-4 border-gray-300" />
-
                 <SignUpLink />
-
             </div>
         }
     />
