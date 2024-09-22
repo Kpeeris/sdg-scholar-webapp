@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { images, imagesLocked } from "./buildingImages";
-//import QuizStartPopup from './QuizStartPopup'
-// import Button from 'react-bootstrap/Button';
-import Modal from "react-bootstrap/Modal";
-// import 'bootstrap/dist/css/bootstrap.min.css'
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +88,7 @@ function ImageComponent({ imageName, top, left, width, height, target }) {
               className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/"
               onClick={handleClick}
             >
-              Start
+              Starts
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -111,76 +107,7 @@ function ImageComponent({ imageName, top, left, width, height, target }) {
             </div>
           </DialogContent>
         </Dialog>
-        {/* <button
-          className="buttonStart"
-          style={{
-            color: "white",
-            position: "relative",
-            top: "-70%",
-            width: "70px",
-            height: "35px",
-            fontSize: "0.8em",
-            backgroundColor: "#16A34A",
-          }}
-          onClick={handleClick}
-        >
-          {status}
-        </button> */}
       </div>
-
-      {/* <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="success" onClick={handleClick}>
-            Start
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Target 11.{target}</DialogTitle>
-            <DialogDescription>
-              description of target goes here
-            </DialogDescription>
-          </DialogHeader>
-
-          <div>
-            <img src="" alt="" />
-            <Button onClick={() => navigate(`/module/${target}/content`)}>
-              {status}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog> */}
-
-      {/* <Modal
-        show={show}
-        onHide={handleClose}
-        centered
-        //scrollable
-        size="lm"
-      >
-        <Modal.Title>
-          <h3 className="p-5 text-center fw-bold">Target 11.{target} </h3>
-        </Modal.Title>
-
-        <Modal.Body className="custom-modal-body">
-          <p className="font-bold">
-            Click below when you're ready to {moduleDone ? "redo" : "start"} the
-            quiz
-          </p>
-          <button
-            className="buttonStart"
-            style={{
-              color: "white",
-              width: "465px",
-              fontSize: "1em",
-              backgroundColor: "#16A34A",
-            }}
-            onClick={() => navigate(`/module/${target}/content`)}
-          >
-            {status}
-          </button>
-        </Modal.Body>
-      </Modal> */}
     </div>
   );
 }

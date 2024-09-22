@@ -2,108 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-} */
-
-/* a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #525fe1;
-} */
-
-/* body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-} */
-
-/* h1 {
-  font-size: 2.5em;
-  line-height: 1.1;
-  padding-top: 40px;
-  font-weight: bold;
-  position: absolute;
-  top: 50px;
-  left: 50px
-}
-
-h2 {
-  font-size: 1.5em;
-  line-height: 1.1;
-  padding-top:30px;
-  font-weight: bold;
-
-} */
-
-/* button {
-  border-radius: 8px;
-  border: 3px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:focus,
-button:focus-visible {
-  outline: 1px auto -webkit-focus-ring-color;
-}
-.buttonStart {
-  border-radius: 8px;
-  border: 2px solid transparent;
-  padding: 0.6em 1.2em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-.buttonStart:hover {
-  background-color: #097732;
-}
-.buttonStart:focus,
-.buttonStart:focus-visible {
-  outline: 1px auto -webkit-focus-ring-color;
-}
-
-.buttonStartSmall {
-  border-radius: 8px;
-  border: 2px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 0.5em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  width: 465px;
-}
-.buttonStartSmall:hover {
-  background-color: #097732;
-}
-.buttonStartSmall:focus,
-.buttonStartSmall:focus-visible {
-  outline: 1px auto -webkit-focus-ring-color;
-} */
-
 .custom-modal-body {
   height: 400px; /* Adjust as needed */
   overflow-y: auto; /* Allows scrolling if content overflows */
@@ -111,22 +9,6 @@ button:focus-visible {
   text-align: center; /* Center text horizontally */
   position: relative; /* Ensure positioning context for absolute elements inside */
 }
-
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #525FE1;
-    background-color: #FFF6F4;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #CBD5E1;
-  }
-  .buttonStart {
-    background-color: #16A34A;
-  }
-} */
 
 @layer base {
   :root {
@@ -230,13 +112,4 @@ button:focus-visible {
   small {
     @apply text-sm font-medium leading-none;
   }
-
-  /* a {
-    font-weight: 500;
-    text-decoration: inherit;
-  }
-
-  a :hover {
-    color: orange;
-  } */
 }
