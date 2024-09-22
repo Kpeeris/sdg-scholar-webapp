@@ -8,12 +8,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB9uQ1k6qNzAYXYyKNcWYxDvsFflYETK98",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "sdg-scholar.firebaseapp.com",
   projectId: "sdg-scholar",
   storageBucket: "sdg-scholar.appspot.com",
   messagingSenderId: "118706304555",
-  appId: "1:118706304555:web:77fb71aeb467bb673fdc6e"
+  appId: "1:118706304555:web:77fb71aeb467bb673fdc6e",
 };
 
 // initialize Firebase
