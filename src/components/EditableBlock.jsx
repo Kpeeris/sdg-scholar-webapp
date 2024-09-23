@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import 'quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill' 
 
-const EditableBlock = ({block}) => {
+const EditableBlock = ({content}) => {
     const [textEditorShow, setTextEditorShow] = useState(false)
 
     let admin = true
@@ -55,9 +55,12 @@ const EditableBlock = ({block}) => {
         <div>
             {textEditorShow === false ? (
                 <div>
-                    {block.subheading ? <h3>{block.subheading}</h3> : null}
+                    {content ? <p>{content}</p> : null}
+
+                    {/*{block.subheading ? <h3>{block.subheading}</h3> : null}
                     {block.body ? <p>{block.body}</p> : null}
-                    {block.media ? <p>Image</p> : null}
+                    {block.media ? <p>Image</p> : null}*/}
+                    
                 </div>
             ) : 
             <div>
@@ -65,25 +68,12 @@ const EditableBlock = ({block}) => {
                     theme="snow"
                     modules={modules}
                     formats={formats}
-                    value={ block.subheading }
+                    value={ content }
                     onChange={handleProcedureContentChange}
                     style={{ height: "75px" }}
                 >
                 </ReactQuill>
 
-                <br />
-                <br />
-                <br />
-
-                <ReactQuill
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    value={ block.body }
-                    onChange={handleProcedureContentChange}
-                    style={{ height: "220px" }}
-                >
-                </ReactQuill>
             </div>
             
             }
@@ -95,6 +85,7 @@ const EditableBlock = ({block}) => {
             
             {/*<button onClick={ addBlock }>Add Block</button>*/}
         </div>
+        
         
     )
 }
