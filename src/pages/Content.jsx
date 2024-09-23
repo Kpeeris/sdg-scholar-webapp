@@ -12,15 +12,16 @@ const Content = () => {
     // You can replace this with logic to dynamically retrieve module info
     const moduleTitle = `Target 11.${moduleId}`; 
 
-    const [content, setContent] = useState({})
+    const [content, setContent] = useState("")
 
     useEffect(() => {
         const getContent = async (moduleId) => {
             try {
-                const docRef = doc(db, 'quizzes', `sdg11t${moduleId}`)
+                const docRef = doc(db, `quizzes/sdg11t${moduleId}`)
                 const docSnap = await getDoc(docRef)
         
                 if (docSnap.exists()) {
+                    console.log((docSnap.data()).content)
                     setContent((docSnap.data()).content)
                 } else {
                     console.log('Document does not exist')
@@ -37,12 +38,13 @@ const Content = () => {
         <div className="main-content">
         <h2>Content Page</h2>
         <SideMenu moduleTitle={moduleTitle} moduleId={moduleId}/>
-
-        {Array.isArray(content) && content.map((block, index) => (
-            <div key={index}>
-                <EditableBlock block={ block } />
-            </div>
-         ))}  
+        {content ? 
+            <div>
+                <EditableBlock content={ content } />
+            </div> :
+            null
+        }
+          
 
         
 
