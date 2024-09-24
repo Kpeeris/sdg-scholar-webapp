@@ -9,14 +9,17 @@ This project was created to enhance SDG education and engage students in areas w
 ### Project Status
 SDG Scholar is still under development with the current version focusing on **SDG 11: Sustainable Cities and Communities**. Users can explore SDG 11 target-specific content through a city-scape view. Future developments should include the other SDGs and new features (e.g. awards/badges) to improve the learning experience.
 
-### Project Tech Stack
-SDG Scholar is built with React and Vite, using Tailwind CSS for styling, Firebase for backend services, and Node.js for server-side functionality.
+### Tech Stack
+SDG Scholar is built with React and Vite, using Tailwind CSS for styling, Firebase for backend services (e.g. authentication, storage, Firestore), and Node.js for server-side functionality.
 
 ## Installation
 ```bash
 # Clone the repository
 git clone https://github.com/Kpeeris/sdg-scholar-webapp.git
 cd sdg-scholar-webapp
+
+# Create a new file in the project root called .env and paste in the API key
+# Please contact our team for the API key
 
 # Install dependencies
 npm install
@@ -27,8 +30,9 @@ npm run dev
 # You can type in control-c to stop running the server
 ```
 
-## Authors and Acknowledgements
-SDG Scholar was developed by Kashmain, Kaylyn, Keerthana, and Sarah.
+## Acknowledgements
+### Authors
+SDG Scholar was developed by [Kashmain](https://github.com/kashmain), [Kaylyn](https://github.com/kaylynthomson), [Keerthana](https://github.com/Kpeeris), and [Sarah](https://github.com/dithintheafternoon).
 
 ### Illustrations
 Illustrations used on the web app are sourced from www.freepik.com
