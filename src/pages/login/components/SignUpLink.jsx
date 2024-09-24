@@ -1,13 +1,15 @@
-import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const SignUpLink = () => {
   return (
     <div className="flex justify-center items-center mt-2">
-      <p className="text-center text-base">Don't have an account?</p>
+      {/* replaced ' (apostorphy) with &apos; because of react/no-unescaped-entities error*/}
+      <p className="text-center text-base">Don&apos;t have an account?</p>
       <Link to="/signup">
-        <Button className="p-2 text-base" variant="link">Sign Up Here</Button>
+        <Button className="p-2 text-base" variant="link">
+          Sign Up Here
+        </Button>
       </Link>
     </div>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import { images, imagesLocked } from "./buildingImages";
 import ImageComponent from "./ImageComponent";
 

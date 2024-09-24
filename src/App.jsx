@@ -1,16 +1,14 @@
-import { useState } from "react";
 import "./index.css";
 import Layout from "./Layout";
 import AuthPage from "./pages/UserAccounts"; // added by kash
 
-
 import { Route, Routes } from "react-router-dom";
 import { Home, FAQ, Discussion, Sdg11, Quiz, Content } from "./pages";
 import { About } from "/src/pages/About/About.jsx";
-import Login from './pages/login/Login'
-import SignUp from './pages/signup/SignUp'
-import SignUpAdmin from './pages/signup/SignUpAdmin'
-import SignUpUser from './pages/signup/SignUpUserType'
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signup/SignUp";
+import SignUpAdmin from "./pages/signup/SignUpAdmin";
+import SignUpUser from "./pages/signup/SignUpUserType";
 
 function App() {
   return (
@@ -28,12 +26,12 @@ function App() {
 
         {/* added by kash */}
 
-        <Route path="/auth" element={<AuthPage />} /> 
+        <Route path="/auth" element={<AuthPage />} />
 
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/signup" element={<SignUp />} /> 
-        <Route path="/signupadmin" element={<SignUpAdmin />} /> 
-        <Route path="/signupuser" element={<SignUpUser />} /> 
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signupadmin" element={<SignUpAdmin />} />
+        <Route path="/signupuser" element={<SignUpUser />} />
       </Routes>
     </Layout>
   );

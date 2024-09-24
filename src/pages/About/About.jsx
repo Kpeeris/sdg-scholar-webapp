@@ -1,4 +1,3 @@
-import React from "react";
 import SdgCarousel from "/src/pages/About/SdgCarousel";
 
 import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
