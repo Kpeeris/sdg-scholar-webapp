@@ -15,10 +15,16 @@ const Navbar = () => {
 
         {/* Navigation links */}
         <ul className="absolute left-1/2 transform -translate-x-1/2 flex m-0">
-          <li className="border-r border-gray-300 px-4 font-semibold">
+          <li
+            data-testid="home-button"
+            className="border-r border-gray-300 px-4 font-semibold"
+          >
             <NavLink to="/">Home</NavLink>
           </li>
-          <li className="border-r border-gray-300 px-4 font-semibold">
+          <li
+            data-testid="about-button"
+            className="border-r border-gray-300 px-4 font-semibold"
+          >
             <NavLink to="/about">About</NavLink>
           </li>
           <Dropdown />
