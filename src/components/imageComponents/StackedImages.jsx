@@ -1,4 +1,4 @@
-import { images, imagesLocked } from "./buildingImages";
+import { images } from "./buildingImages";
 import ImageComponent from "./ImageComponent";
 
 function StackedImages() {

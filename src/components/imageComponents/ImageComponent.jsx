@@ -26,9 +26,9 @@ function ImageComponent({ imageName, top, left, width, height, target }) {
 
   const [status, setStatus] = useState("Start");
 
-  const handleClose = () => {
-    setShow(false);
-  };
+  // const handleClose = () => {
+  //   setShow(false);
+  // };
   const handleShow = () => {
     setShow(true);
   };

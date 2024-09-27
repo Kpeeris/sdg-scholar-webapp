@@ -1,5 +1,6 @@
+/* eslint-disable-next-line no-unused-vars */
 import db from "../../firebaseFiles/firebaseConfig"; // importing database
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 // onSnapshot gets data in realtime getData only gets data once, so we use onSnapshot
 import {
   signup,
