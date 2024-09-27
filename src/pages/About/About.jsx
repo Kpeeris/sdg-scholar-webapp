@@ -1,4 +1,3 @@
-import React from "react";
 import SdgCarousel from "/src/pages/About/SdgCarousel";
 
 import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
@@ -8,7 +7,7 @@ import background from "/src/assets/images/plants-background.svg";
 
 export const About = () => {
   return (
-    <div>
+    <div data-testid="about-page">
       <div className="flex flex-col md:flex-row">
         {/* LHS */}
         <div className="flex flex-col justify-between md:w-1/2 p-10">
