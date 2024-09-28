@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,6 +22,7 @@ export const Sdg11 = () => {
 
         {ListOfBuildings.map((building) => (
           <BuildingComponent
+            key={building.id}
             id={building.id}
             buildingName={building.buildingName}
             dark_image={building.dark_image}
@@ -36,7 +36,7 @@ export const Sdg11 = () => {
         <Dialog>
           <DialogTrigger asChild>
             <div className="fixed left-8 top-20">
-              <InformationCircleIcon class="h-10 w-10 text-gray-300" />
+              <InformationCircleIcon className="h-10 w-10 text-gray-300" />
               {/* <img src={info} alt="info icon" /> */}
             </div>
           </DialogTrigger>

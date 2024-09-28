@@ -48,7 +48,7 @@ const BuildingComponent = ({
       }
     };
     getDescription(id);
-  }, []);
+  });
 
   return (
     <div>
