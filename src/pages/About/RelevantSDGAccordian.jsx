@@ -44,7 +44,7 @@ const LstAccordionContent = [
   },
 ];
 
-const RelaventSDGAccodian = () => {
+const RelevantSDGAccodian = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
       {LstAccordionContent.map((field) => (
@@ -57,4 +57,4 @@ const RelaventSDGAccodian = () => {
   );
 };
 
-export default RelaventSDGAccodian;
+export default RelevantSDGAccodian;

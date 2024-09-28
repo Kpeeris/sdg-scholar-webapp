@@ -4,7 +4,7 @@ import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
 import logo_horizontal from "/src/assets/icons/logo_horizontal.svg";
 import SDG_logo_Square_Transparent from "/src/assets/images/SDG_logo_Square_Transparent.svg";
 import background from "/src/assets/images/plants-background.svg";
-import RelaventSDGAccodian from "./RelaventSDGAccordian";
+import RelevantSDGAccodian from "./RelevantSDGAccordian";
 export const About = () => {
   return (
     <div data-testid="about-page">
@@ -89,9 +89,9 @@ export const About = () => {
       {/* How are SDGs related to you */}
       <div className="flex flex-col items-center mx-16">
         <span className="mb-5 text-3xl font-bold">
-          How are SDGs related to You?
+          How Are SDGs Related To You?
         </span>
-        <RelaventSDGAccodian />
+        <RelevantSDGAccodian />
       </div>
     </div>
   );
