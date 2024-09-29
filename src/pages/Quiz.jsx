@@ -80,7 +80,7 @@ const Quiz = () => {
     }
 
     return <div className="main-content">
-        <h2>{ moduleTitle }</h2>
+        <h2 style={{fontWeight: "bold"}}>{ moduleTitle }</h2>
         <br />
         <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
         <div>
