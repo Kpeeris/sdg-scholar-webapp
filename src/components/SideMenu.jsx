@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.css";
+import { Button } from "./ui/button";
 
-function SideMenu({ moduleTitle, moduleId }) {
+function SideMenu({ moduleId }) {
   const navigate = useNavigate();
   const contentPath = `/module/${moduleId}/content`;
   const quizPath = `/module/${moduleId}/quiz`;
@@ -10,20 +11,20 @@ function SideMenu({ moduleTitle, moduleId }) {
 
   return (
     <div className="side-menu">
-      <h2>SDG 11</h2>
-      <h4>{moduleTitle}</h4>
-      <button
+      <h2 className="pt-6">SDG 11</h2>
+      <h4 className="pb-6">Target {moduleId}</h4>
+      <Button
         className={isActive(contentPath) ? "active" : ""}
         onClick={() => navigate(`/module/${moduleId}/content`)}
       >
         Content
-      </button>
-      <button
+      </Button>
+      <Button
         className={isActive(quizPath) ? "active" : ""}
         onClick={() => navigate(`/module/${moduleId}/quiz`)}
       >
         Quiz
-      </button>
+      </Button>
     </div>
   );
 }

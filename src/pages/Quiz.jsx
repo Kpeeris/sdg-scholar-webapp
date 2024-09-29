@@ -8,7 +8,7 @@ const Quiz = () => {
   return (
     <div className="main-content">
       <h2>Quiz Page</h2>
-      <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
+      <SideMenu moduleId={moduleId} />
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab
         sunt aliquam suscipit dolor inventore laborum doloribus, aliquid

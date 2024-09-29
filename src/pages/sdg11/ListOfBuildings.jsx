@@ -14,7 +14,7 @@ const ListOfdark_buildings = [
       dark_buildings["/src/assets/images/dark/Houses_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Houses.png"].default,
     left: "53%",
-    top: "85%",
+    top: "80%",
   },
   {
     id: 2,
@@ -24,8 +24,8 @@ const ListOfdark_buildings = [
       dark_buildings["/src/assets/images/dark/Train_station_dark.png"].default,
     full_image:
       full_buildings["/src/assets/images/full/Train_station.png"].default,
-    left: "15%",
-    top: "15%",
+    left: "14%",
+    top: "14%",
   },
   {
     id: 3,
@@ -34,8 +34,8 @@ const ListOfdark_buildings = [
     dark_image:
       dark_buildings["/src/assets/images/dark/Town_hall_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Town_Hall.png"].default,
-    left: "30%",
-    top: "25%",
+    left: "31%",
+    top: "26%",
   },
 
   {
@@ -45,8 +45,8 @@ const ListOfdark_buildings = [
     dark_image:
       dark_buildings["/src/assets/images/dark/Hospital_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Hospital.png"].default,
-    left: "46%",
-    top: "15%",
+    left: "47%",
+    top: "13%",
   },
   {
     id: 6,
@@ -56,8 +56,8 @@ const ListOfdark_buildings = [
       dark_buildings["/src/assets/images/dark/Recycle_dark.png"].default,
     full_image:
       full_buildings["/src/assets/images/full/Recycle_Plant.png"].default,
-    left: "10%",
-    top: "85%",
+    left: "12%",
+    top: "83%",
   },
   {
     id: 7,
@@ -66,7 +66,7 @@ const ListOfdark_buildings = [
     dark_image: dark_buildings["/src/assets/images/dark/Park_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Park.png"].default,
     left: "80%",
-    top: "10%",
+    top: "8%",
   },
   {
     id: 4,
@@ -75,8 +75,8 @@ const ListOfdark_buildings = [
     dark_image:
       dark_buildings["/src/assets/images/dark/Museum_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Museum.png"].default,
-    left: "70%",
-    top: "36%",
+    left: "69%",
+    top: "34%",
   },
   {
     id: 8,
@@ -85,8 +85,8 @@ const ListOfdark_buildings = [
     dark_image:
       dark_buildings["/src/assets/images/dark/Bridge_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Bridge.png"].default,
-    left: "70%",
-    top: "65%",
+    left: "72%",
+    top: "61%",
   },
   {
     id: 9,
@@ -97,7 +97,7 @@ const ListOfdark_buildings = [
     full_image:
       full_buildings["/src/assets/images/full/Fire_station.png"].default,
     left: "28%",
-    top: "68%",
+    top: "62%",
   },
   {
     id: 10,
@@ -106,7 +106,7 @@ const ListOfdark_buildings = [
     dark_image: dark_buildings["/src/assets/images/dark/Bank_dark.png"].default,
     full_image: full_buildings["/src/assets/images/full/Bank.png"].default,
     left: "10%",
-    top: "50%",
+    top: "45%",
   },
 ];
 export default ListOfdark_buildings;

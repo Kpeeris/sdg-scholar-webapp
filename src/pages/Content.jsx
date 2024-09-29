@@ -9,9 +9,6 @@ import EditableBlock from "../components/EditableBlock";
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
 
-  // You can replace this with logic to dynamically retrieve module info
-  const moduleTitle = `Target 11.${moduleId}`;
-
   const [content, setContent] = useState("");
 
   useEffect(() => {
@@ -37,7 +34,7 @@ const Content = () => {
   return (
     <div className="main-content">
       <h2>Content Page</h2>
-      <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
+      <SideMenu moduleId={moduleId} />
       {content ? (
         <div>
           <EditableBlock content={content} />
