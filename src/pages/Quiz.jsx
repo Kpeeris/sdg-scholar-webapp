@@ -15,6 +15,8 @@ const Quiz = () => {
     const [docs, setDocs] = useState({})
     const ans = {}
 
+    let admin = false
+
 
     const getTotalQuestions = async () => {
         try {
@@ -79,6 +81,10 @@ const Quiz = () => {
         
     }
 
+    const handleAddQuestionClick = () => {
+
+    }
+
     return <div className="main-content">
         <h2 style={{fontWeight: "bold"}}>{ moduleTitle }</h2>
         <br />
@@ -100,7 +106,15 @@ const Quiz = () => {
             }
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center">
+            {admin ? 
+                <button onClick={()=>handleAddQuestionClick()}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </button>
+            : null}
+            <br />
             <Button onClick={ () => checkAnswers() } className="w-44">Submit Quiz</Button>
         </div>
         

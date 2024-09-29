@@ -6,7 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 //please take userNumber out later once we've figured out how to save global variables for user auth
 const Question = ({ q, ans }) => {  {/*, userNumber*/}
     //ans[q.questionNumber] = {}
-    let admin = true
+    let admin = false
 
     const [answer, setAnswer] = useState("")
 
@@ -46,6 +46,10 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
                 })}
                 <br />
                 {admin ? <Button onClick={()=>handleEditClick()}>Edit</Button> : null}
+                
+
+                
+
             </div>
 
             
