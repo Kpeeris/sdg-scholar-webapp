@@ -6,6 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 //please take userNumber out later once we've figured out how to save global variables for user auth
 const Question = ({ q, ans }) => {  {/*, userNumber*/}
     //ans[q.questionNumber] = {}
+    let admin = true
 
     const [answer, setAnswer] = useState("")
 
@@ -21,7 +22,7 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
 
 
     return (
-        <Card >
+        <Card>
             <CardHeader className="pb-1">
                 <p style={{fontWeight:"bold"}}>Question { q.questionNumber }</p>
                 <p>{ q.questionText }</p>
@@ -38,11 +39,16 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
                                 {option}
                             </label>
                             <br/>
+                            
                         </div>
                     )
                     
                 })}
+                <br />
+                {admin ? <Button onClick={()=>handleEditClick()}>Edit</Button> : null}
             </div>
+
+            
 
         </Card>
     )
