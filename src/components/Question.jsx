@@ -22,7 +22,7 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
 
     return (
         <Card >
-            <CardHeader>
+            <CardHeader className="pb-1">
                 <p style={{fontWeight:"bold"}}>Question { q.questionNumber }</p>
                 <p>{ q.questionText }</p>
             </CardHeader>
@@ -31,10 +31,9 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
                 {Object.values(q.options).map((option, index)=>{
                     return (
                         <div key={index} className="flex items-center space-x-2">
-                            <Checkbox id="terms2" />
+                            <Checkbox />
                             <label
-                                htmlFor="terms2"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 {option}
                             </label>
