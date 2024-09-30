@@ -3,7 +3,6 @@ import BuildingComponent from "./BuildingComponent";
 import ListOfBuildings from "./ListOfBuildings";
 import GoalInfo from "./GoalInfo";
 import FullScreenDiv from "./FullScreenDiv";
-
 export const Sdg11 = () => {
   return (
     <FullScreenDiv>
@@ -22,6 +21,7 @@ export const Sdg11 = () => {
           full_image={building.full_image}
           left={building.left}
           top={building.top}
+          clipPath={building.clipPath}
         />
       ))}
 

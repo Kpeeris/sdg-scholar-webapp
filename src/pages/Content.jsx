@@ -9,6 +9,10 @@ import EditableBlock from "../components/EditableBlock";
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
 
+  // Issue moduleId is not in the form 11.{id} when before it was just {id}
+  // i think this affects the api call because the content no longer appears on
+  // the page
+
   const [content, setContent] = useState("");
 
   useEffect(() => {

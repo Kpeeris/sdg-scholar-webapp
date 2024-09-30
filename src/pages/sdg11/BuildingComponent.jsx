@@ -13,24 +13,28 @@ import db from "../../../firebaseFiles/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
 /* buildingName: name of the building
- target: the target that the building corresponds to 
- image: path to the "dark" image of the building 
+ id: the id of the target in the db
+ dark_image: path to the "dark" image of the building 
+ full_image: paths to the full sized image of the building
  left: the position of the button from the left of the screen 
- top: the position if the button for the top of the screen*/
+ top: the position if the button for the top of the screen
+ clipPath: the list of x,y coords that make the silhouette of the building */
 const BuildingComponent = ({
   id,
   buildingName,
-  target,
   dark_image,
   full_image,
   left,
   top,
+  clipPath,
 }) => {
   const navigate = useNavigate();
 
   const [description, setDescription] = useState("");
   const [targetNum, setTargetNum] = useState("");
 
+  const [isVisible, setIsVisible] = useState(false);
+  // API call to get target description and title from the database
   useEffect(() => {
     const getDescription = async (id) => {
       try {
@@ -52,22 +56,41 @@ const BuildingComponent = ({
 
   return (
     <div>
+      {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {/* have to make it so that this image becomes invisible when the learned completes the quiz  */}
         <img
           src={dark_image}
           alt={buildingName}
-          className="w-full h-auto pointer-events-none"
+          className="w-full h-full object-cover pointer-events-none"
         />
       </div>
+
+      {/* this div covers the building so that when the mouse hovers over it the button becomes opaque */}
+      <div
+        className="absolute w-full h-full"
+        style={{
+          left: 0,
+          top: 0,
+          clipPath: clipPath,
+        }}
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      ></div>
 
       <Dialog>
         <DialogTrigger asChild>
           {/* have to change the text in the button depending on start or restart */}
           <Button
             variant="success"
-            className="absolute"
-            style={{ left: left, top: top }}
+            onMouseEnter={() => setIsVisible(true)}
+            onMouseLeave={() => setIsVisible(false)}
+            className={`absolute -translate-x-1/2 -translate-y-1/2 ${
+              isVisible ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              left: left,
+              top: top,
+            }}
           >
             Open
           </Button>
@@ -87,7 +110,7 @@ const BuildingComponent = ({
             </DialogTitle>
             <Button
               variant="success"
-              onClick={() => navigate(`/module/${target}/content`)}
+              onClick={() => navigate(`/module/${targetNum}/content`)}
               style={{}}
             >
               Open
