@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import "./SideMenu.css";
 import { Button } from "./ui/button";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
