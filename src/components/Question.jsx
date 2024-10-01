@@ -23,13 +23,16 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
 
     return (
         <Card>
-            <CardHeader className="pb-1 bg-neutral-100">
+            <CardHeader className="pt-2 pb-2 bg-neutral-100">
                 <p style={{fontWeight:"bold"}}>Question { q.questionNumber }</p>
             </CardHeader>
             
 
             <div style={{paddingLeft:"40px", paddingTop: "10px", paddingRight:"40px", paddingBottom:"30px"}}>
-                <p>{ q.questionText }</p>
+                <div style={{paddingBottom: "5px"}}>
+                    <p>{ q.questionText }</p>
+                </div>
+                
                 {Object.values(q.options).map((option, index)=>{
                     return (
                         <div key={index} className="flex items-center space-x-2">
