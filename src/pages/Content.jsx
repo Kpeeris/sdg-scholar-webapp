@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import SideMenu from "../components/SideMenu";
-import "../components/SideMenu.css";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
@@ -36,7 +35,7 @@ const Content = () => {
   });
 
   return (
-    <div className="main-content">
+    <div className="ml-[250px]">
       <h2>Content Page</h2>
       <SideMenu moduleId={moduleId} />
       {content ? (

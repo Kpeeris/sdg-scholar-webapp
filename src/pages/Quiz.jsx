@@ -1,12 +1,11 @@
 import SideMenu from "../components/SideMenu";
-import "../components/SideMenu.css";
 import { useParams } from "react-router-dom";
 
 const Quiz = () => {
   const { moduleId } = useParams();
 
   return (
-    <div className="main-content">
+    <div className="ml-[250px]">
       <h2>Quiz Page</h2>
       <SideMenu moduleId={moduleId} />
       <p>
