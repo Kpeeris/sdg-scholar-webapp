@@ -28,7 +28,7 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
             </CardHeader>
             
 
-            <div style={{paddingLeft:"40px", paddingTop: "10px", paddingRight:"40px", paddingBottom:"30px"}}>
+            <div style={{paddingLeft:"40px", paddingTop: "10px", paddingRight:"40px", paddingBottom:"10px"}}>
                 <div style={{paddingBottom: "5px"}}>
                     <p>{ q.questionText }</p>
                 </div>
