@@ -8,9 +8,7 @@ import EditableBlock from "../components/EditableBlock";
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
 
-  // Issue moduleId is not in the form 11.{id} when before it was just {id}
-  // i think this affects the api call because the content no longer appears on
-  // the page
+  const moduleTitle = `Target 11.${moduleId}`;
 
   const [content, setContent] = useState("");
 
@@ -37,7 +35,7 @@ const Content = () => {
   return (
     <div className="ml-[250px]">
       <h2>Content Page</h2>
-      <SideMenu moduleId={moduleId} />
+      <SideMenu moduleId={moduleId} moduleTitle={moduleTitle} />
       {content ? (
         <div>
           <EditableBlock content={content} />

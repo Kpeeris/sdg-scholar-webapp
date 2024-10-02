@@ -54,6 +54,8 @@ const BuildingComponent = ({
     getDescription(id);
   });
 
+  const lastLetter = targetNum.slice(-1);
+
   return (
     <div>
       {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
@@ -110,7 +112,7 @@ const BuildingComponent = ({
             </DialogTitle>
             <Button
               variant="success"
-              onClick={() => navigate(`/module/${targetNum}/content`)}
+              onClick={() => navigate(`/module/${lastLetter}/content`)}
               style={{}}
             >
               Open

@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 
 const Quiz = () => {
   const { moduleId } = useParams();
+  const moduleTitle = `Target 11.${moduleId}`;
 
   return (
     <div className="ml-[250px]">
       <h2>Quiz Page</h2>
-      <SideMenu moduleId={moduleId} />
+      <SideMenu moduleId={moduleId} moduleTitle={moduleTitle} />
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab
         sunt aliquam suscipit dolor inventore laborum doloribus, aliquid

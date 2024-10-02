@@ -5,7 +5,9 @@ import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import goal_11 from "/src/assets/goals/Goal_11.svg";
 import City from "/src/assets/images/City_scape.png";
 
-function SideMenu({ moduleId }) {
+// moduleId is the number corresponding to the target in the url
+// moduleTitle is Target 11.${moduleId}
+function SideMenu({ moduleId, moduleTitle }) {
   const navigate = useNavigate();
   const contentPath = `/module/${moduleId}/content`;
   const quizPath = `/module/${moduleId}/quiz`;
@@ -28,12 +30,12 @@ function SideMenu({ moduleId }) {
           />
         </div>
         <div className="flex flex-col">
-          <text className="text-slate-900 font-inter text-[20px] font-bold">
+          <span className="text-slate-900 font-inter text-[20px] font-bold">
             SDG 11
-          </text>
-          <text className="text-slate-900 font-inter text-[18px] font-normal">
-            Target {moduleId}
-          </text>
+          </span>
+          <span className="text-slate-900 font-inter text-[18px] font-normal">
+            {moduleTitle}
+          </span>
         </div>
       </div>
 
