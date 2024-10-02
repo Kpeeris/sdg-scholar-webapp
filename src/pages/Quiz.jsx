@@ -22,9 +22,7 @@ const Quiz = () => {
         try {
             let docRef = doc(db, `quizzes/sdg11t${ moduleId }`)
             let docSnap = await getDoc(docRef)
-
-            if (docSnap.exists()) {
-                
+            if (docSnap.exists()) {   
                 console.log((docSnap.data()).totalQuestions)
                 return (docSnap.data()).totalQuestions
             } else {
