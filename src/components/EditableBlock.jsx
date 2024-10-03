@@ -1,6 +1,6 @@
-import { useState } from "react";
-import "quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
+import { useState } from 'react'
+import 'quill/dist/quill.snow.css'
+import ReactQuill from 'react-quill' 
 
 const EditableBlock = ({ content }) => {
   const [textEditorShow, setTextEditorShow] = useState(false);
