@@ -2,10 +2,10 @@ import { React, useEffect, useState } from 'react';
 import SideMenu from "../components/SideMenu";
 import "../components/SideMenu.css"
 import {useParams} from "react-router-dom"
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebaseConfig.js';
 import Question from "../components/Question.jsx"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 
 const Quiz = () => {
 
@@ -85,9 +85,11 @@ const Quiz = () => {
         getQuestions()
     }, [])
 
-    const checkAnswers = (ans) => {
+
+    {/*const checkAnswers = (ans) => {
         
-    }
+    }*/}
+    
 
     const handleAddQuestionClick = () => {
 

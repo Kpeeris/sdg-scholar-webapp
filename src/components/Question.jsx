@@ -1,23 +1,24 @@
-import { React, useEffect, useState } from 'react'
+import { React } from 'react'
 import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Card, CardHeader } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 //please take userNumber out later once we've figured out how to save global variables for user auth
 const Question = ({ q, ans }) => {  {/*, userNumber*/}
     //ans[q.questionNumber] = {}
     let admin = false
 
-    const [answer, setAnswer] = useState("")
+    //const [answer, setAnswer] = useState("")
 
-    useEffect(() => {
+    {/*useEffect(() => {
         saveProgress()
     }, [answer])
 
     const saveProgress = () => {
         ans[q.questionNumber] = {}
         //ans[q.questionNumber][] = answer
-    }
+    }*/}
+    
     
 
 
@@ -50,7 +51,7 @@ const Question = ({ q, ans }) => {  {/*, userNumber*/}
                     
                 })}
                 <br />
-                {admin ? <Button onClick={()=>handleEditClick()}>Edit</Button> : null}
+                {admin ? <Button>Edit</Button> : null}
                 
 
                 
