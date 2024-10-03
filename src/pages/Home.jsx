@@ -1,7 +1,4 @@
-import React from "react";
-import Module from "../components/buttons/Module";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import City from "/src/assets/images/City_scape.png";
 import Right_arrow from "/src/assets/icons/arrow_right_circle.svg";
 import goal_11 from "/src/assets/goals/Goal_11.svg";

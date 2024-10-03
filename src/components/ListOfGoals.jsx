@@ -1,4 +1,3 @@
-import React from "react";
 import City from "/src/assets/images/City_scape.png";
 const images = import.meta.glob("/src/assets/goals/*.svg", { eager: true });
 

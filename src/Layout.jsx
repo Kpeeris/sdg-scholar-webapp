@@ -1,5 +1,4 @@
-import React from "react";
-import Navbar from './components/Navbar'
+import Navbar from "./components/Navbar";
 import { useLocation } from "react-router-dom";
 
 /* 
@@ -8,12 +7,16 @@ import { useLocation } from "react-router-dom";
 */
 function Layout({ children }) {
   const location = useLocation();
-  const noPaddingRoute = '/sdg11';
+  const noPaddingRoute = "/sdg11";
 
   return (
     <>
       <Navbar />
-      <div className={location.pathname === noPaddingRoute ? '' : 'pt-32 pb-16 px-12'}>
+      <div
+        className={
+          location.pathname === noPaddingRoute ? "" : "pt-32 pb-16 px-12"
+        }
+      >
         {children}
       </div>
     </>
