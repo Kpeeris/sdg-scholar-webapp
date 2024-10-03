@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { useState } from 'react'
 import 'quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill' 
 

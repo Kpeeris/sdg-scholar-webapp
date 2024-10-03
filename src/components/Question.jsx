@@ -1,10 +1,9 @@
-import { React } from 'react'
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 //please take userNumber out later once we've figured out how to save global variables for user auth
-const Question = ({ q, ans }) => {  {/*, userNumber*/}
+const Question = ({ q }) => {  {/*, userNumber, ans*/}
     //ans[q.questionNumber] = {}
     let admin = false
 

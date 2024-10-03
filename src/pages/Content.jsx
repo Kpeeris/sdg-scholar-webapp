@@ -32,7 +32,7 @@ const Content = () => {
     };
 
     getContent(moduleId);
-  }, []);
+  });
 
   return (
     <div className="main-content">

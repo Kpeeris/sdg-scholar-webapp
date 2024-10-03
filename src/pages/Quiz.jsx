@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideMenu from "../components/SideMenu";
 import "../components/SideMenu.css"
 import {useParams} from "react-router-dom"
@@ -83,7 +83,7 @@ const Quiz = () => {
 
     useEffect(() => {
         getQuestions()
-    }, [])
+    })
 
 
     {/*const checkAnswers = (ans) => {
@@ -125,7 +125,7 @@ const Quiz = () => {
                 </button>
             : null}
             <br />
-            <Button onClick={ () => checkAnswers() } className="w-44">Submit Quiz</Button>
+            <Button className="w-44">Submit Quiz</Button>
         </div>
         
         
