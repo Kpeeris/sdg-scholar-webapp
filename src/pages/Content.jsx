@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import SideMenu from "../components/SideMenu";
-import "../components/SideMenu.css";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
@@ -9,7 +8,6 @@ import EditableBlock from "../components/EditableBlock";
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
 
-  // You can replace this with logic to dynamically retrieve module info
   const moduleTitle = `Target 11.${moduleId}`;
 
   const [content, setContent] = useState("");
@@ -35,9 +33,9 @@ const Content = () => {
   });
 
   return (
-    <div className="main-content">
+    <div className="ml-[250px]">
       <h2>Content Page</h2>
-      <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
+      <SideMenu moduleId={moduleId} moduleTitle={moduleTitle} />
       {content ? (
         <div>
           <EditableBlock content={content} />

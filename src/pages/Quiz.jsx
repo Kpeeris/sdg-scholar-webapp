@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../components/SideMenu";
-import "../components/SideMenu.css";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
@@ -89,6 +88,7 @@ const Quiz = () => {
 
   useEffect(() => {
     getQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   {
@@ -100,44 +100,50 @@ const Quiz = () => {
   const handleAddQuestionClick = () => {};
 
   return (
-    <div className="main-content">
-      <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
-      <br />
+    <div className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
-      <div>
-        {Object.values(docs).map((question) => {
-          console.log("question number is: " + question.questionNumber);
-          console.log("value at docs is: " + question.questionText);
-          return (
-            <div key={question.questionNumber}>
-              <Question key={question.questionNumber} q={question} ans={ans} />
-              <br />
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="flex flex-col items-center">
-        {admin ? (
-          <button onClick={() => handleAddQuestionClick()}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-12"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </button>
-        ) : null}
+      <div className="ml-[250px] flex-1">
+        <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
         <br />
-        <Button className="w-44">Submit Quiz</Button>
+        <div>
+          {Object.values(docs).map((question) => {
+            console.log("question number is: " + question.questionNumber);
+            console.log("value at docs is: " + question.questionText);
+            return (
+              <div key={question.questionNumber}>
+                <Question
+                  key={question.questionNumber}
+                  q={question}
+                  ans={ans}
+                />
+                <br />
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col items-center">
+          {admin ? (
+            <button onClick={() => handleAddQuestionClick()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-12"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </button>
+          ) : null}
+          <br />
+          <Button className="w-44">Submit Quiz</Button>
+        </div>
       </div>
     </div>
   );

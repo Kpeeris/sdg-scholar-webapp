@@ -11,6 +11,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+/* 
+imagename: the type of building
+top: the distance of the top edge of the div and the top edge of its parent
+left: the distance between the left edge of the div and the left edge of its containing block 
+width: width of the div compared to the of the width of its containing block.
+height: width of the div compared to the of the width of its containing block.
+
+target: the SDG 11 target that the image correspond to
+ */
 function ImageComponent({ imageName, top, left, width, height, target }) {
   const sourceLocked = imagesLocked[imageName];
   const sourceUnlocked = images[imageName];
@@ -20,6 +29,7 @@ function ImageComponent({ imageName, top, left, width, height, target }) {
   const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
+
   //outsource this logic to a different component and delete this line;
   //module done should decided on the actual quiz page not this one boys
   let moduleDone = false;
@@ -75,11 +85,13 @@ function ImageComponent({ imageName, top, left, width, height, target }) {
           padding: "0px",
         }}
       >
+        {/* paste the image to the full size of the div specified in the props */}
         <img
           src={source}
           alt={imageName}
           style={{ position: "relative", width: "100%", height: "100%" }}
         />
+
         <Dialog>
           <DialogTrigger asChild>
             <Button
