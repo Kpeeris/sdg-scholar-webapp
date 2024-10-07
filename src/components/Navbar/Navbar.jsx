@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
-import Dropdown from "./buttons/Dropdown";
-import logo_horizontal from "../assets/icons/logo_horizontal.svg";
+import Dropdown from "./Dropdown";
+import logo_horizontal from "@/assets/icons/logo_horizontal.svg";
 
 const Navbar = () => {
   return (
