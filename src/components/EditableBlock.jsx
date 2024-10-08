@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import 'quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill' 
+import ReactQuill from 'react-quill'
+import ReactHtmlParser from 'html-react-parser';
+import { Button } from "@/components/ui/button";
 
 const EditableBlock = ({ content }) => {
   const [textEditorShow, setTextEditorShow] = useState(false);
