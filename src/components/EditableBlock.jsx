@@ -103,33 +103,35 @@ const EditableBlock = ({ content }) => {
     //open up the text editor here
   };
 
-  return (
+  return(
     <div>
-      {textEditorShow === false ? (
-        <div>
-          {content ? <p>{content}</p> : null}
+        {textEditorShow === false ? (
+            <div>
+                {content ? ReactHtmlParser(content) : null}
 
-          {/*{block.subheading ? <h3>{block.subheading}</h3> : null}
-                    {block.body ? <p>{block.body}</p> : null}
-                    {block.media ? <p>Image</p> : null}*/}
-        </div>
-      ) : (
+            </div>
+        ) : 
         <div>
-          <ReactQuill
-            theme="snow"
-            modules={modules}
-            formats={formats}
-            value={content}
-            onChange={handleProcedureContentChange}
-            style={{ height: "75px" }}
-          ></ReactQuill>
-        </div>
-      )}
-      <br />
-      <br />
-      {admin ? <button onClick={handleClick}>{buttonState}</button> : null}
+            <ReactQuill
+                theme="snow"
+                modules={ modules }
+                formats={ formats }
+                value={ content }
+                onChange={handleProcedureContentChange}
+                style={{ height: "300px" }}
+            >
+            </ReactQuill>
 
-      {/*<button onClick={ addBlock }>Add Block</button>*/}
+        </div>
+        
+        }
+        <br />
+        <br />
+        <br />
+        <div>
+            {admin ? <Button onClick={ () => {handleClick(content)} } style={{marginRight: '10px'}}>{ buttonState }</Button> : null}
+            {(admin && showCancel) ? <Button onClick={ () => {handleCancelClick()} }>Cancel</Button> : null}
+        </div>
     </div>
   );
 };
