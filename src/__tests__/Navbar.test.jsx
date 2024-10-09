@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import Navbar from "@/components/Navbar/Navbar";
 import { describe, it, beforeEach, expect } from "vitest";

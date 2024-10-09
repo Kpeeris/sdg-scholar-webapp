@@ -2,6 +2,7 @@ import { it, expect, describe } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import { vi } from "vitest";
 import App from "@/App";
 
 //carousel components was causing issues for some reason so this is a mock
