@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
@@ -16,6 +16,7 @@ function SideMenu({ moduleId, moduleTitle }) {
 
   return (
     <div className="w-[250px] h-[92.75vh] p-6 flex flex-col fixed bottom-0 left-0 border-r border-gray-300">
+      <Link to="/sdg11">
       <div className="flex items-center flex-start pt-3 pb-4">
         <div className="relative w-14 h-14 overflow-hidden mr-5">
           <img
@@ -38,6 +39,7 @@ function SideMenu({ moduleId, moduleTitle }) {
           </span>
         </div>
       </div>
+      </Link>
 
       <Button
         className="my-3 p-6"
