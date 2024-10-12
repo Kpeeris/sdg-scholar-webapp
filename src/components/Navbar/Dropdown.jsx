@@ -24,7 +24,12 @@ function Dropdown() {
     <DropdownMenu>
       {/* dropdown button */}
       <DropdownMenuTrigger asChild className="font-semibold text-base">
-        <Button variant="ghost">Goals</Button>
+        <Button
+          variant="ghost"
+          className="focus-visible:ring-none focus-visible:outline-none "
+        >
+          Goals
+        </Button>
       </DropdownMenuTrigger>
 
       {/* dropdown list */}

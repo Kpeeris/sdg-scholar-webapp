@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
-import Dropdown from "./buttons/Dropdown";
-import logo_horizontal from "../assets/icons/logo_horizontal.svg";
+import Dropdown from "./Dropdown";
+import logo_horizontal from "@/assets/icons/logo_horizontal.svg";
 
 const Navbar = () => {
   return (
@@ -15,17 +15,15 @@ const Navbar = () => {
 
         {/* Navigation links */}
         <ul className="absolute left-1/2 transform -translate-x-1/2 flex m-0">
-          <li
-            data-testid="home-button"
-            className="border-r border-gray-300 px-4 font-semibold"
-          >
-            <NavLink to="/">Home</NavLink>
+          <li className="border-r border-gray-300 px-4 font-semibold">
+            <NavLink data-testid="home-button" to="/">
+              Home
+            </NavLink>
           </li>
-          <li
-            data-testid="about-button"
-            className="border-r border-gray-300 px-4 font-semibold"
-          >
-            <NavLink to="/about">About</NavLink>
+          <li className="border-r border-gray-300 px-4 font-semibold">
+            <NavLink data-testid="about-button" to="/about">
+              About
+            </NavLink>
           </li>
           <li
             data-testid="notice-board-button"

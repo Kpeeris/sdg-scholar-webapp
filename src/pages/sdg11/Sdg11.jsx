@@ -10,6 +10,7 @@ export const Sdg11 = () => {
         src={FULL_CITY}
         alt="full city"
         className="w-full h-full object-cover"
+        data-testid="sdg11-page"
       />
 
       {ListOfBuildings.map((building) => (

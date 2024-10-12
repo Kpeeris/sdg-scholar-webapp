@@ -3,8 +3,8 @@ import Layout from "./Layout";
 import AuthPage from "./pages/UserAccounts"; // added by kash
 
 import { Route, Routes } from "react-router-dom";
-import { Home, FAQ, Discussion, Sdg11, Quiz, Content } from "./pages";
-import { About } from "/src/pages/About/About.jsx";
+import { Home, Sdg11, Quiz, Content, About } from "./index";
+
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SignUp";
 import SignUpAdmin from "./pages/signup/SignUpAdmin";
@@ -17,10 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/discussion" element={<Discussion />} />
         <Route path="/sdg11" element={<Sdg11 />} />
-        {/*<Route path="/award" element={<Awards />}/>*/}
 
         <Route path="/module/:moduleId/content" element={<Content />} />
         <Route path="/module/:moduleId/quiz" element={<Quiz />} />
