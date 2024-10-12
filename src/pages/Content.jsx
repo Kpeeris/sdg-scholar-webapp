@@ -1,4 +1,3 @@
-import { React } from 'react';
 import SideMenu from "../components/SideMenu";
 //import "../components/SideMenu.css";
 import {useParams} from "react-router-dom";
