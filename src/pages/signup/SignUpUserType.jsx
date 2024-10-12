@@ -46,8 +46,8 @@ export const SignUpUser = () => {
     if (userType === "admin") {
       // Navigate to Admin Code Verification page or show the verification component
       alert("Proceeding to Admin Code Verification...");
-      //navigate("/signupadmin");
-      navigate("/signup", { state: { userType: "admin" } });
+      navigate("/signupadmin", { state: { userType: "admin" } });
+      // navigate("/signup", { state: { userType: "admin" } });
     } else if (userType === "learner") {
       // Navigate to Learner Sign-Up Form or show the form component
       navigate("/signup", { state: { userType: "learner" } });

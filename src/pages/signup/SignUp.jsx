@@ -1,5 +1,3 @@
-// sign up jsx
-
 import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import SignupSVG from "@/assets/images/Signup.svg";
@@ -28,7 +26,7 @@ const SignUp = () => {
   // Create an object to store 10 quiz scores initialized to 0
   const quizScores = {};
   for (let i = 1; i <= 10; i++) {
-    quizScores[`sdgt11${i}`] = 0;
+    quizScores[`sdg11t${i}`] = 0;
   }
 
   const handleSignup = async () => {
