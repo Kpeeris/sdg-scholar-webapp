@@ -14,7 +14,7 @@ export const Home = () => {
   };
 
   return (
-    <div>
+    <div data-testid="home-page">
       <h1 className="pb-16">Hi {name}!</h1>
       <div className="bg-orange-400 bg-opacity-70 -mx-12 h-96 flex items-center justify-around">
         <div className="flex items-center justify-around">
