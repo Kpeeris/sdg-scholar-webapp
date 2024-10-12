@@ -2,7 +2,6 @@ import SignupSVG from "@/assets/images/Signup.svg";
 import { LoginLink } from "./components/LoginLink";
 import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { OTPForm } from "./components/OTPForm";
-import { ConfirmButton } from "./components/ConfirmButton";
 
 export const SignUpAdmin = () => {
   return (
@@ -14,7 +13,6 @@ export const SignUpAdmin = () => {
           <h1>Create Your Account</h1>
           <p>Enter the invite code sent to create an admin account</p>
           <OTPForm />
-          <ConfirmButton />
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>

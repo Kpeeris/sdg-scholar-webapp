@@ -1,7 +1,6 @@
 // import SignupSVG from "@/assets/images/Signup.svg";
 
 // import { TwoColumnLayout } from "../../TwoColumnLayout";
-// import { ConfirmButton } from "./components/ConfirmButton";
 // import { UserTypeCard } from "./components/UserTypeCard";
 
 // export const SignUpUser = () => {

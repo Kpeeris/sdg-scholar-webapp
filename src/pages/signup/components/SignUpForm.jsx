@@ -1,10 +1,7 @@
-// SIGN UP FORM 
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { forwardRef } from "react";
 
-export const SignUpForm = forwardRef(({ firstNameRef, lastNameRef, emailRef, passwordRef }, ref) => {
+export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef }) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-center items-center space-x-5">
@@ -37,6 +34,4 @@ export const SignUpForm = forwardRef(({ firstNameRef, lastNameRef, emailRef, pas
       </div>
     </div>
   );
-});
-
-SignUpForm.displayName = "SignUpForm";
+};

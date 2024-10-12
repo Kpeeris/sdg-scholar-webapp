@@ -9,7 +9,7 @@ import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { Button } from "@/components/ui/button";
 
 import db from "../../../firebaseFiles/firebaseConfig.js";
-import { signup, useAuth } from "../../../firebaseFiles/firebaseAuth.js"; // Import the signup function
+import { signup } from "../../../firebaseFiles/firebaseAuth.js"; // Import the signup function
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 const SignUp = () => {
@@ -17,7 +17,7 @@ const SignUp = () => {
   const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  const currentUser = useAuth();
+  //const currentUser = useAuth();
   const navigate = useNavigate();
 
   const { state } = useLocation(); // Get state from previous page
@@ -37,7 +37,7 @@ const SignUp = () => {
       const firstName = firstNameRef.current.value;
       const lastName = lastNameRef.current.value;
       const email = emailRef.current.value;
-      const password = passwordRef.current.value;
+      //const password = passwordRef.current.value;
 
       const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
       const user = userCredential.user;
