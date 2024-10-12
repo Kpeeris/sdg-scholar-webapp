@@ -4,7 +4,7 @@ import AuthPage from "./pages/UserAccounts"; // added by kash
 
 import { Route, Routes } from "react-router-dom";
 import { Home, Sdg11, Quiz, Content, About } from "./index";
-
+import { EditQuiz } from "./pages/quiz/EditQuiz";
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SignUp";
 import SignUpAdmin from "./pages/signup/SignUpAdmin";
@@ -21,7 +21,7 @@ function App() {
 
         <Route path="/module/:moduleId/content" element={<Content />} />
         <Route path="/module/:moduleId/quiz" element={<Quiz />} />
-
+        <Route path="/module/:moduleId/editquiz" element={<EditQuiz />} />
         {/* added by kash */}
 
         <Route path="/auth" element={<AuthPage />} />

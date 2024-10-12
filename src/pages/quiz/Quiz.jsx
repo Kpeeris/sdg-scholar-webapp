@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
-import SideMenu from "../components/SideMenu";
+import { useNavigate } from "react-router-dom";
+import SideMenu from "../../components/SideMenu.jsx";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import db from "../../firebaseFiles/firebaseConfig.js";
-import Question from "../components/Question.jsx";
+import db from "../../../firebaseFiles/firebaseConfig.js";
+import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
 
 const Quiz = () => {
+  // used to navigate to new page when button is clicked
+  const navigate = useNavigate();
+  //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
+
   //const [nQuestions, setNQuestions] = useState(1)
 
-  let realModuleId = moduleId;
   const [docs, setDocs] = useState({});
   const ans = {};
 
-  let admin = false;
+  let admin = true;
 
+  //modify the moduleId from the url to match the format that is is the DB
+  let realModuleId = moduleId;
   if (moduleId == "a") {
     realModuleId = "8";
   } else if (moduleId == "b") {
@@ -25,6 +31,7 @@ const Quiz = () => {
     realModuleId = "10";
   }
 
+  //gets the total
   const getTotalQuestions = async () => {
     try {
       let docRef = doc(db, `quizzes/sdg11t${realModuleId}`);
@@ -102,8 +109,18 @@ const Quiz = () => {
   return (
     <div className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
+
       <div className="ml-[250px] flex-1">
-        <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
+        <div className="flex justify-between">
+          <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
+          <Button
+            className="w-44"
+            onClick={() => navigate(`/module/${moduleId}/editquiz`)}
+          >
+            Edit Quiz
+          </Button>
+        </div>
+
         <br />
         <div>
           {Object.values(docs).map((question) => {
@@ -123,7 +140,7 @@ const Quiz = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          {admin ? (
+          {/* {admin ? (
             <button onClick={() => handleAddQuestionClick()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,9 +157,9 @@ const Quiz = () => {
                 />
               </svg>
             </button>
-          ) : null}
+          ) : null} */}
           <br />
-          <Button className="w-44">Submit Quiz</Button>
+          {admin ? null : <Button className="w-44">Submit Quiz</Button>}
         </div>
       </div>
     </div>
