@@ -3,7 +3,7 @@ import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 //please take userNumber out later once we've figured out how to save global variables for user auth
-const Question = ({ q }) => {  {/*, userNumber, ans*/}
+const Question = ({ q, i }) => {  {/*, userNumber, ans*/}
     //ans[q.questionNumber] = {}
     let admin = false
 
@@ -24,7 +24,7 @@ const Question = ({ q }) => {  {/*, userNumber, ans*/}
     return (
         <Card>
             <CardHeader className="pt-2 pb-2 bg-neutral-100">
-                <p style={{fontWeight:"bold"}}>Question { q.questionNumber }</p>
+                <p style={{fontWeight:"bold"}}>Question { i + 1 }</p>
             </CardHeader>
 
             <div style={{paddingLeft:"25px", paddingRight:"25px"}}>
