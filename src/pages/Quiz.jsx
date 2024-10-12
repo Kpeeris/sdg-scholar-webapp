@@ -10,7 +10,7 @@ const Quiz = () => {
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
   const [totalQuestions, setTotalQuestions] = useState("")
-  const [nQuestions, setNQuestions] = useState(1)
+  //const [nQuestions, setNQuestions] = useState(1)
 
   let realModuleId = moduleId;
   const [docs, setDocs] = useState({});
@@ -44,7 +44,7 @@ const Quiz = () => {
   };
 
   const getQuestions = async () => {
-    const totalQuestions = await getTotalQuestions();
+    await getTotalQuestions();
 
     try {
       let docRef = collection(db, `quizzes/sdg11t${realModuleId}`, 'questions');
@@ -72,6 +72,12 @@ const Quiz = () => {
     /*const checkAnswers = (ans) => {
         
     }*/
+  }
+
+  const handleSubmitClick = () => {
+    return (
+      <div>Total questions: {totalQuestions}</div>
+    )
   }
 
   const handleAddQuestionClick = () => {};
@@ -120,7 +126,7 @@ const Quiz = () => {
             </button>
           ) : null}
           <br />
-          <Button className="w-44">Submit Quiz</Button>
+          <Button className="w-44" onClick={() => {handleSubmitClick}}>Submit Quiz</Button>
         </div>
       </div>
     </div>
