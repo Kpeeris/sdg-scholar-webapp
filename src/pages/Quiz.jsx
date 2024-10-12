@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../components/SideMenu";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
 import Question from "../components/Question.jsx";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 const Quiz = () => {
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
+  const [totalQuestions, setTotalQuestions] = useState("")
   //const [nQuestions, setNQuestions] = useState(1)
 
   let realModuleId = moduleId;
@@ -31,6 +32,7 @@ const Quiz = () => {
       let docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log(docSnap.data().totalQuestions);
+        setTotalQuestions(docSnap.data().totalQuestions)
         return docSnap.data().totalQuestions;
       } else {
         console.log("nQuestions Document does not exist");
@@ -42,45 +44,20 @@ const Quiz = () => {
   };
 
   const getQuestions = async () => {
-    const totalQuestions = await getTotalQuestions();
+    await getTotalQuestions();
 
     try {
-      let docRef = doc(db, `quizzes/sdg11t${realModuleId}`);
-      let docSnap = await getDoc(docRef);
+      let docRef = collection(db, `quizzes/sdg11t${realModuleId}`, 'questions');
+      let docSnap = await getDocs(docRef);
 
-      if (docSnap.exists()) {
+      
         const newDocs = {};
-        //console.log((docSnap.data()).totalQuestions)
-        //setNQuestions((docSnap.data()).totalQuestions)
-        for (let i = 1; i <= totalQuestions; i++) {
-          let docRef = doc(
-            db,
-            `quizzes/sdg11t${realModuleId}/questions/sdg11t${realModuleId}q${i}`
-          );
-          let docSnap = await getDoc(docRef);
+        docSnap.forEach((doc) => {
+          newDocs[doc.id] = doc.data();
+        })
+        setDocs(newDocs)
+        return newDocs;
 
-          if (docSnap.exists()) {
-            console.log(docSnap.data().questionText);
-            newDocs[`sdg11t${realModuleId}q${i}`] = docSnap.data();
-            console.log(
-              `document sdg11t${realModuleId}q${i} is now ${
-                docSnap.data().questionText
-              }`
-            );
-            console.log(
-              "newdocs is: " +
-                newDocs[`sdg11t${realModuleId}q${i}`].questionText
-            );
-          } else {
-            console.log(
-              `Document does not exist at sdg11t${realModuleId}q${i}`
-            );
-          }
-        }
-        setDocs(newDocs);
-      } else {
-        console.log("nQuestions Document does not exist");
-      }
     } catch (e) {
       console.error("Error retrieving document: ", e);
     }
@@ -97,6 +74,12 @@ const Quiz = () => {
     }*/
   }
 
+  const handleSubmitClick = () => {
+    return (
+      <div>Total questions: {totalQuestions}</div>
+    )
+  }
+
   const handleAddQuestionClick = () => {};
 
   return (
@@ -106,15 +89,16 @@ const Quiz = () => {
         <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
         <br />
         <div>
-          {Object.values(docs).map((question) => {
-            console.log("question number is: " + question.questionNumber);
-            console.log("value at docs is: " + question.questionText);
+          {Object.values(docs).map((question, index) => {
+            //console.log("question number is: " + question.questionNumber);
+            //console.log("value at docs is: " + question.questionText);
             return (
-              <div key={question.questionNumber}>
+              <div key={question.id}>
                 <Question
-                  key={question.questionNumber}
+                  key={question.id}
                   q={question}
                   ans={ans}
+                  i={index}
                 />
                 <br />
               </div>
@@ -142,7 +126,7 @@ const Quiz = () => {
             </button>
           ) : null}
           <br />
-          <Button className="w-44">Submit Quiz</Button>
+          <Button className="w-44" onClick={() => {handleSubmitClick}}>Submit Quiz</Button>
         </div>
       </div>
     </div>
