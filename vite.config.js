@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./tests/setup",
+    setupFiles: "./src/__tests__/setup.js",
   },
   resolve: {
     alias: {
