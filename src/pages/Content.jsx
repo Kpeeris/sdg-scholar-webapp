@@ -20,15 +20,18 @@ const Content = () => {
     const moduleTitle = `Target 11.${moduleId}`; 
 
     return (
-        <div className="main-content">
-        <h2>Content Page</h2>
+        <div className="flex">
         <SideMenu moduleTitle={moduleTitle} moduleId={moduleId}/>
+            <div className="ml-[250px] flex-1">
+            <h2>Content Page</h2>
+            
 
-        <div>
-            <EditableBlock moduleId={ dbModuleId } />
-        </div>
+            <div>
+                <EditableBlock moduleId={ dbModuleId } />
+            </div>
+            </div>
         
-    </div>
+        </div>
     )
 }
 

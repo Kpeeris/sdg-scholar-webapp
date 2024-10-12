@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebaseConfig.js';
 import ReactHtmlParser from 'html-react-parser';
+import sanitizeHtml from 'sanitize-html';
 
 const EditableBlock = ({moduleId}) => {
     const [textEditorShow, setTextEditorShow] = useState(false)
@@ -102,7 +103,7 @@ const EditableBlock = ({moduleId}) => {
             setButtonState('Edit')
             if(newContent){
                 console.log("new content is --->", newContent)
-                adminContentWrite(newContent)
+                adminContentWrite(sanitizeHtml(newContent))
             } else {
                 console.log("NO NEW CONTENT")
             }
