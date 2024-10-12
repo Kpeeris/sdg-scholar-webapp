@@ -13,14 +13,17 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogClose
+    DialogClose,
+    DialogFooter,
   } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import db from "../../firebaseFiles/firebaseConfig.js";
 // import { useAuth } from "../../firebaseFiles/firebaseAuth.js";
-import { collection, query, limit, getDocs, orderBy, startAfter, where, setDoc, doc, Timestamp} from "firebase/firestore";
+import { collection, query, limit, getDocs, orderBy, startAfter, where, addDoc, doc, Timestamp, deleteDoc} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const NoticeBoard = () => {
     // const currentUser = useAuth();
@@ -33,14 +36,41 @@ const NoticeBoard = () => {
 
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
-    const [category, setCategory] = useState("All");
+    const [category, setCategory] = useState("General");
+
+    const [deletionReload, setDeletionReload] = useState(0);
+    const [postReload, setPostReload] = useState(0);
 
     useEffect(() => {
         setNotices([]);
         getAnnouncements();
-      }, [selectedTag]);
+      }, [selectedTag, deletionReload, postReload]);
 
-    const handlePost = async () => {
+    // Add these state variables
+  const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [noticeToDelete, setNoticeToDelete] = useState(null);
+
+  // Function to handle opening the confirmation modal
+  const handleDeleteConfirm = (id) => {
+    setNoticeToDelete(id); // Set the notice to delete
+    setDeleteConfirmOpen(true); // Open the confirmation dialog
+  };
+
+  // Function to delete the post after confirmation
+  const handleDelete = async () => {
+    if (!noticeToDelete) return;
+    try {
+      const docRef = doc(db, "announcements", noticeToDelete);
+      await deleteDoc(docRef);
+      console.log("Notice deleted successfully");
+      setDeleteConfirmOpen(false); // Close the confirmation dialog
+      setDeletionReload(deletionReload + 1);
+    } catch (e) {
+      console.error("Error deleting notice: ", e);
+    }
+  };
+    
+      const handlePost = async () => {
         
         // if (!currentUser) {
         //     console.error("User is not logged in.");
@@ -55,21 +85,39 @@ const NoticeBoard = () => {
             const queryToCount = query(announcementsRef);
             const querySnapshot = await getDocs(queryToCount);
             const totalAnnouncements = querySnapshot.size;
-            const customDocId = `announcement${totalAnnouncements + 1}`;
+            
+            const customDocId = `announcement${totalAnnouncements + 2}`;
+            console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
 
-            await setDoc(doc(db, "announcements", customDocId), {
+            await addDoc(announcementsRef, {
               title,
               message,
               category,
               creationTime,
               //author: currentUser.email
             });
-      
+            
+            setPostReload(postReload + 1);
             console.log("Notice Saved");
           } catch (error) {
             console.error("Could not write to database: ", error);
+          } finally {
+            setTitle('');
+            setMessage('');
+            setCategory('General');
           }
     }
+
+    // const handleDelete = async (id) => {
+    //   try{
+    //     const docRef = doc(db, "announcements", id)
+    //     await deleteDoc(docRef);
+    //     console.log("Notice deleted successfully");
+    //     setDeletionReload(deletionReload + 1);
+    //   } catch (e) {
+    //     console.error("Error deleting notice: ", e);
+    //   }
+    // }
     
     const getAnnouncements = async (loadMore = false) => {
         setLoading(true);
@@ -168,14 +216,15 @@ return (
 
       <Dialog>
         <DialogTrigger asChild>
-          <Button>New Notice</Button>
+          <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
         </DialogTrigger>
         <DialogContent>
           
-            <DialogHeader><DialogTitle className="flex justify-center text-4xl">New Notice</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
             <DialogDescription></DialogDescription>
             <label htmlFor="title">Title</label>
             <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+            {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
 
             <label>Category</label>
             {/* my plan: if they don't select one, write All to the notice.category */}
@@ -189,11 +238,8 @@ return (
             <label htmlFor="message">Body</label>
             <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
 
-
-            {/* <Button onClick={handlePost}>Post</Button> */}
-
           <DialogClose asChild>
-            <Button onClick={handlePost}>Post</Button>
+            <Button onClick={handlePost} disabled={title === ''}>Post</Button>
           </DialogClose>
           
         </DialogContent>
@@ -205,9 +251,17 @@ return (
             <ul className="pl-9 pr-16 list-none space-y-4">
             {notices.map((notice) => (
                 <li key={notice.id}>
-                <Card className="inline-block w-full">
-                    <CardHeader className="flex flex-col items-start">
+                <Card className="relative inline-block w-full">
+                    <CardHeader className="flex flex-col items-start justify-between">
                         <CardTitle>{notice.title}</CardTitle>
+                        
+                        {/* Delete Button */}
+                        <Button
+                          className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
+                          onClick={() => handleDeleteConfirm(notice.id)}>
+                          <TrashIcon className="h-6 w-6 text-gray-700" />
+                        </Button>
+  
                         <CardDescription>{notice.author} &bull; {new Date(notice.creationTime.seconds * 1000).toLocaleString()}</CardDescription>
                         {/* Conditional Rendering of the tag */}
                         <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
@@ -244,6 +298,25 @@ return (
           <Button onClick={() => getAnnouncements(true)} disabled={loading}>{loading ? "Please wait..." : "Show More"}</Button>
         </div>
       )}
+
+      {/* Modal for confirming deletion */}
+    <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Notice</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this notice?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex justify-end space-x-2">
+          <DialogClose asChild>
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+          </DialogClose>
+
+          <Button onClick={handleDelete}>Confirm</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 )}
 

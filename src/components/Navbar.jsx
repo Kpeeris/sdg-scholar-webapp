@@ -27,6 +27,13 @@ const Navbar = () => {
           >
             <NavLink to="/about">About</NavLink>
           </li>
+          <li
+            data-testid="notice-board-button"
+            className="border-r border-gray-300 px-4 font-semibold"
+          >
+            <NavLink to="/noticeboard">Notice Board</NavLink>
+          </li>
+          
           <Dropdown />
         </ul>
 
