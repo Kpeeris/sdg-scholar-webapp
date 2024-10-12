@@ -9,6 +9,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SignUp";
 import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
+import NoticeBoard from "./pages/NoticeBoard";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         {/* added by kash */}
 
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/noticeboard" element={<NoticeBoard />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
