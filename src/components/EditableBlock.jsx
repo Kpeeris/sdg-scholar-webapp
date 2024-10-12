@@ -36,6 +36,7 @@ const EditableBlock = ({moduleId}) => {
     useEffect(() => {
         getContent(moduleId)
         console.log(content)
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     //second commit
@@ -85,8 +86,8 @@ const EditableBlock = ({moduleId}) => {
             console.log("doc reference is :  ", docRef)
             await updateDoc(docRef, { content: newContent })
             console.log("update successful")
-        } catch (error){
-            console.error("update unsuccessful")
+        } catch (e){
+            console.error('Error retrieving document: ', e)
         }
         
     }
