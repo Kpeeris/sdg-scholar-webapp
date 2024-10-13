@@ -31,7 +31,7 @@ const Quiz = () => {
     realModuleId = "10";
   }
 
-  //gets the total
+  //gets the total number of questions in the target
   const getTotalQuestions = async () => {
     try {
       let docRef = doc(db, `quizzes/sdg11t${realModuleId}`);
@@ -82,7 +82,7 @@ const Quiz = () => {
     return <div>Total questions: {totalQuestions}</div>;
   };
 
-  const handleAddQuestionClick = () => {};
+  // const handleAddQuestionClick = () => {};
 
   return (
     <div className="flex">
