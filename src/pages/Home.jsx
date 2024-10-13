@@ -11,7 +11,7 @@ import { useAuthContext } from "@/AuthProvider";
 import { logout } from "../../firebaseFiles/firebaseAuth.js";
 
 export const Home = () => {
-  const name = "TestUser";
+  // const name = "TestUser";
 
   const navigate = useNavigate();
   const handleNavigation = (path) => {
@@ -35,7 +35,7 @@ export const Home = () => {
 
   return (
     <div data-testid="home-page">
-      <h1 className="pb-16">Hi {userData.firstName} {userData.lastName}!</h1>
+      {/* <h1 className="pb-16">Hi {userData.firstName} {userData.lastName}!</h1> */}
 
       {/* Will remove this once i figure it out - kay */}
       <p>Current user: {user ? user.email : "No user logged in"}</p>
