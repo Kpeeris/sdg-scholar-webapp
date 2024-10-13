@@ -15,7 +15,6 @@ const Quiz = () => {
   const moduleTitle = `Target 11.${moduleId} Quiz`;
   const [totalQuestions, setTotalQuestions] = useState("")
   const [dialogVisible, setDialogVisible] = useState(false)
-  const [questionComponents, setQuestionComponents] = useState({})
 
   const [quizStarted, setQuizStarted] = useState(false)
   const [quizSubmitted, setQuizSubmitted] = useState(false)
@@ -43,7 +42,7 @@ const Quiz = () => {
   const handleSubmitClick = () => {
     setQuizSubmitted(true)
     let currResult = 0
-    questionRefs.current.forEach((ref, index) => {
+    questionRefs.current.forEach((ref) => {
       if(ref.current){
         currResult += ref.current.markQuestion()
       }
@@ -136,7 +135,7 @@ const Quiz = () => {
 
           <div className="flex flex-col items-center">
             {admin ? (
-              <button onClick={() => handleAddQuestionClick()}>
+              <button>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

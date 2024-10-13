@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useEffect, useState, useRef } from "react"
+import { useImperativeHandle, forwardRef, useEffect, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,14 +11,6 @@ const Question = forwardRef(({ q, i }, ref) => {  {/*, userNumber, ans*/}
     //let optionsArray = []
 
     const [optionsArray, setOptionsArray] = useState([])
-
-    const checkInCorrectAnswers = (opt) => {
-        for(let answer of q.correctAnswers){
-            if(answer === opt){
-                return true;
-            }
-        }
-    }
 
     const checkInSelectedOptions = (answer) => {
         for(let option of optionsArray){
