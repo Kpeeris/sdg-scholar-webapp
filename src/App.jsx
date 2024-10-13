@@ -11,28 +11,32 @@ import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
 import NoticeBoard from "./pages/NoticeBoard";
 
+import { AuthProvider } from "./AuthProvider";
+
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/sdg11" element={<Sdg11 />} />
+    <AuthProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/sdg11" element={<Sdg11 />} />
 
-        <Route path="/module/:moduleId/content" element={<Content />} />
-        <Route path="/module/:moduleId/quiz" element={<Quiz />} />
+          <Route path="/module/:moduleId/content" element={<Content />} />
+          <Route path="/module/:moduleId/quiz" element={<Quiz />} />
 
-        {/* added by kash */}
+          {/* added by kash */}
 
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/noticeboard" element={<NoticeBoard />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/noticeboard" element={<NoticeBoard />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signupadmin" element={<SignUpAdmin />} />
-        <Route path="/signupuser" element={<SignUpUser />} />
-      </Routes>
-    </Layout>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signupadmin" element={<SignUpAdmin />} />
+          <Route path="/signupuser" element={<SignUpUser />} />
+        </Routes>
+      </Layout>
+    </AuthProvider>
   );
 }
 

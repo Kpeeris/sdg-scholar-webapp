@@ -4,8 +4,15 @@ import Right_arrow from "/src/assets/icons/arrow_right_circle.svg";
 import goal_11 from "/src/assets/goals/Goal_11.svg";
 import ListOfGoals from "@/components/ListOfGoals";
 
+import { Button } from "@/components/ui/button.jsx";
+
+import { useAuthContext } from "@/AuthProvider";
+
+import { logout } from "../../firebaseFiles/firebaseAuth.js";
+
 export const Home = () => {
   const name = "TestUser";
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     if (path) {
@@ -13,9 +20,29 @@ export const Home = () => {
     }
   };
 
+  const { user, userData, role } = useAuthContext();
+
+  // Log out function
+  const handleLogout = async () => {
+    try {
+      await logout(); 
+      alert("Logout successful!");
+      navigate("/login"); 
+    } catch (error) {
+      alert("Error during logout: " + error.message);
+    }
+  };
+
   return (
     <div data-testid="home-page">
-      <h1 className="pb-16">Hi {name}!</h1>
+      <h1 className="pb-16">Hi {userData.firstName} {userData.lastName}!</h1>
+
+      {/* Will remove this once i figure it out - kay */}
+      <p>Current user: {user ? user.email : "No user logged in"}</p>
+      <p>User Data: {userData ? JSON.stringify(userData) : "No user data available"}</p>
+      <p>Role: {role || "No role available"}</p>
+      <Button onClick={handleLogout}> Log Out </Button>
+
       <div className="bg-orange-400 bg-opacity-70 -mx-12 h-96 flex items-center justify-around">
         <div className="flex items-center justify-around">
           <p className="text-9xl text-white opacity-100 p-4 border-b-4 ml-10">

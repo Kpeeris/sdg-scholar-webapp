@@ -20,7 +20,7 @@ export function login(email, password){
 
 // Custom Hook
 export function useAuth(){
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => { 
     const unsub = onAuthStateChanged(auth, user => setCurrentUser(user));
     return unsub;

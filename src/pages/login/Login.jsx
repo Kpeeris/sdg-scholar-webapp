@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import LoginSVG from "@/assets/images/Login.svg";
 // import { LoginButton } from "./components/LoginButton";
 
-import { login } from "../../../firebaseFiles/firebaseAuth.js"; // Import the logim function
+import { login } from "../../../firebaseFiles/firebaseAuth.js";
 
 export const Login = () => {
   const emailRef = useRef();
