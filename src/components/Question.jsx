@@ -40,6 +40,7 @@ const Question = forwardRef(({ q, i }, ref) => {  {/*, userNumber, ans*/}
             })
         }
         setOptionsArray(initialArray)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleCheck = (index) => {
