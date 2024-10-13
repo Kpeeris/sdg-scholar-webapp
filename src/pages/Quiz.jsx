@@ -1,19 +1,30 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SideMenu from "../components/SideMenu";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
 import Question from "../components/Question.jsx";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import pana from "/src/assets/images/pana.svg";
+import ConfettiExplosion from 'react-confetti-explosion';
 
 const Quiz = () => {
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
   const [totalQuestions, setTotalQuestions] = useState("")
-  //const [nQuestions, setNQuestions] = useState(1)
+  const [dialogVisible, setDialogVisible] = useState(false)
+  const [questionComponents, setQuestionComponents] = useState({})
 
   const [quizStarted, setQuizStarted] = useState(false)
+  const [quizSubmitted, setQuizSubmitted] = useState(false)
+
+  const [isExploding, setIsExploding] = useState(false)
+
+  const [result, setResult] = useState(0)
+
+  const questionRefs = useRef([])
 
   let realModuleId = moduleId;
   const [docs, setDocs] = useState({});
@@ -27,6 +38,18 @@ const Quiz = () => {
     realModuleId = "9";
   } else if (moduleId == "c") {
     realModuleId = "10";
+  }
+
+  const handleSubmitClick = () => {
+    setQuizSubmitted(true)
+    let currResult = 0
+    questionRefs.current.forEach((ref, index) => {
+      if(ref.current){
+        currResult += ref.current.markQuestion()
+      }
+    })
+    setResult(currResult)
+    console.log("current result is, ", {currResult})
   }
 
   const getTotalQuestions = async () => {
@@ -68,38 +91,38 @@ const Quiz = () => {
 
   useEffect(() => {
     getQuestions();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  {
-    /*const checkAnswers = (ans) => {
-        
-    }*/
-  }
+  useEffect(() => {
+    if(totalQuestions > 0){
+      questionRefs.current = Array(totalQuestions).fill().map((_,i) => questionRefs.current[i] || React.createRef())
+      const nRefs = questionRefs.current.length
+      console.log("there are refs", {nRefs}, "there should be", {totalQuestions} )
+    }
+  }, [totalQuestions])
 
-  const handleSubmitClick = () => {
-    return (
-      <div>Total questions: {totalQuestions}</div>
-    )
-  }
+  useEffect(() => {
+    if(totalQuestions > 0 && result == totalQuestions){
+      setIsExploding(true)
+    }
+  }, [result])
 
-  const handleAddQuestionClick = () => {};
-
-  
   return (
     <div className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
-      {quizStarted ?
+
+      {quizStarted && !quizSubmitted ? (
         <div className="ml-[250px] flex-1">
           <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
           <br />
           <div>
             {Object.values(docs).map((question, index) => {
-              //console.log("question number is: " + question.questionNumber);
-              //console.log("value at docs is: " + question.questionText);
               return (
                 <div key={question.id}>
                   <Question
+                    ref={questionRefs.current[index]}
                     key={question.id}
                     q={question}
                     ans={ans}
@@ -131,10 +154,10 @@ const Quiz = () => {
               </button>
             ) : null}
             <br />
-            <Button className="w-44" onClick={() => {handleSubmitClick}}>Submit Quiz</Button>
+            <Button className="w-44" onClick={() => {setDialogVisible(true)}}>Submit Quiz</Button>
           </div>
-        </div>
-      :
+        </div>)
+      : (!quizSubmitted ? (
         <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
           <div className="relative h-72 w-72">
             <img
@@ -159,10 +182,48 @@ const Quiz = () => {
           <div className="mt-40">
             <Button style={{ textAlign: "center" }}className="w-44" onClick={() => {setQuizStarted(true)}}>Start Quiz</Button>
           </div>
+        </div> 
+        ) 
+      : (
+        <div className="ml-[250px] flex-1">
+          <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <p>You scored</p>
+            <br/>
+            {/*THE CONFETTI DOESNT WORK FOR SOME REASDON!!!!!!!!!*/}
+            {result === totalQuestions ? (
+                <>{isExploding && <ConfettiExplosion />}</>
+              ) : null
+            }
+            <div style={{ borderRadius: "50%", backgroundColor: "#FFE4B2", height: "100px", width: "100px" }} className="flex items-center justify-center">
+              <h2 className="text-orange-500">{(result/totalQuestions) * 100}%</h2>
+            </div>
+            <br/>
+            <Button className="w-32" onClick={() => {setQuizStarted(true); setQuizSubmitted(false)}}>Take Quiz Again</Button>
+          </div>
         </div>
-      }
-      
+      ))}
+
+      {dialogVisible ? 
+        <Dialog open={dialogVisible} onOpenChange={setDialogVisible}>
+          <DialogTitle>
+          <DialogContent>
+            <DialogHeader>
+              <DialogDescription className="text-center text-lg ">
+                Are you sure you're ready to submit the quiz?
+              </DialogDescription>
+              <Separator className="my-4" />
+              <div className="flex-col flex items-center justify-center pt-3">
+                <Button className="w-32" onClick={() => {handleSubmitClick(); setDialogVisible(false)}}>Yes</Button>
+              </div>
+            </DialogHeader>
+          </DialogContent>
+          </DialogTitle>
+        </Dialog>
+      : null }
+
     </div>
   );
 };
+
 export default Quiz;
