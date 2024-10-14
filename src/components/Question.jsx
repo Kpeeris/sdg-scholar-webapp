@@ -3,12 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
-//please take userNumber out later once we've figured out how to save global variables for user auth
-const Question = forwardRef(({ q, i }, ref) => {  {/*, userNumber, ans*/}
-    //ans[q.questionNumber] = {}
+const Question = forwardRef(({ q, i }, ref) => {
     let admin = false;
-
-    //let optionsArray = []
 
     const [optionsArray, setOptionsArray] = useState([])
 
