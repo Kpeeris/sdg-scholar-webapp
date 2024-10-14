@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
+//eslint-disable react/display-name
 const Question = forwardRef(({ q, i }, ref) => {
     let admin = false;
 
