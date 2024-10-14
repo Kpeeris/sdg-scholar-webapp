@@ -3,7 +3,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
-//eslint-disable react/display-name
 const Question = forwardRef(({ q, i }, ref) => {
     let admin = false;
 
@@ -18,6 +17,7 @@ const Question = forwardRef(({ q, i }, ref) => {
     }
 
     const markQuestion = () => {
+        if(q.correctAnswers.length != optionsArray.length) return 0
         for(let answer of q.correctAnswers){
             if(!checkInSelectedOptions(answer)) return 0
         }
@@ -85,5 +85,7 @@ const Question = forwardRef(({ q, i }, ref) => {
         </Card>
     )
 })
+
+Question.displayName = "Question"
 
 export default Question
