@@ -107,13 +107,16 @@ export const EditQuiz = () => {
         `quizzes/sdg11t${realModuleId}`,
         "questions"
       );
-      //const allQuestionsSnapshot = await getDocs(allQuestionsRef);
-
+      //remove all white space options from the arrays
+      const correctAnswersClean = correctAnswers.filter(
+        (answer) => answer.trim() !== ""
+      );
+      const optionsClean = options.filter((opt) => opt.trim() !== "");
       await addDoc(allQuestionsRef, {
         questionText,
         type,
-        correctAnswers,
-        options,
+        correctAnswers: correctAnswersClean,
+        options: optionsClean,
       });
     } catch (error) {
       console.error("Could not write to database: ", error);
@@ -171,21 +174,14 @@ export const EditQuiz = () => {
     }
   };
 
-  // const printQuestion = () => {
-  //   console.log({
-  //     questionText,
-  //     type,
-  //     options,
-  //     correctAnswers,
-  //   });
-  // };
-
   //everytime a fied is updated see if it meets the minimun requirementrs for a question
   useEffect(() => {
     //q a question must have at leat two non empty options, one answer and questionText
     let moreThanTwo =
       options.filter((option) => option.trim() !== "").length >= 2;
-    if (questionText !== "" && correctAnswers.length >= 1 && moreThanTwo) {
+    let validAns =
+      correctAnswers.filter((answer) => answer.trim() !== "").length >= 1;
+    if (questionText !== "" && validAns && moreThanTwo) {
       setIsValidQuestion(true);
     } else {
       setIsValidQuestion(false);
@@ -256,7 +252,7 @@ export const EditQuiz = () => {
                 <label htmlFor="questionType" className="text-xl">
                   <strong>Question Type</strong>
                 </label>
-                <Select>
+                <Select id="questionType">
                   <SelectTrigger className="w-auto mt-1">
                     <SelectValue placeholder="Select a Question Type" />
                   </SelectTrigger>
