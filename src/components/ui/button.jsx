@@ -26,6 +26,7 @@ const buttonVariants = cva(
           "bg-accent text-slate-900 font-inter text-[20px] font-bold leading-[28px] tracking-[-0.1px] justify-start",
         plain:
           "text-slate-900 font-inter text-[20px] font-medium leading-[28px] tracking-[-0.1px] justify-start",
+        white: "bg-white text-black border border-gray-500 hover:bg-gray-100",
       },
       size: {
         default: "h-10 px-4 py-2",

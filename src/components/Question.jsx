@@ -36,7 +36,7 @@ const Question = ({ q, i, mode }) => {
         ) : null}
       </CardHeader>
 
-      <div className="mt-4 mx-8">
+      <div className="mt-2 mx-8">
         <p>{q.questionText}</p>
       </div>
 

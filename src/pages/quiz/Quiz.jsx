@@ -90,9 +90,11 @@ const Quiz = () => {
 
       <div className="ml-[250px] flex-1">
         <div className="flex justify-between">
-          <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
+          <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
+            {moduleTitle}
+          </h2>
           <Button
-            className="w-44"
+            className="w-44 text-lg"
             onClick={() => navigate(`/module/${moduleId}/editquiz`)}
           >
             Edit Quiz
@@ -105,7 +107,7 @@ const Quiz = () => {
             //console.log("question number is: " + question.questionNumber);
             //console.log("value at docs is: " + question.questionText);
             return (
-              <div key={question.id}>
+              <div key={question.id || index}>
                 <Question key={question.id} q={question} ans={ans} i={index} />
                 <br />
               </div>
