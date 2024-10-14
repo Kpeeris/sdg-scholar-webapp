@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } f
 import { Separator } from "@/components/ui/separator";
 import pana from "/src/assets/images/pana.svg";
 import ConfettiExplosion from 'react-confetti-explosion';
+import { round } from 'mathjs'
 
 const Quiz = () => {
   const { moduleId } = useParams();
@@ -190,13 +191,12 @@ const Quiz = () => {
           <div className="flex-1 flex flex-col items-center justify-center">
             <p>You scored</p>
             <br/>
-            {/*THE CONFETTI DOESNT WORK FOR SOME REASDON!!!!!!!!!*/}
             {result === totalQuestions ? (
                 <>{isExploding && <ConfettiExplosion />}</>
               ) : null
             }
             <div style={{ borderRadius: "50%", backgroundColor: "#FFE4B2", height: "100px", width: "100px" }} className="flex items-center justify-center">
-              <h2 className="text-orange-500">{(result/totalQuestions) * 100}%</h2>
+              <h2 className="text-orange-500">{round((result/totalQuestions) * 100, 1)}%</h2>
             </div>
             <br/>
             <Button className="w-32" onClick={() => {setQuizStarted(true); setQuizSubmitted(false)}}>Take Quiz Again</Button>
