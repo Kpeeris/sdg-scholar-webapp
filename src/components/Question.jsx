@@ -17,10 +17,14 @@ const Question = forwardRef(({ q, i }, ref) => {
     }
 
     const markQuestion = () => {
-        if(q.correctAnswers.length != optionsArray.length) return 0
+        
+        let selectedOptions = 0
         for(let answer of q.correctAnswers){
             if(!checkInSelectedOptions(answer)) return 0
+            else selectedOptions++
         }
+        console.log("length of q correct answers: ", q.correctAnswers.length, "length of options: ", selectedOptions)
+        if(q.correctAnswers.length != selectedOptions) return 0
         return 1
     }
 
