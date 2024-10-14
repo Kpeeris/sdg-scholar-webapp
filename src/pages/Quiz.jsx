@@ -106,6 +106,7 @@ const Quiz = () => {
     if(totalQuestions > 0 && result == totalQuestions){
       setIsExploding(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result])
 
   return (
@@ -209,7 +210,7 @@ const Quiz = () => {
           <DialogContent>
             <DialogHeader>
               <DialogDescription className="text-center text-lg ">
-                Are you sure you're ready to submit the quiz? <br/>
+                Are you sure you&apos;re ready to submit the quiz? <br/>
                 Make sure you have answered all questions!
               </DialogDescription>
               <Separator className="my-4" />
