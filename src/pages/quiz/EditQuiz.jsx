@@ -11,8 +11,15 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -67,6 +74,7 @@ export const EditQuiz = () => {
     return 0;
   };
 
+  //gets the questions from the db and saves them in docs
   const getQuestions = async () => {
     await getTotalQuestions();
 
@@ -90,6 +98,7 @@ export const EditQuiz = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // saves the new question to the database
   const saveNewQuestion = async () => {
     try {
       // Count the total announcement there are to generate the custom id
@@ -119,16 +128,19 @@ export const EditQuiz = () => {
     }
   };
 
+  //adds new option text to optionas array
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
   };
 
+  //add new slot for an option
   const handleAddOption = () => {
     setOptions([...options, ""]);
   };
 
+  //deletes the option
   const handleOptionDelete = (index) => {
     if (options.length >= 3) {
       const newOptions = options.filter((_, i) => i !== index);
@@ -146,6 +158,7 @@ export const EditQuiz = () => {
     }, 3000);
   };
 
+  //if the checkbox is checked add ans to correctAnswers
   const handleCheckboxChange = (index, checked) => {
     const selectedOption = options[index];
 
@@ -167,7 +180,9 @@ export const EditQuiz = () => {
   //   });
   // };
 
+  //everytime a fied is updated see if it meets the minimun requirementrs for a question
   useEffect(() => {
+    //q a question must have at leat two non empty options, one answer and questionText
     let moreThanTwo =
       options.filter((option) => option.trim() !== "").length >= 2;
     if (questionText !== "" && correctAnswers.length >= 1 && moreThanTwo) {
@@ -205,6 +220,7 @@ export const EditQuiz = () => {
           </ul>
         </div>
 
+        {/* Modal to build a new question */}
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="white" className="text-lg mb-6">
@@ -212,13 +228,15 @@ export const EditQuiz = () => {
               Add New Question
             </Button>
           </DialogTrigger>
-          <DialogContent className="lg:max-w-[1125px] px-20">
+          <DialogContent className="lg:max-w-[1000px] px-20">
             <DialogTitle className="flex justify-center text-4xl">
               New Question
             </DialogTitle>
-            <div>
-              <div className="mb-4">
-                <label htmlFor="questionText" className="text-2xl">
+
+            {/* Add Question text */}
+            <div className="flex justify-start ">
+              <div className="mb-4 mr-8 w-4/6">
+                <label htmlFor="questionText" className="text-xl">
                   <strong>Question</strong>
                 </label>
                 <Input
@@ -232,17 +250,43 @@ export const EditQuiz = () => {
                   <span style={{ color: "red" }}>please add a question</span>
                 )}
               </div>
-              <h4>
-                <strong>Question Type</strong>
-              </h4>
+
+              {/* Choose Question type */}
+              <div>
+                <label htmlFor="questionType" className="text-xl">
+                  <strong>Question Type</strong>
+                </label>
+                <Select>
+                  <SelectTrigger className="w-auto mt-1">
+                    <SelectValue placeholder="Select a Question Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="mcq">
+                        Multiple Choice Question
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <h4>
-              <strong>Answer Choices</strong>
-            </h4>
-            <h6 style={{ marginTop: "-15px" }}>
-              Select the correct answers below by checking the box next to each
-              option
-            </h6>
+
+            {/* Add Options */}
+            <div className="flex justify-around">
+              <div>
+                <h4>
+                  <strong>Answer Choices</strong>
+                </h4>
+                <h6>
+                  Select the correct answers below by checking the box next to
+                  each option
+                </h6>
+              </div>
+              {/* create a new option */}
+              <Button varient="white" onClick={handleAddOption}>
+                Add Option
+              </Button>
+            </div>
 
             {options.map((option, index) => (
               <div key={index} className="flex items-center justify-center">
@@ -285,24 +329,19 @@ export const EditQuiz = () => {
               </Alert>
             )}
 
-            {/* create a new option */}
-            <Button varient="white" onClick={handleAddOption}>
-              Add Option
-            </Button>
-
             {/* Save the quiestion to database when you click save */}
-            <DialogFooter>
-              <div className="flex justify-center">
-                <DialogClose asChild>
-                  <Button
-                    disabled={isValidQuestion === false}
-                    onClick={saveNewQuestion}
-                  >
-                    Save
-                  </Button>
-                </DialogClose>
-              </div>
-            </DialogFooter>
+
+            <div className="flex justify-center">
+              <DialogClose asChild>
+                <Button
+                  disabled={isValidQuestion === false}
+                  onClick={saveNewQuestion}
+                  className="w-2/3 mt-4"
+                >
+                  Save
+                </Button>
+              </DialogClose>
+            </div>
           </DialogContent>
         </Dialog>
 
