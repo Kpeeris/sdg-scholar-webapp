@@ -44,6 +44,7 @@ const NoticeBoard = () => {
     useEffect(() => {
         setNotices([]);
         getAnnouncements();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [selectedTag, deletionReload, postReload]);
 
     // Add these state variables
