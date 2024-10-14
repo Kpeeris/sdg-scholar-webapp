@@ -209,7 +209,8 @@ const Quiz = () => {
           <DialogContent>
             <DialogHeader>
               <DialogDescription className="text-center text-lg ">
-                Are you sure you're ready to submit the quiz?
+                Are you sure you're ready to submit the quiz? <br/>
+                Make sure you have answered all questions!
               </DialogDescription>
               <Separator className="my-4" />
               <div className="flex-col flex items-center justify-center pt-3">
