@@ -61,7 +61,6 @@ const SignUp = () => {
       
       setLoading(false);
 
-      alert("User signed up and data saved in Firestore ");
       navigate("/login");
 
     } catch (error) {

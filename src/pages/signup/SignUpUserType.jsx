@@ -1,29 +1,3 @@
-// import SignupSVG from "@/assets/images/Signup.svg";
-
-// import { TwoColumnLayout } from "../../TwoColumnLayout";
-// import { UserTypeCard } from "./components/UserTypeCard";
-
-// export const SignUpUser = () => {
-//   return (
-//     <TwoColumnLayout
-//       imageSrc={SignupSVG}
-//       imageAlt="Signup SVG"
-//       rightContent={
-//         <div className="space-y-4">
-//           <h1>Create Your Account</h1>
-//           <p>How are you planning to use SDG Scholar?</p>
-//           <UserTypeCard />
-//           <ConfirmButton />
-//         </div>
-//       }
-//     />
-//   );
-// };
-
-// export default SignUpUser;
-
-
-// SIGN UP USER TYPE
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 
@@ -44,12 +18,8 @@ export const SignUpUser = () => {
   // Handle confirmation action (e.g., navigating to next step)
   const handleConfirm = () => {
     if (userType === "admin") {
-      // Navigate to Admin Code Verification page or show the verification component
-      alert("Proceeding to Admin Code Verification...");
       navigate("/signupadmin", { state: { userType: "admin" } });
-      // navigate("/signup", { state: { userType: "admin" } });
     } else if (userType === "learner") {
-      // Navigate to Learner Sign-Up Form or show the form component
       navigate("/signup", { state: { userType: "learner" } });
     } else {
       alert("Please select a user type to continue.");
