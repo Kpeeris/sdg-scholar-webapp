@@ -1,6 +1,5 @@
 import "./index.css";
 import Layout from "./Layout";
-import AuthPage from "./pages/UserAccounts"; // added by kash
 
 import { Route, Routes } from "react-router-dom";
 import { Home, Sdg11, Quiz, Content, About } from "./index";
@@ -37,8 +36,6 @@ function App() {
           <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} />} />
 
           <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
-
-          <Route path="/auth" element={<PrivateRoute element={<AuthPage />} />} /> {/* added by kash */}
 
         </Routes>
       </Layout>
