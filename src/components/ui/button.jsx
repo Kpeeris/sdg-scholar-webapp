@@ -27,7 +27,7 @@ const buttonVariants = cva(
         plain:
           "text-slate-900 font-inter text-[20px] font-medium leading-[28px] tracking-[-0.1px] justify-start",
         accountInfo:
-          "w-10 h-10 bg-gray-300 rounded-full mr-12",
+          "w-10 h-10 bg-gray-200 rounded-full mr-12",
         accManagement: 
           "w-full rounded-lg text-gray-700 font-semibold hover:bg-gray-100 flex items-center justify-start pl-0",
 
