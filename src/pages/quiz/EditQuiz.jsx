@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   doc,
-  getDoc,
   getDocs,
   collection,
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
 import db from "../../../firebaseFiles/firebaseConfig.js";
+
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,22 +41,17 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 export const EditQuiz = () => {
-  // used to navigate to new page when button is clicked
-  //const navigate = useNavigate();
   //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
-  // eslint-disable-next-line no-unused-vars
-  const [totalQuestions, setTotalQuestions] = useState("");
   const [questionText, setQuestionText] = useState("");
   const [isValidQuestion, setIsValidQuestion] = useState(false);
   const [type, setType] = useState("mcq");
   const [options, setOptions] = useState(["", ""]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [minError, setMinError] = useState("");
-  const [questionSaved, setQuestionSaved] = useState(false);
+  const [questionSaved, setQuestionSaved] = useState(0);
   const [docs, setDocs] = useState({});
-  const ans = {};
 
   const [deletionReload, setDeletionReload] = useState(0);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -94,40 +89,18 @@ export const EditQuiz = () => {
       console.error("Error deleting question: ", e);
     }
   };
-
-  //gets the total number of questions in the target
-  const getTotalQuestions = async () => {
-    try {
-      let docRef = doc(db, `quizzes/sdg11t${realModuleId}`);
-      let docSnap = await getDoc(docRef);
-      //is the document exists
-      if (docSnap.exists()) {
-        console.log(docSnap.data().totalQuestions);
-        setTotalQuestions(docSnap.data().totalQuestions);
-        return docSnap.data().totalQuestions;
-      } else {
-        console.log("nQuestions: Document does not exist");
-      }
-    } catch (e) {
-      console.error("Error retrieving document: ", e);
-    }
-    return 0;
-  };
-
   //gets the questions from the db and saves them in docs
   const getQuestions = async () => {
-    await getTotalQuestions();
-
     try {
       let docRef = collection(db, `quizzes/sdg11t${realModuleId}`, "questions");
       let docSnap = await getDocs(docRef);
 
-      const newDocs = {};
-      docSnap.forEach((doc) => {
-        newDocs[doc.id] = doc.data();
-      });
-      setDocs(newDocs);
-      return newDocs;
+      const newQuestions = docSnap.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setDocs(newQuestions);
+      return newQuestions;
     } catch (e) {
       console.error("Error retrieving document: ", e);
     }
@@ -135,9 +108,8 @@ export const EditQuiz = () => {
 
   useEffect(() => {
     getQuestions();
-    setQuestionSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionSaved]);
+  }, [questionSaved, deletionReload]);
 
   // saves the new question to the database
   const saveNewQuestion = async () => {
@@ -169,7 +141,7 @@ export const EditQuiz = () => {
       setOptions(["", ""]);
       setCorrectAnswers([]);
       setMinError("");
-      setQuestionSaved(true);
+      setQuestionSaved(questionSaved + 1);
     }
   };
 
@@ -393,14 +365,11 @@ export const EditQuiz = () => {
               <div key={question.id || index}>
                 <Question
                   q={question}
-                  ans={ans}
                   i={index}
                   mode="edit"
                   onDelete={() => handleDeleteConfirm(question.id)}
                 />
                 <br />
-                {/* console.log("question id = ", {question.id});
-                console.log("question index = ", {index}); */}
               </div>
             );
           })}

@@ -10,7 +10,15 @@ import {
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import db from "../../../firebaseFiles/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
+import { useAuthContext } from "@/AuthProvider";
 
 /* buildingName: name of the building
  id: the id of the target in the db
@@ -29,9 +37,10 @@ const BuildingComponent = ({
   clipPath,
 }) => {
   const navigate = useNavigate();
-
+  const { userData, role } = useAuthContext();
   const [description, setDescription] = useState("");
   const [targetNum, setTargetNum] = useState("");
+  const [score, setScore] = useState(0);
 
   const [isVisible, setIsVisible] = useState(false);
   // API call to get target description and title from the database
@@ -55,17 +64,51 @@ const BuildingComponent = ({
   });
 
   const lastLetter = targetNum.slice(-1);
+  const getScore = async (id) => {
+    let email = userData.email;
 
+    const learnersRef = collection(db, "learners");
+    const queryByEmail = query(learnersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(queryByEmail);
+
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        const learnerData = doc.data();
+
+        const scores = learnerData.scores;
+        const userScore = scores ? scores[`sdg11t${id}`] : undefined;
+
+        if (userScore !== undefined) {
+          console.log(`score for sdg11t${id}:`, userScore);
+          setScore(userScore);
+        } else {
+          console.log(`No score found for sdg11t${id}`);
+        }
+      });
+    } else {
+      console.log("No learner was found with that email");
+    }
+  };
+
+  useEffect(() => {
+    const fetchScore = async () => {
+      await getScore(id);
+    };
+    fetchScore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
   return (
     <div>
       {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <img
-          src={dark_image}
-          alt={buildingName}
-          className="w-full h-full object-cover pointer-events-none"
-        />
-      </div>
+      {role !== "admin" && score !== 100 ? (
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          <img
+            src={dark_image}
+            alt={buildingName}
+            className="w-full h-full object-cover pointer-events-none"
+          />
+        </div>
+      ) : null}
 
       {/* this div covers the building so that when the mouse hovers over it the button becomes opaque */}
       <div
