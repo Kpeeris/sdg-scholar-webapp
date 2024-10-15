@@ -1,95 +1,114 @@
-import { useImperativeHandle, forwardRef, useEffect, useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { useImperativeHandle, forwardRef, useEffect, useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-const Question = forwardRef(({ q, i }, ref) => {
-    let admin = false;
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-    const [optionsArray, setOptionsArray] = useState([])
+const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
+  let admin = false;
 
-    const checkInSelectedOptions = (answer) => {
-        for(let option of optionsArray){
-            if(answer === option["opt"] && option["checked"]){
-                return true
-            }
-        }
+  const [optionsArray, setOptionsArray] = useState([]);
+
+  const checkInSelectedOptions = (answer) => {
+    for (let option of optionsArray) {
+      if (answer === option["opt"] && option["checked"]) {
+        return true;
+      }
     }
+  };
 
-    const markQuestion = () => {
-        
-        let selectedOptions = 0
-        for(let answer of q.correctAnswers){
-            if(!checkInSelectedOptions(answer)) return 0
-            else selectedOptions++
-        }
-        console.log("length of q correct answers: ", q.correctAnswers.length, "length of options: ", selectedOptions)
-        if(q.correctAnswers.length != selectedOptions) return 0
-        return 1
+  const markQuestion = () => {
+    let selectedOptions = 0;
+    for (let answer of q.correctAnswers) {
+      if (!checkInSelectedOptions(answer)) return 0;
+      else selectedOptions++;
     }
+    console.log(
+      "length of q correct answers: ",
+      q.correctAnswers.length,
+      "length of options: ",
+      selectedOptions
+    );
+    if (q.correctAnswers.length != selectedOptions) return 0;
+    return 1;
+  };
 
-    useImperativeHandle(ref, () => ({
-        markQuestion
-    }))
+  useImperativeHandle(ref, () => ({
+    markQuestion,
+  }));
 
-    useEffect(() => {
-        let initialArray = []
-        for(let option of q.options){
-            initialArray.push({
-                "opt": option,
-                "checked": false
-            })
-        }
-        setOptionsArray(initialArray)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const handleCheck = (index) => {
-        const newOptionsArray = [...optionsArray]
-        optionsArray[index]["checked"] ? (newOptionsArray[index]["checked"] = false) : (newOptionsArray[index]["checked"] = true)
-        console.log("option ", optionsArray[index]["opt"], "of question: ", q.questionText, "is now: ", optionsArray[index]["checked"])
-        setOptionsArray(newOptionsArray)
+  useEffect(() => {
+    let initialArray = [];
+    for (let option of q.options) {
+      initialArray.push({
+        opt: option,
+        checked: false,
+      });
     }
+    setOptionsArray(initialArray);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    if(optionsArray.length < q.options.length){
-        return null
-    }
+  const handleCheck = (index) => {
+    const newOptionsArray = [...optionsArray];
+    optionsArray[index]["checked"]
+      ? (newOptionsArray[index]["checked"] = false)
+      : (newOptionsArray[index]["checked"] = true);
+    console.log(
+      "option ",
+      optionsArray[index]["opt"],
+      "of question: ",
+      q.questionText,
+      "is now: ",
+      optionsArray[index]["checked"]
+    );
+    setOptionsArray(newOptionsArray);
+  };
 
-    return (
-        <Card>
-            <CardHeader className="pt-2 pb-2 bg-neutral-100">
-                <p style={{fontWeight:"bold"}}>Question { i + 1 }</p>
-            </CardHeader>
+  if (optionsArray.length < q.options.length) {
+    return null;
+  }
 
-            <div style={{paddingLeft:"25px", paddingRight:"25px"}}>
-                <p>{ q.questionText }</p>
+  return (
+    <Card className="relative">
+      <CardHeader className="pt-4 pb-4 bg-neutral-100 rounded-t-md">
+        <p style={{ fontWeight: "bold" }}>Question {i + 1}</p>
+        {mode ? (
+          <Button
+            className="absolute top-1 right-4 bg-neutral-100 hover:bg-gray-100 text-xs py-1 px-2"
+            onClick={onDelete}
+          >
+            <TrashIcon className="h-6 w-6 text-gray-700 hover:text-red-500" />
+          </Button>
+        ) : null}
+      </CardHeader>
+
+      <div className="mt-2 mx-8">
+        <p>{q.questionText}</p>
+      </div>
+
+      <div className="mx-10 mb-5">
+        {Object.values(q.options).map((option, index) => {
+          return (
+            <div key={index} className="flex items-center my-2 space-x-2">
+              <Checkbox
+                checked={optionsArray[index]["checked"]}
+                onCheckedChange={() => {
+                  handleCheck(index);
+                }}
+              />
+              <label className="text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {option}
+              </label>
             </div>
+          );
+        })}
+        {admin ? <Button>Edit</Button> : null}
+      </div>
+    </Card>
+  );
+});
 
-            <div style={{paddingLeft:"40px", paddingTop: "10px", paddingRight:"40px", paddingBottom:"10px"}}>
-
-                
-                {Object.values(q.options).map((option, index)=>{
-
-                    return (
-                        <div key={index} className="flex items-center space-x-2">
-                            <Checkbox 
-                              checked={optionsArray[index]["checked"]}
-                              onCheckedChange={() => {handleCheck(index)}}
-                            />
-                            <label className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {option}
-                            </label>
-                            <br/>
-                        </div>
-                    )
-                })}
-                <br />
-                {admin ? <Button>Edit</Button> : null}
-            </div>
-        </Card>
-    )
-})
-
-Question.displayName = "Question"
-
-export default Question
+Question.displayName = "Question";
+export default Question;
