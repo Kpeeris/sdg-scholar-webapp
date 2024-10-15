@@ -36,14 +36,15 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { useAuthContext } from "@/AuthProvider";
 
 const NoticeBoard = () => {
-  // const currentUser = useAuth();
-  const [notices, setNotices] = useState([]);
-  const [lastOnPage, setLastOnPage] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [selectedTag, setSelectedTag] = useState("All");
+    const [notices, setNotices] = useState([]);
+    const [lastOnPage, setLastOnPage] = useState(null);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [selectedTag, setSelectedTag] = useState("All");
+
 
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -81,129 +82,108 @@ const NoticeBoard = () => {
       console.error("Error deleting notice: ", e);
     }
   };
+    const { userData, role } = useAuthContext();
+      const handlePost = async () => {
+        
+        try {
+            const creationTime = Timestamp.now();
 
-  const handlePost = async () => {
-    // if (!currentUser) {
-    //     console.error("User is not logged in.");
-    //     return;
-    // }
+           // Count the total announcement there are to generate the custom id
+            const announcementsRef = collection(db, "announcements");
+            const queryToCount = query(announcementsRef);
+            const querySnapshot = await getDocs(queryToCount);
+            const totalAnnouncements = querySnapshot.size;
+            
+            const customDocId = `announcement${totalAnnouncements + 2}`;
+            console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
+            
+            const authorName = `${userData?.firstName || 'Unauthorised'} ${userData?.lastName || 'User'}`;
 
-    try {
-      const creationTime = Timestamp.now();
-
-      // Count the total announcement there are to generate the custom id
-      const announcementsRef = collection(db, "announcements");
-      const queryToCount = query(announcementsRef);
-      const querySnapshot = await getDocs(queryToCount);
-      const totalAnnouncements = querySnapshot.size;
-
-      const customDocId = `announcement${totalAnnouncements + 2}`;
-      console.log(
-        "the id is: " + customDocId,
-        "total announcments: " + totalAnnouncements
-      );
-
-      await addDoc(announcementsRef, {
-        title,
-        message,
-        category,
-        creationTime,
-        //author: currentUser.email
-      });
-
-      setPostReload(postReload + 1);
-      console.log("Notice Saved");
-    } catch (error) {
-      console.error("Could not write to database: ", error);
-    } finally {
-      setTitle("");
-      setMessage("");
-      setCategory("General");
+            await addDoc(announcementsRef, {
+              title,
+              message,
+              category,
+              creationTime,
+              author: authorName
+            });
+            
+            setPostReload(postReload + 1);
+            console.log("Notice Saved");
+          } catch (error) {
+            console.error("Could not write to database: ", error);
+          } finally {
+            setTitle('');
+            setMessage('');
+            setCategory('General');
+          }
     }
-  };
+    
+    const getAnnouncements = async (loadMore = false) => {
+        setLoading(true);
+        try {
+                let collectionRef = collection(db, `announcements`);
+                let announcementQuery;
+                
+                // pagination logic
+                if (!(loadMore && lastOnPage)) {
+                    // this is the first time we are fetching the announcements
+                    if (selectedTag == "All") {
+                        // Fetch all the announcements
+                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(10));
+                      } else {
+                        // Fetch announcements whose category matches the selected tag
+                        announcementQuery = query(collectionRef,
+                          where("category", "==", selectedTag),
+                          orderBy("creationTime", "desc"),
+                          limit(10)
+                        );
+                      }
+                    
+                } else {
+                    // to fetch more announcements
+                    if (selectedTag == "All") {
+                        announcementQuery = query(
+                          collectionRef,
+                          orderBy("creationTime", "desc"),
+                          startAfter(lastOnPage),
+                          limit(10)
+                        );
+                      } else {
+                        announcementQuery = query(
+                          collectionRef,
+                          where("category", "==", selectedTag), // Filter by selected category
+                          orderBy("creationTime", "desc"),
+                          startAfter(lastOnPage),
+                          limit(10)
+                        );
+                      }
+                }
+                let collectionSnap = await getDocs(announcementQuery);
+            
+                if (!collectionSnap.empty){
+                    const newNotices = collectionSnap.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+                    setNotices((prevNotices) => (loadMore ? [...prevNotices, ...newNotices] : newNotices));
 
-  // const handleDelete = async (id) => {
-  //   try{
-  //     const docRef = doc(db, "announcements", id)
-  //     await deleteDoc(docRef);
-  //     console.log("Notice deleted successfully");
-  //     setDeletionReload(deletionReload + 1);
-  //   } catch (e) {
-  //     console.error("Error deleting notice: ", e);
-  //   }
-  // }
-
-  const getAnnouncements = async (loadMore = false) => {
-    setLoading(true);
-    try {
-      let collectionRef = collection(db, `announcements`);
-      //let announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(20));
-      let announcementQuery;
-
-      // pagination logic
-      if (!(loadMore && lastOnPage)) {
-        // this is the first time we are fetching the announcements
-        if (selectedTag == "All") {
-          // Fetch all the announcements
-          announcementQuery = query(
-            collectionRef,
-            orderBy("creationTime", "desc"),
-            limit(20)
-          );
-        } else {
-          // Fetch announcements whose category matches the selected tag
-          announcementQuery = query(
-            collectionRef,
-            where("category", "==", selectedTag),
-            orderBy("creationTime", "desc"),
-            limit(20)
-          );
-        }
-      } else {
-        // to fetch more announcements
-        if (selectedTag == "All") {
-          announcementQuery = query(
-            collectionRef,
-            orderBy("creationTime", "desc"),
-            startAfter(lastOnPage),
-            limit(20)
-          );
-        } else {
-          announcementQuery = query(
-            collectionRef,
-            where("category", "==", selectedTag), // Filter by selected category
-            orderBy("creationTime", "desc"),
-            startAfter(lastOnPage),
-            limit(20)
-          );
-        }
-      }
-      let collectionSnap = await getDocs(announcementQuery);
-
-      if (!collectionSnap.empty) {
-        const newNotices = collectionSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setNotices((prevNotices) =>
-          loadMore ? [...prevNotices, ...newNotices] : newNotices
-        );
-
-        let lastNoticePosition = collectionSnap.docs.length - 1;
-        setLastOnPage(collectionSnap.docs[lastNoticePosition]);
-
-        if (collectionSnap.docs.length < 20) {
-          setHasMore(false);
-        }
-      } else {
-        setHasMore(false);
-      }
-    } catch (e) {
-      console.error("Error retrieving announcements: ", e);
-    }
-    setLoading(false);
-    return 0;
-  };
+                    
+                    let lastNoticePosition = collectionSnap.docs.length - 1;
+                    setLastOnPage(collectionSnap.docs[lastNoticePosition]);
+                    
+                    if (collectionSnap.docs.length < 10) {
+                        setHasMore(false);
+                    }
+                
+                } else {
+                    setHasMore(false);
+                }
+          } catch (e) {
+            console.error("Error retrieving announcements: ", e);
+          }
+          setLoading(false);
+          return 0;
+        };
 
   return (
     <div>
@@ -277,110 +257,62 @@ const NoticeBoard = () => {
           </ToggleGroupItem>
         </ToggleGroup>
 
+      {role === "admin" && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
-              <PencilSquareIcon className="h-6 w-6 text-white" /> New Notice
-            </Button>
+            <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="flex justify-center text-4xl">
-                Create New Notice
-              </DialogTitle>
-            </DialogHeader>
-            <DialogDescription></DialogDescription>
-            <label htmlFor="title">Title</label>
-            <Input
-              placeholder="Write your notice here..."
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            {title === "" && (
-              <span style={{ color: "red" }}>please add a title</span>
-            )}
+              <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
+              <DialogDescription></DialogDescription>
+              <label htmlFor="title">Title</label>
+              <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+              {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
 
-            <label>Category</label>
-            {/* my plan: if they don't select one, write All to the notice.category */}
-            <ToggleGroup
-              variant="default"
-              size="default"
-              type="single"
-              className="justify-start"
-              onValueChange={(value) => setCategory(value || "General")}
-            >
-              <ToggleGroupItem
-                value="General"
-                className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300"
-              >
-                General
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="Project Initiatives"
-                className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300"
-              >
-                Project Initiatives
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="Quizzes"
-                className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300"
-              >
-                Quizzes
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="SDGs"
-                className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300"
-              >
-                SDGs
-              </ToggleGroupItem>
-            </ToggleGroup>
+              <label>Category</label>
+              {/* my plan: if they don't select one, write All to the notice.category */}
+              <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
+                  <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
+                  <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
+                  <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
+                  <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
+              </ToggleGroup>
 
-            <label htmlFor="message">Body</label>
-            <Input
-              placeholder="Write your notice here..."
-              id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
+              <label htmlFor="message">Body</label>
+              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
 
             <DialogClose asChild>
-              <Button onClick={handlePost} disabled={title === ""}>
-                Post
-              </Button>
+              <Button onClick={handlePost} disabled={title === ''}>Post</Button>
             </DialogClose>
+            
           </DialogContent>
         </Dialog>
-      </div>
-
-      <div>
+        )}
+     </div>
+    
+    <div>
         {notices.length > 0 ? (
           <ul className="pl-9 pr-16 list-none space-y-4">
             {notices.map((notice) => (
               <li key={notice.id}>
                 <Card className="relative inline-block w-full">
-                  <CardHeader className="flex flex-col items-start justify-between">
-                    <CardTitle>{notice.title}</CardTitle>
-
-                    {/* Delete Button */}
-                    <Button
-                      className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
-                      onClick={() => handleDeleteConfirm(notice.id)}
-                    >
-                      <TrashIcon className="h-6 w-6 text-gray-700" />
-                    </Button>
-
-                    <CardDescription>
-                      {notice.author} &bull;{" "}
-                      {new Date(
-                        notice.creationTime.seconds * 1000
-                      ).toLocaleString()}
-                    </CardDescription>
-                    {/* Conditional Rendering of the tag */}
-                    <span
-                      className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
-                        ${
-                          notice.category === "All"
+                    <CardHeader className="flex flex-col items-start justify-between">
+                        <CardTitle>{notice.title}</CardTitle>
+                        
+          
+                        {/* Conditional Rendering of the Delete Button */}
+                        {role === "admin" && (
+                          <Button
+                            className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
+                            onClick={() => handleDeleteConfirm(notice.id)}>
+                            <TrashIcon className="h-6 w-6 text-gray-700" />
+                          </Button>
+                        )}
+  
+                        <CardDescription>{notice.author} &bull; {new Date(notice.creationTime.seconds * 1000).toLocaleString()}</CardDescription>
+                        {/* Conditional Rendering of the tag */}
+                        <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
+                        ${ notice.category === "All"
                             ? "bg-orange-100 text-orange-600"
                             : notice.category === "General"
                             ? "bg-rose-100 text-rose-600"
@@ -421,30 +353,26 @@ const NoticeBoard = () => {
       )}
 
       {/* Modal for confirming deletion */}
-      <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Notice</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this notice?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-end space-x-2">
-            <DialogClose asChild>
-              <Button
-                variant="outline"
-                onClick={() => setDeleteConfirmOpen(false)}
-              >
-                Cancel
-              </Button>
-            </DialogClose>
+      {role === "admin" && (
+        <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Notice</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this notice?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex justify-end space-x-2">
+              <DialogClose asChild>
+                <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+              </DialogClose>
 
-            <Button onClick={handleDelete}>Confirm</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
+              <Button onClick={handleDelete}>Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+     )}
+  </div>
+)}
 
 export default NoticeBoard;

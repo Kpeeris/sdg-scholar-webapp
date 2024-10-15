@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 import Dropdown from "./Dropdown";
 import logo_horizontal from "@/assets/icons/logo_horizontal.svg";
+import AccountPopover from './AccountPopover'
 
 const Navbar = () => {
   return (
@@ -35,7 +36,9 @@ const Navbar = () => {
           <Dropdown />
         </ul>
 
-        <div className="w-10 h-10 bg-gray-300 rounded-full mr-12"></div>
+          <AccountPopover />
+    
+
       </nav>
     </div>
   );
