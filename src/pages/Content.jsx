@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import EditableBlock from '../components/EditableBlock';
 
 //import storage from '../../firebaseFiles/firebaseConfig.js';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const Content = () => {
     const { moduleId } = useParams(); // Capture the module ID from the URL
@@ -24,7 +24,7 @@ const Content = () => {
 
     const retrieveImages = async () => {
         //const dbString = `/sdg11/target${dbModuleId}/GOAL_11_TARGET_11.1.png`
-        const testDbString= "New Ardoch Logo (1) 1.png"
+        //const testDbString= "New Ardoch Logo (1) 1.png"
         //console.log(`trying to hit: ${dbString}`)
         console.log(`${isNaN(Number(dbModuleId))}`)
         try{
