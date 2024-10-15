@@ -11,6 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
+  DialogHeader,
+  DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -19,6 +22,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectLabel,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -43,8 +47,13 @@ export const EditQuiz = () => {
   const [options, setOptions] = useState(["", ""]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [minError, setMinError] = useState("");
+  const [questionSaved, setQuestionSaved] = useState(false);
   const [docs, setDocs] = useState({});
   const ans = {};
+
+  const [deletionReload, setDeletionReload] = useState(0);
+  const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [questionToDelete, setQuestionToDelete] = useState(null);
 
   let realModuleId = moduleId;
   if (moduleId == "a") {
@@ -54,6 +63,30 @@ export const EditQuiz = () => {
   } else if (moduleId == "c") {
     realModuleId = "10";
   }
+
+  // Function to handle opening the confirmation modal
+  const handleDeleteConfirm = (id) => {
+    setQuestionToDelete(id); // Set the question to delete
+    console.log("handleDeleteConfirm id = ", { id });
+    setDeleteConfirmOpen(true); // Open the confirmation dialog
+  };
+
+  const handleDelete = async () => {
+    if (!questionToDelete) return;
+    try {
+      const docRef = doc(
+        db,
+        `quizzes/sdg11t${realModuleId}/questions`,
+        questionToDelete
+      );
+      await deleteDoc(docRef);
+      console.log("Question deleted successfully");
+      setDeleteConfirmOpen(false); // Close the confirmation dialog
+      setDeletionReload(deletionReload + 1);
+    } catch (e) {
+      console.error("Error deleting question: ", e);
+    }
+  };
 
   //gets the total number of questions in the target
   const getTotalQuestions = async () => {
@@ -95,8 +128,9 @@ export const EditQuiz = () => {
 
   useEffect(() => {
     getQuestions();
+    setQuestionSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [questionSaved]);
 
   // saves the new question to the database
   const saveNewQuestion = async () => {
@@ -128,6 +162,7 @@ export const EditQuiz = () => {
       setOptions(["", ""]);
       setCorrectAnswers([]);
       setMinError("");
+      setQuestionSaved(true);
     }
   };
 
@@ -158,7 +193,7 @@ export const EditQuiz = () => {
 
     setTimeout(() => {
       setMinError("");
-    }, 3000);
+    }, 5000);
   };
 
   //if the checkbox is checked add ans to correctAnswers
@@ -258,6 +293,10 @@ export const EditQuiz = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
+                      <SelectLabel>Type</SelectLabel>
+                      <SelectItem value="mselect">
+                        Multiple Select Question
+                      </SelectItem>
                       <SelectItem value="mcq">
                         Multiple Choice Question
                       </SelectItem>
@@ -345,16 +384,43 @@ export const EditQuiz = () => {
           {Object.values(docs).map((question, index) => {
             return (
               <div key={question.id || index}>
-                <Question q={question} ans={ans} i={index} mode="edit" />
+                <Question
+                  q={question}
+                  ans={ans}
+                  i={index}
+                  mode="edit"
+                  onDelete={() => handleDeleteConfirm(question.id)}
+                />
                 <br />
+                console.log("question id = ", {question.id});
+                console.log("question index = ", {index});
               </div>
             );
           })}
         </div>
 
-        <div className="flex flex-col items-center">
-          <br />
-        </div>
+        {/* Modal for confirming deletion */}
+        <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Question</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this question?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex justify-end space-x-2">
+              <DialogClose asChild>
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteConfirmOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button onClick={handleDelete}>Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

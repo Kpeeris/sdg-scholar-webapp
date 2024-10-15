@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 
-const Question = forwardRef(({ q, i, mode }, ref) => {
+const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
   let admin = false;
 
   const [optionsArray, setOptionsArray] = useState([]);
@@ -74,8 +74,11 @@ const Question = forwardRef(({ q, i, mode }, ref) => {
     <Card className="relative">
       <CardHeader className="pt-4 pb-4 bg-neutral-100 rounded-t-md">
         <p style={{ fontWeight: "bold" }}>Question {i + 1}</p>
-        {mode === "edit" ? (
-          <Button className="absolute top-1 right-4 bg-neutral-100 hover:bg-gray-100 text-xs py-1 px-2">
+        {mode ? (
+          <Button
+            className="absolute top-1 right-4 bg-neutral-100 hover:bg-gray-100 text-xs py-1 px-2"
+            onClick={onDelete}
+          >
             <TrashIcon className="h-6 w-6 text-gray-700 hover:text-red-500" />
           </Button>
         ) : null}
@@ -101,7 +104,6 @@ const Question = forwardRef(({ q, i, mode }, ref) => {
             </div>
           );
         })}
-        <br />
         {admin ? <Button>Edit</Button> : null}
       </div>
     </Card>

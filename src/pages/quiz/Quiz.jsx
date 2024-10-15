@@ -128,18 +128,20 @@ const Quiz = () => {
     <div className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
 
-      {quizStarted && !quizSubmitted ? (
+      {(quizStarted && !quizSubmitted) || admin ? (
         <div className="ml-[250px] flex-1">
           <div className="flex justify-between">
             <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
               {moduleTitle}
             </h2>
-            <Button
-              className="w-44 text-lg"
-              onClick={() => navigate(`/module/${moduleId}/editquiz`)}
-            >
-              Edit Quiz
-            </Button>
+            {admin ? (
+              <Button
+                className="w-44 text-lg"
+                onClick={() => navigate(`/module/${moduleId}/editquiz`)}
+              >
+                Edit Quiz
+              </Button>
+            ) : null}
           </div>
           <br />
           <div>
@@ -159,19 +161,21 @@ const Quiz = () => {
             })}
           </div>
 
-          <div className="flex flex-col items-center">
-            <br />
-            <Button
-              className="w-44"
-              onClick={() => {
-                setDialogVisible(true);
-              }}
-            >
-              Submit Quiz
-            </Button>
-          </div>
+          {admin ? null : (
+            <div className="flex flex-col items-center">
+              <br />
+              <Button
+                className="w-44"
+                onClick={() => {
+                  setDialogVisible(true);
+                }}
+              >
+                Submit Quiz
+              </Button>
+            </div>
+          )}
         </div>
-      ) : !quizSubmitted ? (
+      ) : !quizSubmitted && !admin ? (
         <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
           <div className="relative h-72 w-72">
             <img
