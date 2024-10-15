@@ -46,9 +46,10 @@ export const Home = () => {
         </Link>
       </div>
 
-      <span className="text-7xl font-bold flex justify-center my-20">
+      {/* <span className="text-7xl font-bold flex justify-center my-20">
         Your Goals
-      </span>
+      </span> */}
+      <h1 className="mt-16 mb-8 text-center">Your Goals</h1>
 
       {/* grid of modules */}
       <div className=" grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">

@@ -5,6 +5,7 @@ import SignupSVG from "@/assets/images/Signup.svg";
 import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { UserTypeCard } from "./components/UserTypeCard"; 
 import { Button } from "@/components/ui/button";
+import { LoginLink } from "./components/LoginLink";
 
 export const SignUpUser = () => {
   const [userType, setUserType] = useState(null); // Track selected user type
@@ -39,9 +40,12 @@ export const SignUpUser = () => {
           <UserTypeCard onSelectType={handleUserTypeSelection} />
 
           {/* Create Account Button */}
-          <Button className="w-full mt-6 mb-2" variant="default" onClick={handleConfirm}>
+          <Button className="w-full mb-2" variant="default" onClick={handleConfirm}>
             Create Account
           </Button>
+          <hr className="w-full mt-4 border-white" />
+          <hr className="w-full mt-4 border-gray-300" />
+          <LoginLink />
         </div>
       }
     />

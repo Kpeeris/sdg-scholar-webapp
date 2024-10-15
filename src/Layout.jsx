@@ -14,7 +14,7 @@ function Layout({ children }) {
       <Navbar />
       <div
         className={
-          location.pathname === noPaddingRoute ? "pt-16" : "pt-32 pb-16 px-12"
+          location.pathname === noPaddingRoute ? "pt-20" : "pt-36 pb-16 px-12"
         }
       >
         {children}

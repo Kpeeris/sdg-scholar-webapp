@@ -69,7 +69,7 @@ export const UserTypeCard = ({ onSelectType }) => {
   };
 
   return (
-    <div className="flex items-center justify-center space-x-6">
+    <div className="flex items-center justify-center space-x-6 pb-2">
       
       {/* Admin Card */}
       <Card
