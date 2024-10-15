@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 
 //import storage from '../../firebaseFiles/firebaseConfig.js';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useAuthContext } from "@/AuthProvider";
 
 import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
@@ -22,7 +23,11 @@ const Content = () => {
     const [image2Url, setImage2Url] = useState("")
     const [textEditorShow, setTextEditorShow] = useState(false)
 
-    let admin = true
+    const { role } = useAuthContext();
+
+    let isAdmin = role === "admin";
+
+    //let admin = true
 
     const [content, setContent] = useState("")
 
@@ -225,8 +230,8 @@ const Content = () => {
             <div className="ml-[250px] flex-1">
                 <div className="flex justify-between">
                     <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>Content Page</h2>
-                    <br/>
-                    {admin ? (
+                    <br/><br/>
+                    {isAdmin ? (
                         <Button
                             className="w-44 text-lg"
                             onClick={() => setTextEditorShow(true)}
@@ -268,8 +273,8 @@ const Content = () => {
                         <br />
                         <br />
                         <div>
-                            {admin && textEditorShow ? <Button onClick={ () => {handleClick(content)} } style={{marginRight: '10px'}}>Publish</Button> : null}
-                            {(admin && textEditorShow) ? <Button onClick={ () => {handleCancelClick()} }>Cancel</Button> : null}
+                            {isAdmin && textEditorShow ? <Button onClick={ () => {handleClick(content)} } style={{marginRight: '10px'}}>Publish</Button> : null}
+                            {(isAdmin && textEditorShow) ? <Button onClick={ () => {handleCancelClick()} }>Cancel</Button> : null}
                         </div>
                     </div>
                 
