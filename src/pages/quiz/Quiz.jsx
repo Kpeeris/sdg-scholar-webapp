@@ -4,6 +4,7 @@ import SideMenu from "../../components/SideMenu.jsx";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import db from "../../../firebaseFiles/firebaseConfig.js";
+import { useAuthContext } from "@/AuthProvider";
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,9 +38,9 @@ const Quiz = () => {
   const questionRefs = useRef([]);
 
   const [docs, setDocs] = useState({});
-  const ans = {};
+  const { userData, role } = useAuthContext();
 
-  let admin = true;
+  let isAdmin = role === "admin";
 
   //modify the moduleId from the url to match the format that is is the DB
   let realModuleId = moduleId;
@@ -128,13 +129,13 @@ const Quiz = () => {
     <div className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
 
-      {(quizStarted && !quizSubmitted) || admin ? (
+      {(quizStarted && !quizSubmitted) || isAdmin ? (
         <div className="ml-[250px] flex-1">
           <div className="flex justify-between">
             <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
               {moduleTitle}
             </h2>
-            {admin ? (
+            {isAdmin ? (
               <Button
                 className="w-44 text-lg"
                 onClick={() => navigate(`/module/${moduleId}/editquiz`)}
@@ -147,12 +148,11 @@ const Quiz = () => {
           <div>
             {Object.values(docs).map((question, index) => {
               return (
-                <div key={question.id}>
+                <div key={question.id || index}>
                   <Question
                     ref={questionRefs.current[index]}
                     key={question.id}
                     q={question}
-                    ans={ans}
                     i={index}
                   />
                   <br />
@@ -161,7 +161,7 @@ const Quiz = () => {
             })}
           </div>
 
-          {admin ? null : (
+          {isAdmin ? null : (
             <div className="flex flex-col items-center">
               <br />
               <Button
@@ -175,7 +175,7 @@ const Quiz = () => {
             </div>
           )}
         </div>
-      ) : !quizSubmitted && !admin ? (
+      ) : !quizSubmitted && !isAdmin ? (
         <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
           <div className="relative h-72 w-72">
             <img
