@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { doc, getDoc, getDocs, collection, addDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import db from "../../../firebaseFiles/firebaseConfig.js";
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
@@ -392,8 +399,8 @@ export const EditQuiz = () => {
                   onDelete={() => handleDeleteConfirm(question.id)}
                 />
                 <br />
-                console.log("question id = ", {question.id});
-                console.log("question index = ", {index});
+                {/* console.log("question id = ", {question.id});
+                console.log("question index = ", {index}); */}
               </div>
             );
           })}
