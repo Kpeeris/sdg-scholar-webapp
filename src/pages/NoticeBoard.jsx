@@ -37,6 +37,7 @@ import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/AuthProvider";
+import { Textarea } from "@/components/ui/textarea"
 
 const NoticeBoard = () => {
     const [notices, setNotices] = useState([]);
@@ -278,8 +279,12 @@ const NoticeBoard = () => {
                   <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
               </ToggleGroup>
 
-              <label htmlFor="message">Body</label>
-              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+              {/* <label htmlFor="message">Body</label>
+              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
+              <div className="grid w-full gap-1.5">
+                <label htmlFor="message">Body</label>
+                <Textarea placeholder="Type your message here." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+              </div>
 
             <DialogClose asChild>
               <Button onClick={handlePost} disabled={title === ''}>Post</Button>
@@ -303,9 +308,9 @@ const NoticeBoard = () => {
                         {/* Conditional Rendering of the Delete Button */}
                         {role === "admin" && (
                           <Button
-                            className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
+                            className="absolute top-2 right-4 bg-white hover:bg-transparent text-xs py-1 px-2"
                             onClick={() => handleDeleteConfirm(notice.id)}>
-                            <TrashIcon className="h-6 w-6 text-gray-700" />
+                            <TrashIcon className="h-6 w-6 hover:text-red-600 text-gray-700" />
                           </Button>
                         )}
   
