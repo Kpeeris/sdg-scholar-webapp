@@ -43,7 +43,7 @@ export function AccountPopover() {
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        {/* round icon iwth initials (displayed on the nav bar) */}
+        {/* round icon with initials (displayed on the nav bar) */}
         <Button 
             variant="accountInfo" 
             className="w-11 h-11 text-lg text-gray-700 tracking-normal"
