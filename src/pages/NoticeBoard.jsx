@@ -72,11 +72,6 @@ const NoticeBoard = () => {
     const { userData, role } = useAuthContext();
       const handlePost = async () => {
         
-        // if (!currentUser) {
-        //     console.error("User is not logged in.");
-        //     return;
-        // }
-        
         try {
             const creationTime = Timestamp.now();
 
@@ -109,23 +104,11 @@ const NoticeBoard = () => {
             setCategory('General');
           }
     }
-
-    // const handleDelete = async (id) => {
-    //   try{
-    //     const docRef = doc(db, "announcements", id)
-    //     await deleteDoc(docRef);
-    //     console.log("Notice deleted successfully");
-    //     setDeletionReload(deletionReload + 1);
-    //   } catch (e) {
-    //     console.error("Error deleting notice: ", e);
-    //   }
-    // }
     
     const getAnnouncements = async (loadMore = false) => {
         setLoading(true);
         try {
                 let collectionRef = collection(db, `announcements`);
-                //let announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(20));
                 let announcementQuery;
                 
                 // pagination logic
@@ -133,13 +116,13 @@ const NoticeBoard = () => {
                     // this is the first time we are fetching the announcements
                     if (selectedTag == "All") {
                         // Fetch all the announcements
-                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(20));
+                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(10));
                       } else {
                         // Fetch announcements whose category matches the selected tag
                         announcementQuery = query(collectionRef,
                           where("category", "==", selectedTag),
                           orderBy("creationTime", "desc"),
-                          limit(20)
+                          limit(10)
                         );
                       }
                     
@@ -150,7 +133,7 @@ const NoticeBoard = () => {
                           collectionRef,
                           orderBy("creationTime", "desc"),
                           startAfter(lastOnPage),
-                          limit(20)
+                          limit(10)
                         );
                       } else {
                         announcementQuery = query(
@@ -158,7 +141,7 @@ const NoticeBoard = () => {
                           where("category", "==", selectedTag), // Filter by selected category
                           orderBy("creationTime", "desc"),
                           startAfter(lastOnPage),
-                          limit(20)
+                          limit(10)
                         );
                       }
                 }
@@ -175,7 +158,7 @@ const NoticeBoard = () => {
                     let lastNoticePosition = collectionSnap.docs.length - 1;
                     setLastOnPage(collectionSnap.docs[lastNoticePosition]);
                     
-                    if (collectionSnap.docs.length < 20) {
+                    if (collectionSnap.docs.length < 10) {
                         setHasMore(false);
                     }
                 

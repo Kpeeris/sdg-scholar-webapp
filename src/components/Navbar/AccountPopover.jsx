@@ -27,18 +27,21 @@ export function AccountPopover() {
     const navigate = useNavigate(); // React Router's navigation hook
 
     const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog open/close
-    // log out function
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false); // Track popover open state
+
+    // Logout function
     const handleLogout = async () => {
-        try {
+      try {
         await logout(); // Perform logout
+        setIsPopoverOpen(false); // Close the popover
         navigate("/"); // Redirect to home or login page
-        } catch (error) {
+      } catch (error) {
         console.error("Logout failed:", error); // Handle errors
-        }
+      }
     };
 
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         {/* round icon iwth initials (displayed on the nav bar) */}
         <Button 
@@ -93,12 +96,14 @@ export function AccountPopover() {
                 </Dialog>
                 <div className="border-t border-gray-300 my-1"></div>
 
-                {/* Logout Button */}
+
                 <Button
                 onClick={handleLogout}
                 variant="accManagement"
                 className="px-1 gap-x-2"> 
-                    <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-gray-500" />Log Out</Button>
+                <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-gray-500" />
+                Log Out</Button>
+
             </div>
         </PopoverContent>
     </Popover>

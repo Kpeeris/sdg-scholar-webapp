@@ -38,7 +38,6 @@ export const Login = () => {
       await login(email, password);
 
       setLoading(false);
-      alert("Login successful!");
       navigate("/");
 
     } catch (error) {
