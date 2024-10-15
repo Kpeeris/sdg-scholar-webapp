@@ -44,8 +44,6 @@ export const EditQuiz = () => {
   //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
-  // eslint-disable-next-line no-unused-vars
-  const [totalQuestions, setTotalQuestions] = useState("");
   const [questionText, setQuestionText] = useState("");
   const [isValidQuestion, setIsValidQuestion] = useState(false);
   const [type, setType] = useState("mcq");

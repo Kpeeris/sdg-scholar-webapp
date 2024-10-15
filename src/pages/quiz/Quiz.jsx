@@ -2,7 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu.jsx";
 import { useParams } from "react-router-dom";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  updateDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import db from "../../../firebaseFiles/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
 import Question from "../../components/Question.jsx";
@@ -34,6 +42,7 @@ const Quiz = () => {
   const [isExploding, setIsExploding] = useState(false);
 
   const [result, setResult] = useState(0);
+  const [score, setScore] = useState(0);
 
   const questionRefs = useRef([]);
 
@@ -61,6 +70,9 @@ const Quiz = () => {
       }
     });
     setResult(currResult);
+    const perCent = round((currResult / totalQuestions) * 100, 1);
+    saveScore(perCent);
+    setScore(perCent);
     console.log("current result is, ", { currResult });
   };
 
@@ -100,9 +112,60 @@ const Quiz = () => {
     }
   };
 
+  //save the score to the database
+  const saveScore = async (score) => {
+    let email = userData.email;
+
+    const learnersRef = collection(db, "learners");
+    const queryByEmail = query(learnersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(queryByEmail);
+
+    if (querySnapshot.empty) {
+      console.log("No learner was found with that email");
+      return null;
+    }
+
+    querySnapshot.forEach(async (learner) => {
+      const learnerDocId = learner.id;
+      console.log("updating learner with id: ", learnerDocId);
+
+      const learnerDocRef = doc(db, "learners", learnerDocId);
+      await updateDoc(learnerDocRef, {
+        [`scores.sdg11t${realModuleId}`]: score,
+      });
+    });
+  };
+
+  //gets the score form the db and saved in to score
+  const getScore = async () => {
+    let email = userData.email;
+
+    const learnersRef = collection(db, "learners");
+    const queryByEmail = query(learnersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(queryByEmail);
+
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        const learnerData = doc.data();
+
+        const scores = learnerData.scores;
+        const userScore = scores ? scores[`sdg11t${realModuleId}`] : undefined;
+
+        if (userScore !== undefined) {
+          console.log(`score for sdg11t${realModuleId}:`, userScore);
+          setScore(userScore);
+        } else {
+          console.log(`No score found for sdg11t${realModuleId}`);
+        }
+      });
+    } else {
+      console.log("No learner was found with that email");
+    }
+  };
+
   useEffect(() => {
     getQuestions();
-
+    getScore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -175,7 +238,8 @@ const Quiz = () => {
             </div>
           )}
         </div>
-      ) : !quizSubmitted && !isAdmin ? (
+      ) : //if user is not an Admin and the quiz is not submitted
+      !quizSubmitted && !isAdmin && score === 0 ? (
         <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
           <div className="relative h-72 w-72">
             <img
@@ -246,7 +310,8 @@ const Quiz = () => {
               className="flex items-center justify-center"
             >
               <h2 className="text-orange-500">
-                {round((result / totalQuestions) * 100, 1)}%
+                {/* {round((result / totalQuestions) * 100, 1)}% */}
+                {score}%
               </h2>
             </div>
             <br />
@@ -255,6 +320,8 @@ const Quiz = () => {
               onClick={() => {
                 setQuizStarted(true);
                 setQuizSubmitted(false);
+                saveScore(0);
+                setScore(0);
               }}
             >
               Take Quiz Again
