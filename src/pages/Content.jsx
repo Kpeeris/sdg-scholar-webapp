@@ -22,7 +22,7 @@ const Content = () => {
         <div className="flex">
         <SideMenu moduleTitle={moduleTitle} moduleId={moduleId}/>
             <div className="ml-[250px] flex-1">
-            <h2>Content Page</h2>
+            <h2 style={{ fontWeight: "bold" }}>Content Page</h2>
             
 
             <div>
