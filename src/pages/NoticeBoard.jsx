@@ -1,32 +1,44 @@
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogClose,
-    DialogFooter,
-  } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import db from "../../firebaseFiles/firebaseConfig.js";
 // import { useAuth } from "../../firebaseFiles/firebaseAuth.js";
-import { collection, query, limit, getDocs, orderBy, startAfter, where, addDoc, doc, Timestamp, deleteDoc} from "firebase/firestore";
+import {
+  collection,
+  query,
+  limit,
+  getDocs,
+  orderBy,
+  startAfter,
+  where,
+  addDoc,
+  doc,
+  Timestamp,
+  deleteDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { useAuthContext } from "@/AuthProvider";
 
 const NoticeBoard = () => {
-    // const currentUser = useAuth();
     const [notices, setNotices] = useState([]);
     const [lastOnPage, setLastOnPage] = useState(null);
     const [hasMore, setHasMore] = useState(true);
@@ -34,20 +46,20 @@ const NoticeBoard = () => {
     const [selectedTag, setSelectedTag] = useState("All");
 
 
-    const [title, setTitle] = useState("");
-    const [message, setMessage] = useState("");
-    const [category, setCategory] = useState("General");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [category, setCategory] = useState("General");
 
-    const [deletionReload, setDeletionReload] = useState(0);
-    const [postReload, setPostReload] = useState(0);
+  const [deletionReload, setDeletionReload] = useState(0);
+  const [postReload, setPostReload] = useState(0);
 
-    useEffect(() => {
-        setNotices([]);
-        getAnnouncements();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [selectedTag, deletionReload, postReload]);
+  useEffect(() => {
+    setNotices([]);
+    getAnnouncements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTag, deletionReload, postReload]);
 
-    // Add these state variables
+  // Add these state variables
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [noticeToDelete, setNoticeToDelete] = useState(null);
 
@@ -70,14 +82,9 @@ const NoticeBoard = () => {
       console.error("Error deleting notice: ", e);
     }
   };
-    
+    const { userData, role } = useAuthContext();
       const handlePost = async () => {
         
-        // if (!currentUser) {
-        //     console.error("User is not logged in.");
-        //     return;
-        // }
-
         try {
             const creationTime = Timestamp.now();
 
@@ -89,13 +96,15 @@ const NoticeBoard = () => {
             
             const customDocId = `announcement${totalAnnouncements + 2}`;
             console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
+            
+            const authorName = `${userData?.firstName || 'Unauthorised'} ${userData?.lastName || 'User'}`;
 
             await addDoc(announcementsRef, {
               title,
               message,
               category,
               creationTime,
-              //author: currentUser.email
+              author: authorName
             });
             
             setPostReload(postReload + 1);
@@ -108,23 +117,11 @@ const NoticeBoard = () => {
             setCategory('General');
           }
     }
-
-    // const handleDelete = async (id) => {
-    //   try{
-    //     const docRef = doc(db, "announcements", id)
-    //     await deleteDoc(docRef);
-    //     console.log("Notice deleted successfully");
-    //     setDeletionReload(deletionReload + 1);
-    //   } catch (e) {
-    //     console.error("Error deleting notice: ", e);
-    //   }
-    // }
     
     const getAnnouncements = async (loadMore = false) => {
         setLoading(true);
         try {
                 let collectionRef = collection(db, `announcements`);
-                //let announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(20));
                 let announcementQuery;
                 
                 // pagination logic
@@ -132,13 +129,13 @@ const NoticeBoard = () => {
                     // this is the first time we are fetching the announcements
                     if (selectedTag == "All") {
                         // Fetch all the announcements
-                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(20));
+                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(10));
                       } else {
                         // Fetch announcements whose category matches the selected tag
                         announcementQuery = query(collectionRef,
                           where("category", "==", selectedTag),
                           orderBy("creationTime", "desc"),
-                          limit(20)
+                          limit(10)
                         );
                       }
                     
@@ -149,7 +146,7 @@ const NoticeBoard = () => {
                           collectionRef,
                           orderBy("creationTime", "desc"),
                           startAfter(lastOnPage),
-                          limit(20)
+                          limit(10)
                         );
                       } else {
                         announcementQuery = query(
@@ -157,7 +154,7 @@ const NoticeBoard = () => {
                           where("category", "==", selectedTag), // Filter by selected category
                           orderBy("creationTime", "desc"),
                           startAfter(lastOnPage),
-                          limit(20)
+                          limit(10)
                         );
                       }
                 }
@@ -174,7 +171,7 @@ const NoticeBoard = () => {
                     let lastNoticePosition = collectionSnap.docs.length - 1;
                     setLastOnPage(collectionSnap.docs[lastNoticePosition]);
                     
-                    if (collectionSnap.docs.length < 20) {
+                    if (collectionSnap.docs.length < 10) {
                         setHasMore(false);
                     }
                 
@@ -188,80 +185,129 @@ const NoticeBoard = () => {
           return 0;
         };
 
-
-
-return (
+  return (
     <div>
       <h1 className="pb-10 px-16">Notice Board</h1>
-     
-     {/* category selection to filter notices */}
-     <div className="px-16 flex items-center justify-between">
-      <ToggleGroup variant="default" size="default" type="single" className="justify-start"
-      onValueChange={(value) => {
-        if (value && value !== selectedTag){
-            setSelectedTag(value);
-            setLastOnPage(null);
-            setHasMore(true);
-        }}}>
-          <ToggleGroupItem value="All" className={`bg-orange-100 border-2 ${selectedTag === "All" ? "border-orange-300" : "border-transparent"}
-           hover:border-orange-300 text-orange-600 data-[state=on]:border-orange-300`}>All</ToggleGroupItem>
-          <ToggleGroupItem value="General" className={`bg-rose-100 border-2 ${selectedTag === "General" ? "border-rose-300" : "border-transparent"}
-           hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300`}>General</ToggleGroupItem>
-          <ToggleGroupItem value="Project Initiatives" className={`bg-green-100 border-2 ${selectedTag === "Project Initiatives" ? "border-green-300" : "border-transparent"}
-           hover:border-green-300 text-green-600 data-[state=on]:border-green-300`}>Project Initiatives</ToggleGroupItem>
-          <ToggleGroupItem value="Quizzes" className={`bg-purple-100 border-2 ${selectedTag === "Quizzes" ? "border-purple-300" : "border-transparent"}
-           hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300`}>Quizzes</ToggleGroupItem>
-          <ToggleGroupItem value="SDGs" className={`bg-sky-100 border-2 ${selectedTag === "SDGs" ? "border-sky-300" : "border-transparent"}
-           hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300`}>SDGs</ToggleGroupItem>
-      </ToggleGroup>
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
-        </DialogTrigger>
-        <DialogContent>
-          
-            <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
-            <DialogDescription></DialogDescription>
-            <label htmlFor="title">Title</label>
-            <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-            {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
+      {/* category selection to filter notices */}
+      <div className="px-16 flex items-center justify-between">
+        <ToggleGroup
+          variant="default"
+          size="default"
+          type="single"
+          className="justify-start"
+          onValueChange={(value) => {
+            if (value && value !== selectedTag) {
+              setSelectedTag(value);
+              setLastOnPage(null);
+              setHasMore(true);
+            }
+          }}
+        >
+          <ToggleGroupItem
+            value="All"
+            className={`bg-orange-100 border-2 ${
+              selectedTag === "All" ? "border-orange-300" : "border-transparent"
+            }
+           hover:border-orange-300 text-orange-600 data-[state=on]:border-orange-300`}
+          >
+            All
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="General"
+            className={`bg-rose-100 border-2 ${
+              selectedTag === "General"
+                ? "border-rose-300"
+                : "border-transparent"
+            }
+           hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300`}
+          >
+            General
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="Project Initiatives"
+            className={`bg-green-100 border-2 ${
+              selectedTag === "Project Initiatives"
+                ? "border-green-300"
+                : "border-transparent"
+            }
+           hover:border-green-300 text-green-600 data-[state=on]:border-green-300`}
+          >
+            Project Initiatives
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="Quizzes"
+            className={`bg-purple-100 border-2 ${
+              selectedTag === "Quizzes"
+                ? "border-purple-300"
+                : "border-transparent"
+            }
+           hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300`}
+          >
+            Quizzes
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="SDGs"
+            className={`bg-sky-100 border-2 ${
+              selectedTag === "SDGs" ? "border-sky-300" : "border-transparent"
+            }
+           hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300`}
+          >
+            SDGs
+          </ToggleGroupItem>
+        </ToggleGroup>
 
-            <label>Category</label>
-            {/* my plan: if they don't select one, write All to the notice.category */}
-            <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
-                <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
-                <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
-                <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
-                <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
-            </ToggleGroup>
+      {role === "admin" && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
+          </DialogTrigger>
+          <DialogContent>
+              <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
+              <DialogDescription></DialogDescription>
+              <label htmlFor="title">Title</label>
+              <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+              {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
 
-            <label htmlFor="message">Body</label>
-            <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+              <label>Category</label>
+              {/* my plan: if they don't select one, write All to the notice.category */}
+              <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
+                  <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
+                  <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
+                  <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
+                  <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
+              </ToggleGroup>
 
-          <DialogClose asChild>
-            <Button onClick={handlePost} disabled={title === ''}>Post</Button>
-          </DialogClose>
-          
-        </DialogContent>
-      </Dialog>
+              <label htmlFor="message">Body</label>
+              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+
+            <DialogClose asChild>
+              <Button onClick={handlePost} disabled={title === ''}>Post</Button>
+            </DialogClose>
+            
+          </DialogContent>
+        </Dialog>
+        )}
      </div>
     
     <div>
         {notices.length > 0 ? (
-            <ul className="pl-9 pr-16 list-none space-y-4">
+          <ul className="pl-9 pr-16 list-none space-y-4">
             {notices.map((notice) => (
-                <li key={notice.id}>
+              <li key={notice.id}>
                 <Card className="relative inline-block w-full">
                     <CardHeader className="flex flex-col items-start justify-between">
                         <CardTitle>{notice.title}</CardTitle>
                         
-                        {/* Delete Button */}
-                        <Button
-                          className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
-                          onClick={() => handleDeleteConfirm(notice.id)}>
-                          <TrashIcon className="h-6 w-6 text-gray-700" />
-                        </Button>
+          
+                        {/* Conditional Rendering of the Delete Button */}
+                        {role === "admin" && (
+                          <Button
+                            className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
+                            onClick={() => handleDeleteConfirm(notice.id)}>
+                            <TrashIcon className="h-6 w-6 text-gray-700" />
+                          </Button>
+                        )}
   
                         <CardDescription>{notice.author} &bull; {new Date(notice.creationTime.seconds * 1000).toLocaleString()}</CardDescription>
                         {/* Conditional Rendering of the tag */}
@@ -277,47 +323,55 @@ return (
                             : notice.category === "SDGs"
                             ? "bg-sky-100 text-sky-600"
                             : "bg-gray-100 text-gray-600"
-                        }`}>
-                        {notice.category}
-                        </span>
-                    </CardHeader>
-                    <CardContent>
-                        <p>{notice.message}</p>
-                    </CardContent>
+                        }`}
+                    >
+                      {notice.category}
+                    </span>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{notice.message}</p>
+                  </CardContent>
                 </Card>
-                </li>
-        
+              </li>
             ))}
-            </ul>
-        ) : !loading && (
-        <p className="text-center text-2xl mt-10">No announcements available</p>
+          </ul>
+        ) : (
+          !loading && (
+            <p className="text-center text-2xl mt-10">
+              No announcements available
+            </p>
+          )
         )}
       </div>
-       {/* Conditional Rendering of the button for Pagination */}
-       {hasMore && (
+      {/* Conditional Rendering of the button for Pagination */}
+      {hasMore && (
         <div className="flex justify-center mt-12">
-          <Button onClick={() => getAnnouncements(true)} disabled={loading}>{loading ? "Please wait..." : "Show More"}</Button>
+          <Button onClick={() => getAnnouncements(true)} disabled={loading}>
+            {loading ? "Please wait..." : "Show More"}
+          </Button>
         </div>
       )}
 
       {/* Modal for confirming deletion */}
-    <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Delete Notice</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to delete this notice?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex justify-end space-x-2">
-          <DialogClose asChild>
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
-          </DialogClose>
+      {role === "admin" && (
+        <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Notice</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this notice?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex justify-end space-x-2">
+              <DialogClose asChild>
+                <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+              </DialogClose>
 
-          <Button onClick={handleDelete}>Confirm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+              <Button onClick={handleDelete}>Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+     )}
   </div>
 )}
 
