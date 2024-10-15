@@ -2,10 +2,12 @@ import { useState,useEffect } from 'react';
 import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { Button } from "@/components/ui/button";
+
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import db from '../../firebaseFiles/firebaseConfig.js';
-import ReactHtmlParser from 'html-react-parser';
-import sanitizeHtml from 'sanitize-html';
+
+import parse from 'html-react-parser';
+//import sanitizeHtml from 'sanitize-html';
 
 const EditableBlock = ({moduleId}) => {
     const [textEditorShow, setTextEditorShow] = useState(false)
@@ -13,8 +15,57 @@ const EditableBlock = ({moduleId}) => {
     let admin = true
 
     const [content, setContent] = useState("")
-    //const [parsedContent, setParsedContent] = useState({})
+
     const [showCancel, setShowCancel] = useState(false)
+
+    const transform = (node) => {
+        if (node.attribs && node.attribs.class) {
+            if (node.attribs.class.includes('ql-align-center')) {
+                node.attribs.style = {
+                    ...node.attribs.style, 
+                    textAlign: 'center' };
+            }
+            if (node.attribs.class.includes('ql-align-right')) {
+                node.attribs.style = {
+                    ...node.attribs.style, 
+                    textAlign: 'right' };
+            }
+            if (node.attribs.class.includes('ql-size-small')){
+                node.attribs.style = {
+                    ...node.attribs.style,
+                    fontSize: '0.75em'
+                }
+            }
+            if (node.attribs.class.includes('ql-size-large')){
+                node.attribs.style = {
+                    ...node.attribs.style,
+                    fontSize: '2em'
+                }
+            }
+            if (node.attribs.class.includes('ql-size-huge')){
+                node.attribs.style = {
+                    ...node.attribs.style,
+                    fontSize: '3em'
+                }
+            }
+            if (node.attribs.class.includes('ql-indent-1')){
+                node.attribs.style = {
+                    ...node.attribs.style,
+                    marginLeft: '3em'
+                }
+            }
+            if (node.name === 'a' && node.attribs.href){
+                //node.attribs.className = 'quill-link';
+                node.attribs.style = {
+                    ...node.attribs.style,
+                    textDecoration: 'underline',
+                    color: 'blue'
+                }
+            }
+          node.attribs.className = node.attribs.class; // Convert class to className
+          delete node.attribs.class; // Remove the old class attribute
+        }
+    }
 
     const getContent = async (moduleId) => {
         try {
@@ -39,17 +90,15 @@ const EditableBlock = ({moduleId}) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    //second commit
-
     //text editor styling credit to https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
     var modules = {
         toolbar: [
           [{ size: ["small", false, "large", "huge"] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
-          [{ list: "ordered" }, { list: "bullet" }],
+          //[ { list: "bullet" }],
           ["link", "image"],
           [
-            { list: "ordered" },
+            
             { list: "bullet" },
             { indent: "-1" },
             { indent: "+1" },
@@ -75,8 +124,6 @@ const EditableBlock = ({moduleId}) => {
     const [buttonState, setButtonState] = useState('Edit')
 
     const adminContentWrite = async (newContent) => {
-        //const db = getDatabase();
-        //setContent(newContent)
         const docRef = doc(db, `quizzes/sdg11t${moduleId}`)
 
         console.log("trying to update")
@@ -104,12 +151,11 @@ const EditableBlock = ({moduleId}) => {
             setButtonState('Edit')
             if(newContent){
                 console.log("new content is --->", newContent)
-                adminContentWrite(sanitizeHtml(newContent))
+                adminContentWrite(newContent)
             } else {
                 console.log("NO NEW CONTENT")
             }
         }
-        //open up the text editor here
     }
 
     const handleCancelClick = () => {
@@ -117,19 +163,18 @@ const EditableBlock = ({moduleId}) => {
         setButtonState('Edit')
     }
 
-    
-
     return(
+
         <div>
             {textEditorShow === false ? (
                 <div>
-                    {content ? ReactHtmlParser(content) : null}
-
-                    {/*{block.subheading ? <h3>{block.subheading}</h3> : null}
-                    {block.body ? <p>{block.body}</p> : null}
-                    {block.media ? <p>Image</p> : null}*/} {/** */}
-
-                    </div>
+                    {content ? parse(content, {
+                        replace: (domNode) => {
+                            transform(domNode); // Apply the transformation
+                            return domNode; // Return the transformed node
+                        }}) : null}
+                </div>
+                
                 ) : 
                 <div>
                     <ReactQuill
@@ -138,10 +183,9 @@ const EditableBlock = ({moduleId}) => {
                         formats={ formats }
                         value={ content }
                         onChange={handleProcedureContentChange}
-                        style={{ height: "300px" }}
+                        style={{ height: "300px", maxWidth: "100%", overflowWrap: "break-word", wordWrap: "break-word" }}
                     >
                     </ReactQuill>
-    
                 </div>
                 
                 }
@@ -152,16 +196,9 @@ const EditableBlock = ({moduleId}) => {
                     {admin ? <Button onClick={ () => {handleClick(content)} } style={{marginRight: '10px'}}>{ buttonState }</Button> : null}
                     {(admin && showCancel) ? <Button onClick={ () => {handleCancelClick()} }>Cancel</Button> : null}
                 </div>
-                
-                
-                
-                
-                {/*<button onClick={ addBlock }>Add Block</button>*/}
-            </div>
-            
-            
+            </div> 
         )
     }
     
-    export default EditableBlock
+export default EditableBlock
         
