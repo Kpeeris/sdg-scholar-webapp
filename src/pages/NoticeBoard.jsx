@@ -24,9 +24,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { useAuthContext } from "@/AuthProvider";
 
 const NoticeBoard = () => {
-    // const currentUser = useAuth();
     const [notices, setNotices] = useState([]);
     const [lastOnPage, setLastOnPage] = useState(null);
     const [hasMore, setHasMore] = useState(true);
@@ -69,14 +69,14 @@ const NoticeBoard = () => {
       console.error("Error deleting notice: ", e);
     }
   };
-    
+    const { userData, role } = useAuthContext();
       const handlePost = async () => {
         
         // if (!currentUser) {
         //     console.error("User is not logged in.");
         //     return;
         // }
-
+        
         try {
             const creationTime = Timestamp.now();
 
@@ -88,13 +88,15 @@ const NoticeBoard = () => {
             
             const customDocId = `announcement${totalAnnouncements + 2}`;
             console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
+            
+            const authorName = `${userData?.firstName || 'Unauthorised'} ${userData?.lastName || 'User'}`;
 
             await addDoc(announcementsRef, {
               title,
               message,
               category,
               creationTime,
-              //author: currentUser.email
+              author: authorName
             });
             
             setPostReload(postReload + 1);
@@ -214,36 +216,37 @@ return (
            hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300`}>SDGs</ToggleGroupItem>
       </ToggleGroup>
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
-        </DialogTrigger>
-        <DialogContent>
-          
-            <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
-            <DialogDescription></DialogDescription>
-            <label htmlFor="title">Title</label>
-            <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-            {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
+      {role === "admin" && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
+          </DialogTrigger>
+          <DialogContent>
+              <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
+              <DialogDescription></DialogDescription>
+              <label htmlFor="title">Title</label>
+              <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+              {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
 
-            <label>Category</label>
-            {/* my plan: if they don't select one, write All to the notice.category */}
-            <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
-                <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
-                <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
-                <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
-                <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
-            </ToggleGroup>
+              <label>Category</label>
+              {/* my plan: if they don't select one, write All to the notice.category */}
+              <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
+                  <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
+                  <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
+                  <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
+                  <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
+              </ToggleGroup>
 
-            <label htmlFor="message">Body</label>
-            <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+              <label htmlFor="message">Body</label>
+              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
 
-          <DialogClose asChild>
-            <Button onClick={handlePost} disabled={title === ''}>Post</Button>
-          </DialogClose>
-          
-        </DialogContent>
-      </Dialog>
+            <DialogClose asChild>
+              <Button onClick={handlePost} disabled={title === ''}>Post</Button>
+            </DialogClose>
+            
+          </DialogContent>
+        </Dialog>
+        )}
      </div>
     
     <div>
@@ -255,12 +258,15 @@ return (
                     <CardHeader className="flex flex-col items-start justify-between">
                         <CardTitle>{notice.title}</CardTitle>
                         
-                        {/* Delete Button */}
-                        <Button
-                          className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
-                          onClick={() => handleDeleteConfirm(notice.id)}>
-                          <TrashIcon className="h-6 w-6 text-gray-700" />
-                        </Button>
+          
+                        {/* Conditional Rendering of the Delete Button */}
+                        {role === "admin" && (
+                          <Button
+                            className="absolute top-2 right-4 bg-white hover:bg-gray-100 text-xs py-1 px-2"
+                            onClick={() => handleDeleteConfirm(notice.id)}>
+                            <TrashIcon className="h-6 w-6 text-gray-700" />
+                          </Button>
+                        )}
   
                         <CardDescription>{notice.author} &bull; {new Date(notice.creationTime.seconds * 1000).toLocaleString()}</CardDescription>
                         {/* Conditional Rendering of the tag */}
@@ -300,23 +306,25 @@ return (
       )}
 
       {/* Modal for confirming deletion */}
-    <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Delete Notice</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to delete this notice?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex justify-end space-x-2">
-          <DialogClose asChild>
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
-          </DialogClose>
+      {role === "admin" && (
+        <Dialog open={isDeleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Notice</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this notice?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex justify-end space-x-2">
+              <DialogClose asChild>
+                <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+              </DialogClose>
 
-          <Button onClick={handleDelete}>Confirm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+              <Button onClick={handleDelete}>Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+     )}
   </div>
 )}
 

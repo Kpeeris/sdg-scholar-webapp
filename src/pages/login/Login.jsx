@@ -12,6 +12,14 @@ import LoginSVG from "@/assets/images/Login.svg";
 // import { LoginButton } from "./components/LoginButton";
 
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
+import { 
+  Dialog, 
+  DialogTrigger, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription, 
+} from "@/components/ui/dialog";
 
 export const Login = () => {
   const emailRef = useRef();
@@ -48,11 +56,26 @@ export const Login = () => {
           <h1>Welcome to SDG Scholar</h1>
           <p>Redefining SDG Education, One Goal at a Time</p>
           <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
+          
+          
           <div className="text-right">
-            <Button className="p-0" variant="link">
-              Forgot Password?
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="p-0" variant="link">
+                  Forgot Password?
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="space-y-0">
+                  <DialogHeader className="space-y-1">
+                      <DialogTitle className="text-lg font-semibold">Forgot your password?</DialogTitle>
+                      <DialogDescription>Please contact your administrator to reset your password.</DialogDescription>
+                      <DialogDescription>For security reasons, only admins can perform password resets.</DialogDescription>
+                  </DialogHeader> 
+              </DialogContent>
+            </Dialog>
           </div>
+
+
           <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleLogin}>
             {loading ? "Logging in..." : "Log In"}
           </Button>

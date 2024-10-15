@@ -1,8 +1,9 @@
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { useState, useEffect} from 'react';
+import {app} from './firebaseConfig';
 
 // Initialize Authentication
-const auth = getAuth();
+const auth = getAuth(app);
 
 export function signup(email, password){
   // any function from firebase/auth will take the handle "auth" as the first argument
