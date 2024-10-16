@@ -112,7 +112,7 @@ const Content = () => {
   };
 
   useEffect(() => {
-    getContent(moduleId);
+    getContent(dbModuleId);
     console.log(content);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
