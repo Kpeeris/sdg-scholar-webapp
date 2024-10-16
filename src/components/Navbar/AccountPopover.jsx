@@ -43,7 +43,7 @@ export function AccountPopover() {
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        {/* round icon iwth initials (displayed on the nav bar) */}
+        {/* round icon with initials (displayed on the nav bar) */}
         <Button 
             variant="accountInfo" 
             className="w-11 h-11 text-lg text-gray-700 tracking-normal"
@@ -61,15 +61,15 @@ export function AccountPopover() {
                 </div>
 
                 {/* user information */}
-                <div className="flex flex-col justify-center space-y-0 pl-1">
+                <div className="flex flex-col justify-center space-y-0.5 pl-1">
                     <p className="text-sm font-bold text-gray-900 leading-tight">
                         {`${userData?.firstName} ${userData?.lastName}`}
                     </p>
                     <p className="text-sm text-gray-800 leading-tight">
                         {user?.email || "No Email Available"}
                     </p>
-                    <p className="text-sm text-gray-500">
-                        {role || "Role not assigned"}
+                    <p className="text-sm text-gray-700">
+                        {role ? role.charAt(0).toUpperCase() + role.slice(1) : "Role not assigned"}
                     </p>
                 </div>
             </div>

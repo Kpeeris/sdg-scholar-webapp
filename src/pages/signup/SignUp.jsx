@@ -5,6 +5,8 @@ import { SignUpForm } from "./components/SignUpForm";
 import { LoginLink } from "./components/LoginLink";
 import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+
 
 import db from "../../../firebaseFiles/firebaseConfig.js";
 import { signup } from "../../../firebaseFiles/firebaseAuth.js"; // Import the signup function
@@ -15,27 +17,49 @@ const SignUp = () => {
   const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  //const currentUser = useAuth();
   const navigate = useNavigate();
 
   const { state } = useLocation(); // Get state from previous page
   const userType = state?.userType; // Extract the userType (admin or learner)
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Create an object to store 10 quiz scores initialized to 0
+  // Create an object to store 10 quiz scores initialized to 0 for learners
   const quizScores = {};
   for (let i = 1; i <= 10; i++) {
     quizScores[`sdg11t${i}`] = 0;
   }
 
+  const firebaseErrorMessages = {
+    "auth/user-not-found": "No user found with this email address.",
+    "auth/missing-password": "A password is required to sign up. Please try again.",
+    "auth/invalid-email": "This email is invalid. Please try again.",
+    "auth/invalid-credential": "Your email or password is invalid. Please try again.",
+    "auth/weak-password": "Your password does not meet the requirements. Please try again.",
+  };
+
   const handleSignup = async () => {
     setLoading(true);
+    setError(null);
+
+    if (!userType) {
+      setError(
+        <>
+        Please select a user type before creating an account. 
+        <Link to="/signupuser">
+          <Button className="text-base p-2" variant="link">Select Here</Button>
+        </Link>
+        </>
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const firstName = firstNameRef.current.value;
       const lastName = lastNameRef.current.value;
       const email = emailRef.current.value;
-      //const password = passwordRef.current.value;
 
       const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
       const user = userCredential.user;
@@ -64,7 +88,8 @@ const SignUp = () => {
       navigate("/login");
 
     } catch (error) {
-      alert("Error during sign up: " + error.message);
+      const customErrorMessage = firebaseErrorMessages[error.code] || error.message; //error.message
+      setError(customErrorMessage); 
       setLoading(false);
     }
   };
@@ -83,9 +108,11 @@ const SignUp = () => {
             emailRef={emailRef} 
             passwordRef={passwordRef} 
           />
+        {error && <p className="text-red-500 text-base">{error}</p>} 
           <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleSignup}>
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
+          <hr className="w-full mt-4 border-white" />
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>

@@ -12,6 +12,7 @@ import NoticeBoard from "./pages/NoticeBoard";
 
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 function App() {
   return (
@@ -20,11 +21,10 @@ function App() {
         <Routes>
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signupadmin" element={<SignUpAdmin />} />
-          <Route path="/signupuser" element={<SignUpUser />} />
-
+          <Route path="/login" element={<PublicRoute element={<Login />} />} />
+          <Route path="/signup" element={<PublicRoute element={<SignUp />} />} />
+          <Route path="/signupadmin" element={<PublicRoute element={<SignUpAdmin />} />} />
+          <Route path="/signupuser" element={<PublicRoute element={<SignUpUser />} />} />
 
           {/* Private routes, accessible only if logged in */}
           <Route path="/" element={<PrivateRoute element={<Home />} />} />

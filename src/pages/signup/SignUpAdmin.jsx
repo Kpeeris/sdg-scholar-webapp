@@ -65,7 +65,7 @@ export const SignUpAdmin = () => {
             <Input
               type={codeVisible ? "text" : "password"} // Toggle between text and password
               id="admin-code"
-              className="w-full h-12"
+              className="w-full h-12 mb-2"
               placeholder="Invite Admin Code"
               ref={adminCodeRef}
             />
@@ -87,7 +87,8 @@ export const SignUpAdmin = () => {
             Verify Admin Code
           </Button>
 
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 text-base">{error}</p>}
+          <hr className="w-full mt-4 border-white" />
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>
