@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   doc,
@@ -44,6 +44,9 @@ export const EditQuiz = () => {
   //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
+
+  const navigate = useNavigate();
+
   const [questionText, setQuestionText] = useState("");
   const [isValidQuestion, setIsValidQuestion] = useState(false);
   const [type, setType] = useState("mcq");
@@ -209,7 +212,11 @@ export const EditQuiz = () => {
           <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
             {moduleTitle}
           </h2>
-          <Button style={{ fontSize: "1.125rem", lineHeight: "1.75rem" }}>
+
+          <Button
+            style={{ fontSize: "1.125rem", lineHeight: "1.75rem" }}
+            onClick={() => navigate(`/module/${moduleId}/quiz`)}
+          >
             <PaperAirplaneIcon className="h-6 w-6 mr-2 text-white" />
             Publish Quiz
           </Button>
