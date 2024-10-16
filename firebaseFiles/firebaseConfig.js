@@ -18,7 +18,10 @@ const firebaseConfig = {
 // initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const db = getFirestore(app)
+// to check API key
+console.log("Firebase API Key:", import.meta.env.VITE_FIREBASE_API_KEY);
+
+const db = getFirestore(app);
 
 export { app };
 export default db;
