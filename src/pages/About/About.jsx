@@ -1,5 +1,5 @@
 import SdgCarousel from "/src/pages/About/SdgCarousel";
-
+import { Icon } from "@iconify/react";
 import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
 import logo_horizontal from "/src/assets/icons/logo_horizontal.svg";
 import SDG_logo_Square_Transparent from "/src/assets/images/SDG_logo_Square_Transparent.svg";
@@ -9,13 +9,27 @@ export const About = () => {
   return (
     <div data-testid="about-page">
       {/* About SDG Scholar */}
+
       <div className="flex flex-col md:flex-row">
         {/* LHS */}
         <div className="flex flex-col justify-between md:w-1/2 p-10">
           <div>
-            <span className="text-7xl font-extrabold">About</span>
-            <img src={logo_horizontal} alt="SDG logo" />
-            <div> Redefining SDG Education, One Goal at a Time </div>
+            <h1>About</h1>
+            {/* <span className="text-7xl font-extrabold">About</span> */}
+            {/* <img src={logo_horizontal} alt="SDG logo" /> */}
+            <div className="flex items-center flex-wrap">
+              <h1>SDG Scholar</h1>
+              <Icon
+                icon="streamline:global-learning"
+                width="40"
+                height="40"
+                className="ml-2 text-orange-500"
+              />
+            </div>
+            <span style={{ fontSize: "18px" }}>
+              {" "}
+              Redefining SDG Education, One Goal at a Time{" "}
+            </span>
           </div>
 
           <div className="mt-14">

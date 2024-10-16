@@ -286,8 +286,7 @@ const Content = () => {
       <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
       <div className="ml-[250px] flex-1">
         <div className="flex justify-between">
-          <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>Content</h2>
-          <br />
+          <h1>{moduleTitle} Content</h1>
           <br />
           {isAdmin ? (
             <Button
@@ -298,6 +297,7 @@ const Content = () => {
             </Button>
           ) : null}
         </div>
+        <hr className="w-full mt-4 border-white" />
         <div className="relative h-96 flex flex-cols">
           <img src={image1Url} alt="Image 1" />
           <img src={image2Url} alt="Image 2" />

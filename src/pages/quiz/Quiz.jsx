@@ -195,9 +195,10 @@ const Quiz = () => {
       {(quizStarted && !quizSubmitted) || isAdmin ? (
         <div className="ml-[250px] flex-1">
           <div className="flex justify-between">
-            <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
+            <h1>{moduleTitle} Content</h1>
+            {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
               {moduleTitle}
-            </h2>
+            </h2> */}
             {isAdmin ? (
               <Button
                 className="w-44 text-lg"
@@ -293,7 +294,9 @@ const Quiz = () => {
         </div>
       ) : (
         <div className="ml-[250px] flex-1">
-          <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2>
+          <h1>{moduleTitle}</h1>
+          {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
+          <br />
           <div className="flex-1 flex flex-col items-center justify-center">
             <p>You scored</p>
             <br />
