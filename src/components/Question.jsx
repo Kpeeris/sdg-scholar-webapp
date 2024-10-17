@@ -19,8 +19,10 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
   };
 
   const markQuestion = () => {
+    console.log(optionsArray)
     let selectedOptions = 0;
     for (let answer of q.correctAnswers) {
+      console.log(`${q.correctAnswers.length}`)
       if (!checkInSelectedOptions(answer)) return 0;
       else selectedOptions++;
     }
@@ -28,9 +30,11 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
       "length of q correct answers: ",
       q.correctAnswers.length,
       "length of options: ",
-      selectedOptions
+      selectedOptions,
+      "options array lenght is: ",
+      optionsArray.length
     );
-    if (q.correctAnswers.length != selectedOptions) return 0;
+    if (q.correctAnswers.length != optionsArray.length) return 0;
     return 1;
   };
 
