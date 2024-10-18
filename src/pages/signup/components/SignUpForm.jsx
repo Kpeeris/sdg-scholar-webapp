@@ -56,9 +56,9 @@ export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef })
         </div>
 
         <ul className="text-sm">
-          <li>Minimum length of 6 characters</li>
+          <li>Minimum length of 8 characters</li>
           <li>Has uppercase and lowercase letters </li>
-          <li>At least 1 number or special character</li>
+          <li>At least 1 number and special character</li>
         </ul>
       </div>
     </div>

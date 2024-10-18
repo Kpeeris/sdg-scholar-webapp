@@ -33,10 +33,11 @@ const SignUp = () => {
 
   const firebaseErrorMessages = {
     "auth/user-not-found": "No user found with this email address.",
+    "auth/missing-email": "An email is required to sign up. Please try again.",
     "auth/missing-password": "A password is required to sign up. Please try again.",
     "auth/invalid-email": "This email is invalid. Please try again.",
     "auth/invalid-credential": "Your email or password is invalid. Please try again.",
-    "auth/weak-password": "Your password does not meet the requirements. Please try again.",
+    "auth/password-does-not-meet-requirements": "Your password does not meet the requirements. Please try again.",
   };
 
   const handleSignup = async () => {
