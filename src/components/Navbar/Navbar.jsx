@@ -64,7 +64,7 @@ const Navbar = () => {
                 <Button variant="outline">Log In</Button>
               </NavLink>
               <NavLink
-                to="/signup"
+                to="/signupuser"
                 className={({ isActive }) => (isActive ? "" : "")}
               >
                 <Button>Sign Up</Button>
