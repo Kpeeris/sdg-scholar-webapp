@@ -2,7 +2,6 @@ import { Link, NavLink } from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
 import "./Navbar.css";
 import Dropdown from "./Dropdown";
-import logo_horizontal from "@/assets/icons/logo_horizontal.svg";
 import AccountPopover from "./AccountPopover";
 import { Button } from "../ui/button";
 
