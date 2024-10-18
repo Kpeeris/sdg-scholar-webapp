@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import City from "/src/assets/images/City_scape.png";
-import Right_arrow from "/src/assets/icons/arrow_right_circle.svg";
 import goal_11 from "/src/assets/goals/Goal_11.svg";
 import ListOfGoals from "@/components/ListOfGoals";
 import { useAuthContext } from "@/AuthProvider";
-
+import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 export const Home = () => {
   // const name = "TestUser";
@@ -16,22 +16,41 @@ export const Home = () => {
     }
   };
 
-  const { userData} = useAuthContext();
+  const { userData } = useAuthContext();
 
   return (
     <div data-testid="home-page">
-      <h1 className="pb-16">Hi {`${userData?.firstName} ${userData?.lastName}`}!</h1>
+      <h1 className="pb-16">
+        Hi {`${userData?.firstName} ${userData?.lastName}`}!
+      </h1>
 
-      <div className="bg-orange-400 bg-opacity-70 -mx-12 h-96 flex items-center justify-around">
-        <div className="flex items-center justify-around">
-          <p className="text-9xl text-white opacity-100 p-4 border-b-4 ml-10">
+      <div className="bg-orange-200 -mx-12 h-96 flex items-center justify-around">
+        <div className="flex flex-col justify-around">
+          <h1>
+            Discover SDG 11: Sustainable
+            <br /> Cities and Communities
+          </h1>
+          <h4 className="text-2xl font-normal mt-6">
+            Learn how to make cities and human settlements <br />
+            inclusive, safe, resilient and sustainable
+          </h4>
+          <Link to="/sdg11">
+            <Button
+              variant="white"
+              className="w-2/6 border-white mt-6 font-semibold text-lg"
+            >
+              Explore SDG 11 <ArrowRightIcon className="h-6 w-6 mx-4" />
+            </Button>
+          </Link>
+
+          {/* <p className="text-9xl text-white opacity-100 p-4 border-b-4 ml-10">
             Play Now!
           </p>
-          <img src={Right_arrow} alt="right arrow" className="w-30 h-30" />
+          <img src={Right_arrow} alt="right arrow" className="w-30 h-30" /> */}
         </div>
 
         <Link to="/sdg11">
-          <div className="relative rounded-xl w-80 h-80 overflow-hidden mr-20">
+          <div className="relative rounded-xl w-80 h-80 overflow-hidden">
             <img
               src={City}
               alt="SDG11 City"
