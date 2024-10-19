@@ -8,7 +8,10 @@ import { Button } from "../ui/button";
 import { Icon } from "@iconify/react";
 
 const Navbar = () => {
-  const { user } = useAuthContext();
+  const { user, loading } = useAuthContext();  // Get loading state from context
+
+  // Show nothing while loading
+  if (loading) return null;
 
   return (
     <div>

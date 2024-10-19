@@ -10,7 +10,7 @@ const AuthContext = createContext();
 
 // AuthProvider that wraps the app
 export const AuthProvider = ({ children }) => {
-  const currentUser = useAuth();
+  const {currentUser, loading} = useAuth();
 
   // store user data
   const [userData, setUserData] = useState(null);
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ user: currentUser, userData, role }}>
+    <AuthContext.Provider value={{ user: currentUser, userData, role, loading }}>
       {children}
     </AuthContext.Provider>
   );
