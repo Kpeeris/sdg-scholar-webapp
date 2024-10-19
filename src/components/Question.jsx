@@ -116,7 +116,7 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
             <RadioGroup onValueChange={(value) => {optionsArray[value]["checked"] = true}}>
               {Object.values(q.options).map((option, index) => {
                 return (
-                  <div className="flex items-center space-x-2">
+                  <div key={index} className="flex items-center space-x-2">
                     <RadioGroupItem value={index} id={index} />
                     <label className="text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{option}</label>
                   </div>
