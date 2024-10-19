@@ -14,6 +14,8 @@ import db from "../../firebaseFiles/firebaseConfig.js";
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
+import sanitizeHtml from 'sanitize-html';
+
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
   const [image1Url, setImage1Url] = useState("");
