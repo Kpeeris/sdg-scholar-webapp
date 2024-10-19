@@ -44,6 +44,12 @@ const SignUp = () => {
     setLoading(true);
     setError(null);
 
+    if (!firstNameRef.current.value) {
+      setError("A first name is required to sign up. Please try again.");
+      setLoading(false);
+      return;
+    }
+
     if (!userType) {
       setError(
         <>
