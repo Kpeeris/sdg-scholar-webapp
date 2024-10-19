@@ -1,6 +1,0 @@
-export * from "./Home"
-export * from "./Goals"
-export * from "./About"
-export * from "./Discussion"
-export * from "./FAQ"
-export * from "./Sdg11"
