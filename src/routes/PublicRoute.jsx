@@ -7,7 +7,7 @@ const PublicRoute = ({ element }) => {
   console.log("PublicRoute - loading:", loading);
   console.log("PublicRoute - user:", user);
 
-  // Show nothing while loading (you can add a loader here if you want)
+  // loading screen
   if (loading) {
     return (
       <div className="flex justify-center text-orange-500 text-3xl">

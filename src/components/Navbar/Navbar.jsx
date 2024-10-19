@@ -8,9 +8,16 @@ import { Button } from "../ui/button";
 import { Icon } from "@iconify/react";
 
 const Navbar = () => {
-  const { user, loading } = useAuthContext();  // Get loading state from context
 
-  // Show nothing while loading
+  // get informatin about authorisation but only if it exists
+  const authContext = useAuthContext();
+  if (!authContext) {
+    console.error("AuthContext is not provided!");
+    return null;
+  }
+  const { user, loading } = authContext;
+
+  // don't show navbar when loading
   if (loading) return null;
 
   return (

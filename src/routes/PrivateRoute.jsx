@@ -7,7 +7,8 @@ const PrivateRoute = ({ element }) => {
 
   console.log("PrivateRoute - loading:", loading);
   console.log("PrivateRoute - user:", user);
-  // Show nothing while loading (you can add a loader here if you want)
+
+  // loading screen
   if (loading) {
     return (
       <div className="flex justify-center text-orange-500 text-3xl">
