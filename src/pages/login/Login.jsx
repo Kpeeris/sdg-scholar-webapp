@@ -11,6 +11,9 @@ import { SignUpLink } from "./components/SignUpLink";
 import { Button } from "@/components/ui/button";
 import LoginSVG from "@/assets/images/Login.svg";
 
+import { Link } from "react-router-dom";
+
+
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
 import { 
   Dialog, 
@@ -72,7 +75,7 @@ export const Login = () => {
           <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
           
           
-          <div className="text-right">
+          {/* <div className="text-right">
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="p-0" variant="link">
@@ -87,8 +90,16 @@ export const Login = () => {
                   </DialogHeader> 
               </DialogContent>
             </Dialog>
+          </div> */}
+          <div className='text-right'>
+            <Link to="/resetpassword">
+              <Button className="p-2" variant="link">
+                Forgot Password?
+              </Button>
+            </Link>
           </div>
-
+          
+          
           {error && <p className="text-red-500 text-base">{error}</p>}
 
           <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleLogin}>
