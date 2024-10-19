@@ -215,8 +215,8 @@ const Quiz = () => {
               return (
                 <div key={question.id || index}>
                   <Question
-                    ref={el => questionRefs.current[index] = el}
-                    key={question}
+                    ref={questionRefs.current[index]}
+                    //key={question}
                     q={question}
                     i={index}
                   />

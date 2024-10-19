@@ -39,7 +39,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { set } from "react-hook-form";
+//import { set } from "react-hook-form";
 
 export const EditQuiz = () => {
   //gets the moduleId from the url
@@ -57,7 +57,7 @@ export const EditQuiz = () => {
   const [questionSaved, setQuestionSaved] = useState(0);
   const [docs, setDocs] = useState({});
 
-  const [tooManyAnswers, setTooManyAnswers] = useState(false)
+  //const [tooManyAnswers, setTooManyAnswers] = useState(false)
 
   const [deletionReload, setDeletionReload] = useState(0);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -212,7 +212,7 @@ export const EditQuiz = () => {
       setIsValidQuestion(false);
       if(!validAnswerNumber){
         setMinError("Multiple choice questions can only have one answer.")
-        setTooManyAnswers(true)
+        //setTooManyAnswers(true)
       }
     }
   }, [questionText, type, options, correctAnswers]);
