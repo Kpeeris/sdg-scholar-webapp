@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 export const Home = () => {
-  // const name = "TestUser";
-
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     if (path) {
@@ -20,9 +18,15 @@ export const Home = () => {
 
   return (
     <div data-testid="home-page">
+      {/* Renders Hi message based on if their first name or last name exists */}
       <h1 className="pb-16">
-        Hi {`${userData?.firstName} ${userData?.lastName}`}!
-      </h1>
+        {userData?.firstName
+          ? userData.lastName
+            ? `Hi ${userData.firstName} ${userData.lastName}!` 
+            : `Hi ${userData.firstName}!`                      
+          : "Hi!"                                              
+        }
+      </h1>  
 
       <div className="bg-orange-200 -mx-12 h-96 flex items-center justify-around">
         <div className="flex flex-col justify-around">
