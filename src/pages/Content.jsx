@@ -277,10 +277,11 @@ const Content = () => {
 
   useEffect(() => {
     retrieveImages();
+
+    // console.log(
+    //   `url of image 1 is ${image1Url}. url of mage 2 is ${image2Url}`
+    // );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(
-      `url of image 1 is ${image1Url}. url of mage 2 is ${image2Url}`
-    );
   }, []);
 
   // You can replace this with logic to dynamically retrieve module info

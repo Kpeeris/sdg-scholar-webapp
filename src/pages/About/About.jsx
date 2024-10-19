@@ -1,7 +1,9 @@
 import SdgCarousel from "/src/pages/About/SdgCarousel";
 import { Icon } from "@iconify/react";
 import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
+
 //import logo_horizontal from "/src/assets/icons/logo_horizontal.svg";
+
 import SDG_logo_Square_Transparent from "/src/assets/images/SDG_logo_Square_Transparent.svg";
 import background from "/src/assets/images/plants-background.svg";
 import RelevantSDGAccodian from "./RelevantSDGAccordian";

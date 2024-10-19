@@ -2,14 +2,26 @@ import { Link, NavLink } from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
 import "./Navbar.css";
 import Dropdown from "./Dropdown";
+
 //import logo_horizontal from "@/assets/icons/logo_horizontal.svg";
+
 import AccountPopover from "./AccountPopover";
 import { Button } from "../ui/button";
 
 import { Icon } from "@iconify/react";
 
 const Navbar = () => {
-  const { user } = useAuthContext();
+
+  // get informatin about authorisation but only if it exists
+  const authContext = useAuthContext();
+  if (!authContext) {
+    console.error("AuthContext is not provided!");
+    return null;
+  }
+  const { user, loading } = authContext;
+
+  // don't show navbar when loading
+  if (loading) return null;
 
   return (
     <div>
@@ -65,7 +77,7 @@ const Navbar = () => {
                 <Button variant="outline">Log In</Button>
               </NavLink>
               <NavLink
-                to="/signup"
+                to="/signupuser"
                 className={({ isActive }) => (isActive ? "" : "")}
               >
                 <Button>Sign Up</Button>
