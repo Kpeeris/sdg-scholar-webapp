@@ -32,9 +32,16 @@ export function resetPassword(email) {
 // Custom Hook
 export function useAuth(){
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state here
+
   useEffect(() => { 
-    const unsub = onAuthStateChanged(auth, user => setCurrentUser(user));
+    const unsub = onAuthStateChanged(auth, (user) => {
+      console.log("onAuthStateChanged - User:", user);
+      setCurrentUser(user);
+      setLoading(false); // Set loading to false once Firebase completes the check
+    }
+    );
     return unsub;
   }, [])
-  return currentUser;
+  return { currentUser, loading }; // Return both user and loading state
 }
