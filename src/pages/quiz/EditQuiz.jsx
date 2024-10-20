@@ -39,6 +39,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+//import { set } from "react-hook-form";
 
 export const EditQuiz = () => {
   //gets the moduleId from the url
@@ -49,12 +50,14 @@ export const EditQuiz = () => {
 
   const [questionText, setQuestionText] = useState("");
   const [isValidQuestion, setIsValidQuestion] = useState(false);
-  const [type, setType] = useState("mcq");
+  const [type, setType] = useState("ms");
   const [options, setOptions] = useState(["", ""]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [minError, setMinError] = useState("");
   const [questionSaved, setQuestionSaved] = useState(0);
   const [docs, setDocs] = useState({});
+
+  //const [tooManyAnswers, setTooManyAnswers] = useState(false)
 
   const [deletionReload, setDeletionReload] = useState(0);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -140,7 +143,7 @@ export const EditQuiz = () => {
       // reset all the defult caragories
       setQuestionText("");
       setIsValidQuestion(false);
-      setType("mcq");
+      setType("ms");
       setOptions(["", ""]);
       setCorrectAnswers([]);
       setMinError("");
@@ -191,6 +194,10 @@ export const EditQuiz = () => {
     }
   };
 
+  const handleQuestionTypeSelect = (value) => {
+    setType(value)
+  }
+
   //everytime a fied is updated see if it meets the minimun requirementrs for a question
   useEffect(() => {
     //q a question must have at leat two non empty options, one answer and questionText
@@ -198,10 +205,15 @@ export const EditQuiz = () => {
       options.filter((option) => option.trim() !== "").length >= 2;
     let validAns =
       correctAnswers.filter((answer) => answer.trim() !== "").length >= 1;
-    if (questionText !== "" && validAns && moreThanTwo) {
+    let validAnswerNumber = !(type === "mcq" && correctAnswers.filter((answer) => answer.trim() !== "").length > 1)
+    if (questionText !== "" && validAns && moreThanTwo && validAnswerNumber) {
       setIsValidQuestion(true);
     } else {
       setIsValidQuestion(false);
+      if(!validAnswerNumber){
+        setMinError("Multiple choice questions can only have one answer.")
+        //setTooManyAnswers(true)
+      }
     }
   }, [questionText, type, options, correctAnswers]);
 
@@ -273,14 +285,14 @@ export const EditQuiz = () => {
                 <label htmlFor="questionType" className="text-xl">
                   <strong>Question Type</strong>
                 </label>
-                <Select id="questionType">
+                <Select id="questionType" onValueChange={handleQuestionTypeSelect}>
                   <SelectTrigger className="w-auto mt-1">
                     <SelectValue placeholder="Select a Question Type" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Type</SelectLabel>
-                      <SelectItem value="mselect">
+                      <SelectItem value="ms">
                         Multiple Select Question
                       </SelectItem>
                       <SelectItem value="mcq">

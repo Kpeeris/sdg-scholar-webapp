@@ -15,6 +15,17 @@ import { Link } from "react-router-dom";
 
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
 
+{/*import { 
+  Dialog, 
+  DialogTrigger, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription, 
+} from "@/components/ui/dialog";*/}
+
+
+
 export const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();

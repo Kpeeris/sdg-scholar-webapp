@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../components/SideMenu";
 import { useParams } from "react-router-dom";
-//import EditableBlock from '../components/EditableBlock';
-
-//import storage from '../../firebaseFiles/firebaseConfig.js';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useAuthContext } from "@/AuthProvider";
 
@@ -15,6 +12,8 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
 
 import parse from "html-react-parser";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
 //import sanitizeHtml from 'sanitize-html';
 
 const Content = () => {
@@ -45,6 +44,7 @@ const Content = () => {
   }
 
   const transform = (node) => {
+    //console.log(`NAME IS: ${node.name}`)
     if (node.attribs && node.attribs.class) {
       if (node.attribs.class.includes("ql-align-center")) {
         node.attribs.style = {
@@ -82,16 +82,21 @@ const Content = () => {
           marginLeft: "3em",
         };
       }
-      if (node.name === "a" && node.attribs.href) {
-        //node.attribs.className = 'quill-link';
-        node.attribs.style = {
-          ...node.attribs.style,
-          textDecoration: "underline",
-          color: "blue",
-        };
-      }
+
       node.attribs.className = node.attribs.class; // Convert class to className
       delete node.attribs.class; // Remove the old class attribute
+    }
+    if (node.name == "a") {
+      //console.log("REACHED A LINK")
+      //node.attribs.className = 'quill-link';
+      node.attribs.style = {
+        ...node.attribs.style,
+        textDecoration: "underline",
+        color: "blue",
+      };
+    }
+    if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
+      return <br />
     }
   };
 
@@ -113,7 +118,7 @@ const Content = () => {
 
   useEffect(() => {
     getContent(dbModuleId);
-    console.log(content);
+    console.log(`${content}`);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -294,7 +299,7 @@ const Content = () => {
               className="w-44 text-lg"
               onClick={() => setTextEditorShow(true)}
             >
-              Edit Content
+              <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Content
             </Button>
           ) : null}
         </div>
@@ -325,7 +330,7 @@ const Content = () => {
                 value={content}
                 onChange={handleProcedureContentChange}
                 style={{
-                  height: "300px",
+                  height: "400px",
                   maxWidth: "100%",
                   overflowWrap: "break-word",
                   wordWrap: "break-word",
