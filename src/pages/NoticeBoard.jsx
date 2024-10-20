@@ -39,12 +39,18 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/AuthProvider";
 import { Textarea } from "@/components/ui/textarea"
 
+import "quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
+import sanitizeHtml from 'sanitize-html';
+import parse from "html-react-parser";
+
 const NoticeBoard = () => {
     const [notices, setNotices] = useState([]);
     const [lastOnPage, setLastOnPage] = useState(null);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const [selectedTag, setSelectedTag] = useState("All");
+    //const [content, setContent] = useState("");
 
 
   const [title, setTitle] = useState("");
@@ -53,6 +59,88 @@ const NoticeBoard = () => {
 
   const [deletionReload, setDeletionReload] = useState(0);
   const [postReload, setPostReload] = useState(0);
+
+  var modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      //[ { list: "bullet" }],
+      ["link"],
+      [{ list: "bullet" }]
+    ],
+  };
+  
+  var formats = [
+    "header",
+    "height",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+  ];
+
+  const transform = (node) => {
+    //console.log(`NAME IS: ${node.name}`)
+    if (node.attribs && node.attribs.class) {
+      if (node.attribs.class.includes("ql-align-center")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          textAlign: "center",
+        };
+      }
+      if (node.attribs.class.includes("ql-align-right")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          textAlign: "right",
+        };
+      }
+      if (node.attribs.class.includes("ql-size-small")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          fontSize: "0.75em",
+        };
+      }
+      if (node.attribs.class.includes("ql-size-large")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          fontSize: "2em",
+        };
+      }
+      if (node.attribs.class.includes("ql-size-huge")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          fontSize: "3em",
+        };
+      }
+      if (node.attribs.class.includes("ql-indent-1")) {
+        node.attribs.style = {
+          ...node.attribs.style,
+          marginLeft: "3em",
+        };
+      }
+
+      node.attribs.className = node.attribs.class; // Convert class to className
+      delete node.attribs.class; // Remove the old class attribute
+    }
+    if (node.name == "a") {
+      node.attribs.style = {
+        ...node.attribs.style,
+        textDecoration: "underline",
+        color: "blue",
+      };
+    }
+    if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
+      return <br />
+    }
+  };
+  
+  const handleProcedureContentChange = (newContent) => {
+    setMessage(newContent);
+    console.log("MESSAGE---->", message);
+  };
 
   useEffect(() => {
     setNotices([]);
@@ -100,9 +188,11 @@ const NoticeBoard = () => {
             
             const authorName = `${userData?.firstName || 'Unauthorised'} ${userData?.lastName || 'User'}`;
 
+            const message2 = sanitizeHtml(message)
+
             await addDoc(announcementsRef, {
               title,
-              message,
+              message: message2,
               category,
               creationTime,
               author: authorName
@@ -257,33 +347,53 @@ const NoticeBoard = () => {
             SDGs
           </ToggleGroupItem>
         </ToggleGroup>
-
       {role === "admin" && (
-        <Dialog>
+        <Dialog className="max-w-3xl">
           <DialogTrigger asChild>
             <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-3xl w-full">
               <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
-              <DialogDescription></DialogDescription>
-              <label htmlFor="title">Title</label>
-              <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-              {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
+              <div className="p-1">
+                <label htmlFor="title">Title</label>
+                <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
+                <br/>
+                <label>Category</label>
+                
+                {/* my plan: if they don't select one, write All to the notice.category */}
+                <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
+                    <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
+                    <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
+                    <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
+                    <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
+                </ToggleGroup>
+                <br/>
 
-              <label>Category</label>
-              {/* my plan: if they don't select one, write All to the notice.category */}
-              <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
-                  <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
-                  <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
-                  <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
-                  <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
-              </ToggleGroup>
-
-              {/* <label htmlFor="message">Body</label>
-              <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
-              <div className="grid w-full gap-1.5">
-                <label htmlFor="message">Body</label>
-                <Textarea placeholder="Type your message here." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>
+                {/* <label htmlFor="message">Body</label>
+                <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
+                <div className="grid w-full gap-1.5 mb-5">
+                  <label htmlFor="message">Body</label>
+                  <div>
+                    <ReactQuill
+                    theme="snow"
+                    modules={modules}
+                    formats={formats}
+                    value={message}
+                    onChange={handleProcedureContentChange}
+                    style={{
+                      height: "200px",
+                      width: "100%",
+                      maxWidth: "100%",
+                      whiteSpace: "pre-wrap",
+                      overflowWrap: "break-word",
+                      wordWrap: "break-word",
+                      overflow: "hidden",
+                    }}></ReactQuill>
+                  </div>
+                  
+                  {/*<Textarea placeholder="Type your message here." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>*/}
+                </div>
               </div>
 
             <DialogClose asChild>
@@ -334,7 +444,12 @@ const NoticeBoard = () => {
                     </span>
                   </CardHeader>
                   <CardContent>
-                    <p>{notice.message}</p>
+                    <p>{notice.message ? parse((notice.message).toString(), {
+                    replace: (domNode) => {
+                      transform(domNode); // Apply the transformation
+                      return domNode; // Return the transformed node
+                    },
+                  }) : ""}</p>
                   </CardContent>
                 </Card>
               </li>
