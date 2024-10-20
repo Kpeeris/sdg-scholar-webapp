@@ -37,7 +37,7 @@ import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useAuthContext } from "@/AuthProvider";
-import { Textarea } from "@/components/ui/textarea"
+//import { Textarea } from "@/components/ui/textarea"
 
 import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
