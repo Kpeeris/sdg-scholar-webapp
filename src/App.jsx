@@ -20,7 +20,7 @@ import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   useEffect(() => {
-    const handleUnload = (event) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+    const handleUnload = () => {
       logout()
         .then(() => console.log("User signed out before closign the tab"))
         .catch((error) => console.error("Error logging out:", error))
