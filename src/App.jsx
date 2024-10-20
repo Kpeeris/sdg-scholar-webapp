@@ -20,20 +20,23 @@ import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   useEffect(() => {
+    const handleUnload = (event) => {
+      logout()
+        .then(() => console.log("User signed out before closign the tab"))
+        .catch((error) => console.error("Error logging out:", error))
+    }
+
     const handleBeforeUnload = (event) => {
       event.preventDefault()
-
-      logout()
-        .then(()=> console.log("User signed out before closing the tab"))
-        .catch((error) => console.error("Error logging out:", error))
-      
       event.returnValue = ""
     }
 
     window.addEventListener("beforeunload", handleBeforeUnload)
+    window.addEventListener("unload", handleUnload)
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload)
+      window.removeEventListener("unload", handleUnload)
     }
   }, [])
 
