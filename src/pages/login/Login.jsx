@@ -1,4 +1,4 @@
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react";
 
 import { useRef, useState } from "react"; // Ensure these hooks are imported
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ import LoginSVG from "@/assets/images/Login.svg";
 
 import { Link } from "react-router-dom";
 
-
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
 
 {/*import { 
@@ -26,6 +25,7 @@ import { login } from "../../../firebaseFiles/firebaseAuth.js";
 } from "@/components/ui/dialog";*/}
 
 
+
 export const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -33,12 +33,14 @@ export const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const firebaseErrorMessages = {
     "auth/user-not-found": "No user found with this email address.",
-    "auth/missing-password": "A password is required to login. Please try again.",
+    "auth/missing-password":
+      "A password is required to login. Please try again.",
     "auth/invalid-email": "This email is invalid. Please try again.",
-    "auth/invalid-credential": "Your email or password is invalid. Please try again."
+    "auth/invalid-credential":
+      "Your email or password is invalid. Please try again.",
   };
 
   const handleLogin = async () => {
@@ -52,9 +54,10 @@ export const Login = () => {
 
       setLoading(false);
       navigate("/");
-
     } catch (error) {
-      const customErrorMessage = firebaseErrorMessages[error.code] || "An unexpected error occurred. Please try again."; //error.message
+      const customErrorMessage =
+        firebaseErrorMessages[error.code] ||
+        "An unexpected error occurred. Please try again."; //error.message
       setError(customErrorMessage);
       setLoading(false);
     }
@@ -66,17 +69,21 @@ export const Login = () => {
       imageAlt="Login SVG"
       rightContent={
         <div className="space-y-4">
-          <div className='space-y-3'>
+          <div className="space-y-3">
             <h1>Welcome to </h1>
-            <div className='flex items-center flex-wrap'>
+            <div className="flex items-center flex-wrap">
               <h1>SDG Scholar</h1>
-              <Icon icon="streamline:global-learning" width="35" height="35" className='ml-3 mt-1 text-orange-500'/>
+              <Icon
+                icon="streamline:global-learning"
+                width="35"
+                height="35"
+                className="ml-3 mt-1 text-orange-500"
+              />
             </div>
           </div>
           <p>Redefining SDG Education, One Goal at a Time</p>
           <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
-          
-          
+
           {/* <div className="text-right">
             <Dialog>
               <DialogTrigger asChild>
@@ -93,18 +100,22 @@ export const Login = () => {
               </DialogContent>
             </Dialog>
           </div> */}
-          <div className='text-right'>
+          <div className="text-right">
             <Link to="/resetpassword">
               <Button className="p-2" variant="link">
                 Forgot Password?
               </Button>
             </Link>
           </div>
-          
-          
+
           {error && <p className="text-red-500 text-base">{error}</p>}
 
-          <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleLogin}>
+          <Button
+            className="w-full mt-2 mb-2"
+            variant={loading ? "secondary" : "default"}
+            disabled={loading}
+            onClick={handleLogin}
+          >
             {loading ? "Logging in..." : "Log In"}
           </Button>
           <hr className="w-full mt-4 border-white" />
