@@ -10,11 +10,32 @@ import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
 import NoticeBoard from "./pages/NoticeBoard";
 
+import { useEffect } from "react"
+import { logout } from "../firebaseFiles/firebaseAuth"; // Adjust the path if needed
+
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
 function App() {
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault()
+
+      logout()
+        .then(()=> console.log("User signed out before closing the tab"))
+        .catch((error) => console.error("Error logging out:", error))
+      
+      event.returnValue = ""
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload)
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload)
+    }
+  }, [])
+
   return (
     <AuthProvider>
       <Layout>
