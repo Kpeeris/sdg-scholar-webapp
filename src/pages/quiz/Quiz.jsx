@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import pana from "/src/assets/images/pana.svg";
 import ConfettiExplosion from "react-confetti-explosion";
 import { round } from "mathjs";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const Quiz = () => {
   // used to navigate to new page when button is clicked
@@ -204,7 +205,7 @@ const Quiz = () => {
                 className="w-44 text-lg"
                 onClick={() => navigate(`/module/${moduleId}/editquiz`)}
               >
-                Edit Quiz
+                <PencilSquareIcon className="h-6 w-6 text-white" />  Edit Quiz
               </Button>
             ) : null}
           </div>
@@ -215,7 +216,7 @@ const Quiz = () => {
                 <div key={question.id || index}>
                   <Question
                     ref={questionRefs.current[index]}
-                    key={question.id}
+                    //key={question}
                     q={question}
                     i={index}
                   />

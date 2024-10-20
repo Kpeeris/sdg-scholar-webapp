@@ -16,6 +16,7 @@ import { logout } from "../firebaseFiles/firebaseAuth"; // Adjust the path if ne
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} />} />
 
           <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
+          <Route path="/resetpassword" element={<PublicRoute element={<ResetPassword />} />} />
 
         </Routes>
       </Layout>
