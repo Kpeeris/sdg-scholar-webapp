@@ -14,7 +14,7 @@ import db from "../../firebaseFiles/firebaseConfig.js";
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
-//import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html';
 
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
@@ -26,11 +26,7 @@ const Content = () => {
 
   let isAdmin = role === "admin";
 
-  //let admin = true
-
   const [content, setContent] = useState("");
-
-  //const [showCancel, setShowCancel] = useState(false)
 
   const storage = getStorage();
 
@@ -87,8 +83,6 @@ const Content = () => {
       delete node.attribs.class; // Remove the old class attribute
     }
     if (node.name == "a") {
-      //console.log("REACHED A LINK")
-      //node.attribs.className = 'quill-link';
       node.attribs.style = {
         ...node.attribs.style,
         textDecoration: "underline",
@@ -206,9 +200,18 @@ const Content = () => {
     console.log("trying to update");
     console.log("module id is: ", moduleId);
 
+    const writeableContent = sanitizeHtml(newContent, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat([ "img" ]),
+      //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
+      allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"])
+    });
+
+    console.log(`ALLOWED TAGS FOR IMAGES ARE: ${sanitizeHtml.defaults.allowedAttributes["img"]}`)
+
     try {
       console.log("doc reference is :  ", docRef);
-      await updateDoc(docRef, { content: newContent });
+      await updateDoc(docRef, { content: writeableContent });
+      console.log(`WRITING:         ${writeableContent}`)
       console.log("update successful");
     } catch (e) {
       console.error("Error retrieving document: ", e);
@@ -233,9 +236,6 @@ const Content = () => {
   };
 
   const retrieveImages = async () => {
-    //const dbString = `/sdg11/target${dbModuleId}/GOAL_11_TARGET_11.1.png`
-    //const testDbString= "New Ardoch Logo (1) 1.png"
-    //console.log(`trying to hit: ${dbString}`)
     console.log(`${isNaN(Number(dbModuleId))}`);
     try {
       getDownloadURL(
@@ -271,16 +271,10 @@ const Content = () => {
         console.error("Unknown error occurred:", error.message);
       }
     }
-    //const storageRef1 = ref(storage, `/sdg11/target${dbModuleId}/GOAL_11_TARGET_11.1.png`)
-    //const storageRef2 = ref(storage, `/sdg11/target${dbModuleId}/MC_Target_11.1.png`)
   };
 
   useEffect(() => {
     retrieveImages();
-
-    // console.log(
-    //   `url of image 1 is ${image1Url}. url of mage 2 is ${image2Url}`
-    // );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
