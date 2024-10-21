@@ -98,7 +98,7 @@
   }
 
   p {
-    @apply text-lg leading-7 [&:not(:first-child)]:mt-6
+    @apply text-lg leading-7 [&:not(:first-child)]:mt-1
   }
 
   blockquote {
