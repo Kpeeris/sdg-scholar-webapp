@@ -195,7 +195,7 @@ const Content = () => {
   //const [buttonState, setButtonState] = useState('Edit')
 
   const adminContentWrite = async (newContent) => {
-    const docRef = doc(db, `quizzes/sdg11t${moduleId}`);
+    const docRef = doc(db, `quizzes/sdg11t${dbModuleId}`);
 
     console.log("trying to update");
     console.log("module id is: ", moduleId);
