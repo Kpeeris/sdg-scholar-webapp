@@ -27,6 +27,7 @@ const Content = () => {
   let isAdmin = role === "admin";
 
   const [content, setContent] = useState("");
+  const [pulledContent, setPulledContent] = useState("")
 
   const storage = getStorage();
 
@@ -102,6 +103,7 @@ const Content = () => {
       if (docSnap.exists()) {
         console.log(docSnap.data().content);
         setContent(docSnap.data().content);
+        setPulledContent(docSnap.data().content);
       } else {
         console.log("Document does not exist");
       }
@@ -232,6 +234,7 @@ const Content = () => {
 
   const handleCancelClick = () => {
     setTextEditorShow(false);
+    setContent(pulledContent)
     //setButtonState('Edit')
   };
 
