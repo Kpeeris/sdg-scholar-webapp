@@ -84,12 +84,13 @@ export const SignUpAdmin = () => {
             </button>
           </div>
 
+          {error && <p className="text-red-500 text-base">{error}</p>}
+          
           {/* Verify Button */}
           <Button className="w-full mt-2 mb-2" onClick={verifyAdminCode}>
             Verify Admin Code
           </Button>
 
-          {error && <p className="text-red-500 text-base">{error}</p>}
           <hr className="w-full mt-4 border-white" />
           <hr className="w-full mt-4 border-gray-300" />
 
