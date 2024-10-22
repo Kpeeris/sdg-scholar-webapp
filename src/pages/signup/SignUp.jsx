@@ -115,8 +115,11 @@ const SignUp = () => {
       imageAlt="Signup SVG"
       rightContent={
         <div className="space-y-4">
-          <h1>Create Your Account</h1>
-          <p>Enter your details to start creating your account</p>
+          <div className="space-y-2 pb-4 text-center">
+            <h1>Create Your Account</h1>
+            <p>Enter your details to start creating your account</p>
+          </div>
+          
           <SignUpForm 
             firstNameRef={firstNameRef} 
             lastNameRef={lastNameRef} 
