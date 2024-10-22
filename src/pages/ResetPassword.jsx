@@ -53,12 +53,16 @@ const ResetPassword = () => {
       imageAlt="Forgot Password SVG"
       rightContent={
         <div className="space-y-4">
-            <h1>Forgot Password? </h1>
-            <p>Enter your email to receive a password reset link</p>          
-            <div className="w-full flex flex-col items-left gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" placeholder="Email" ref={emailRef} />
-            </div>
+            {/* <h1>Forgot Password? </h1>
+            <p>Enter your email to receive a password reset link</p>  */}
+          <div className="space-y-2 pb-2 text-center">
+            <h1>Forgot Password?</h1>
+            <p>Enter your email to receive a password reset link</p>
+          </div>         
+          <div className="w-full flex flex-col items-left gap-2 pb-4">
+              <Label htmlFor="email">Email</Label>
+              <Input type="email" id="email" placeholder="Email" ref={emailRef} />
+          </div>
           
           {message && <p className="text-green-600 text-base">{message}</p>}
           {error && <p className="text-red-500 text-base">{error}</p>}
