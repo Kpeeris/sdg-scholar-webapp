@@ -15,16 +15,16 @@ import { Link } from "react-router-dom";
 
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
 
-{/*import { 
+{
+  /*import { 
   Dialog, 
   DialogTrigger, 
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
   DialogDescription, 
-} from "@/components/ui/dialog";*/}
-
-
+} from "@/components/ui/dialog";*/
+}
 
 export const Login = () => {
   const emailRef = useRef();
@@ -108,13 +108,21 @@ export const Login = () => {
             </Link>
           </div>
 
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && (
+            <p
+              data-testid="loginErrorMessage"
+              className="text-red-500 text-base"
+            >
+              {error}
+            </p>
+          )}
 
           <Button
             className="w-full mt-2 mb-2"
             variant={loading ? "secondary" : "default"}
             disabled={loading}
             onClick={handleLogin}
+            data-testid="login-button"
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>
