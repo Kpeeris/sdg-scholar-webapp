@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef }) => {
+export const SignUpForm = ({
+  firstNameRef,
+  lastNameRef,
+  emailRef,
+  passwordRef,
+}) => {
   const [passwordVisible, setPasswordVisible] = useState(false); // Track password visibility
 
   const togglePasswordVisibility = () => {
@@ -15,18 +20,36 @@ export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef })
       <div className="flex justify-center items-center space-x-5">
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="first-name">First Name</Label>
-          <Input type="text" id="first-name" placeholder="First Name" ref={firstNameRef} />
+          <Input
+            data-testid="first-name"
+            type="text"
+            id="first-name"
+            placeholder="First Name"
+            ref={firstNameRef}
+          />
         </div>
 
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="last-name">Last Name</Label>
-          <Input type="text" id="last-name" placeholder="Last Name" ref={lastNameRef} />
+          <Input
+            data-testid="last-name"
+            type="text"
+            id="last-name"
+            placeholder="Last Name"
+            ref={lastNameRef}
+          />
         </div>
       </div>
 
       <div className="w-full flex flex-col items-left gap-2">
         <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" placeholder="Email" ref={emailRef} />
+        <Input
+          data-testid="signup-email"
+          type="email"
+          id="email"
+          placeholder="Email"
+          ref={emailRef}
+        />
       </div>
 
       <div className="space-y-3">
@@ -34,6 +57,7 @@ export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef })
           <Label htmlFor="password">Password</Label>
           <div className="relative">
             <Input
+              data-testid="signup-password"
               type={passwordVisible ? "text" : "password"} // Toggle between text and password
               id="password"
               placeholder="Password"
@@ -42,6 +66,7 @@ export const SignUpForm = ({ firstNameRef, lastNameRef, emailRef, passwordRef })
 
             {/* Eye Icon Button to toggle visibility */}
             <button
+              data-testid="toggle-password-visibility"
               type="button"
               className="absolute right-0 top-0 mt-3 mr-3"
               onClick={togglePasswordVisibility}

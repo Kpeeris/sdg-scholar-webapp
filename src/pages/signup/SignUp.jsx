@@ -7,7 +7,6 @@ import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-
 import db from "../../../firebaseFiles/firebaseConfig.js";
 import { signup } from "../../../firebaseFiles/firebaseAuth.js"; // Import the signup function
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -34,10 +33,13 @@ const SignUp = () => {
   const firebaseErrorMessages = {
     "auth/user-not-found": "No user found with this email address.",
     "auth/missing-email": "An email is required to sign up. Please try again.",
-    "auth/missing-password": "A password is required to sign up. Please try again.",
+    "auth/missing-password":
+      "A password is required to sign up. Please try again.",
     "auth/invalid-email": "This email is invalid. Please try again.",
-    "auth/invalid-credential": "Your email or password is invalid. Please try again.",
-    "auth/password-does-not-meet-requirements": "Your password does not meet the requirements. Please try again.",
+    "auth/invalid-credential":
+      "Your email or password is invalid. Please try again.",
+    "auth/password-does-not-meet-requirements":
+      "Your password does not meet the requirements. Please try again.",
   };
 
   const handleSignup = async () => {
@@ -53,10 +55,12 @@ const SignUp = () => {
     if (!userType) {
       setError(
         <>
-        Please select a user type before creating an account. 
-        <Link to="/signupuser">
-          <Button className="text-base p-2" variant="link">Select Here</Button>
-        </Link>
+          Please select a user type before creating an account.
+          <Link to="/signupuser">
+            <Button className="text-base p-2" variant="link">
+              Select Here
+            </Button>
+          </Link>
         </>
       );
       setLoading(false);
@@ -68,7 +72,10 @@ const SignUp = () => {
       const lastName = lastNameRef.current.value;
       const email = emailRef.current.value;
 
-      const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
+      const userCredential = await signup(
+        emailRef.current.value,
+        passwordRef.current.value
+      );
       const user = userCredential.user;
 
       if (userType === "admin") {
@@ -86,17 +93,17 @@ const SignUp = () => {
           firstName,
           lastName,
           createdAt: serverTimestamp(),
-          scores: quizScores
+          scores: quizScores,
         });
       }
-      
+
       setLoading(false);
 
       navigate("/login");
-
     } catch (error) {
-      const customErrorMessage = firebaseErrorMessages[error.code] || error.message; //error.message
-      setError(customErrorMessage); 
+      const customErrorMessage =
+        firebaseErrorMessages[error.code] || error.message; //error.message
+      setError(customErrorMessage);
       setLoading(false);
     }
   };
@@ -109,14 +116,20 @@ const SignUp = () => {
         <div className="space-y-4">
           <h1>Create Your Account</h1>
           <p>Enter your details to start creating your account</p>
-          <SignUpForm 
-            firstNameRef={firstNameRef} 
-            lastNameRef={lastNameRef} 
-            emailRef={emailRef} 
-            passwordRef={passwordRef} 
+          <SignUpForm
+            firstNameRef={firstNameRef}
+            lastNameRef={lastNameRef}
+            emailRef={emailRef}
+            passwordRef={passwordRef}
           />
-        {error && <p className="text-red-500 text-base">{error}</p>} 
-          <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleSignup}>
+          {error && <p className="text-red-500 text-base">{error}</p>}
+          <Button
+            data-testid="signup-button"
+            className="w-full mt-2 mb-2"
+            variant={loading ? "secondary" : "default"}
+            disabled={loading}
+            onClick={handleSignup}
+          >
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
           <hr className="w-full mt-4 border-white" />
