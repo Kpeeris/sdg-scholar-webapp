@@ -39,6 +39,22 @@ const Content = () => {
   } else if (moduleId === "c") {
     dbModuleId = "10";
   }
+  {/*  const deleteEmptyQuestions = async () => {
+
+    const docRef = collection(db, `quizzes/sdg11t4/questions`);
+    const docSnap = await getDocs(docRef);
+    docSnap.forEach((doc) => {
+      if((doc.id).slice(0,3) == "sdg"){
+        console.log("not wrong")
+      } else{
+        console.log(`DELETE!${doc.id}`)
+        console.log("DELETE THIS")
+        deleteDoc(doc.ref)
+      }
+      
+    })
+  }*/}
+
 
   const transform = (node) => {
     //console.log(`NAME IS: ${node.name}`)
