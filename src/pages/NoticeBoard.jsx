@@ -374,21 +374,23 @@ const NoticeBoard = () => {
                 <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
                 <div className="grid w-full gap-1.5 mb-5">
                   <label htmlFor="message">Body</label>
-                  <div>
+                  <div className="w-full p-1">
                     <ReactQuill
                     theme="snow"
                     modules={modules}
                     formats={formats}
                     value={message}
                     onChange={handleProcedureContentChange}
+                    className="break-all"
                     style={{
-                      height: "200px",
+                      height: "250px",
                       width: "100%",
                       maxWidth: "100%",
                       whiteSpace: "pre-wrap",
-                      overflowWrap: "break-word",
-                      wordWrap: "break-word",
                       overflow: "hidden",
+                      paddingTop:"10px",
+                      display: "inline-block",
+                      paddingBottom:"45px"
                     }}></ReactQuill>
                   </div>
                   
