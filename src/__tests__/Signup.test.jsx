@@ -27,21 +27,46 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+//helper function to render the signup page
+const renderSignUp = (userType) => {
+  useLocation.mockReturnValue({
+    state: { userType: userType },
+  });
+  render(
+    <MemoryRouter>
+      <SignUp />
+    </MemoryRouter>
+  );
+};
+
+//helper function to fill in the form
+const fillInForm = ({ firstName, lastName, email, password }) => {
+  const firstNameInput = screen.getByTestId("first-name");
+  const lastNameInput = screen.getByTestId("last-name");
+  const emailInput = screen.getByTestId("signup-email");
+  const passwordInput = screen.getByTestId("signup-password");
+
+  fireEvent.change(firstNameInput, { target: { value: firstName } });
+  fireEvent.change(lastNameInput, { target: { value: lastName } });
+  fireEvent.change(emailInput, { target: { value: email } });
+  fireEvent.change(passwordInput, { target: { value: password } });
+
+  expect(firstNameInput.value).toBe(firstName);
+  expect(lastNameInput.value).toBe(lastName);
+  expect(emailInput.value).toBe(email);
+  expect(passwordInput.value).toBe(password);
+};
+
 describe("SignUp Page", () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it("should render the signup page", async () => {
-    useLocation.mockReturnValue({
-      state: { userType: "learner" },
-    });
-    render(
-      <MemoryRouter>
-        <SignUp />
-      </MemoryRouter>
-    );
-    //get all the important parts of the page
+    //whether is admin or learner the page should render
+    renderSignUp("learner");
+
+    //get the important elements
     const firstNameInput = screen.getByTestId("first-name");
     const lastNameInput = screen.getByTestId("last-name");
     const emailInput = screen.getByTestId("signup-email");
@@ -56,45 +81,26 @@ describe("SignUp Page", () => {
     expect(signupButton).toBeInTheDocument();
   });
 
-  it("should successfully call login to signup learner using firebase authentication", async () => {
+  it("should successfully call signup to signup learner using firebase authentication", async () => {
     //mock successful signup
     signup.mockResolvedValueOnce({ success: true });
 
-    useLocation.mockReturnValue({
-      state: { userType: "learner" },
+    renderSignUp("learner");
+
+    fillInForm({
+      firstName: "Test",
+      lastName: "learner",
+      email: "test@test.com",
+      password: "Abcd1234",
     });
-    render(
-      <MemoryRouter>
-        <SignUp />
-      </MemoryRouter>
-    );
 
-    const firstNameInput = screen.getByTestId("first-name");
-    const lastNameInput = screen.getByTestId("last-name");
-    const emailInput = screen.getByTestId("signup-email");
-    const passwordInput = screen.getByTestId("signup-password");
     const signupButton = screen.getByTestId("signup-button");
-
-    expect(firstNameInput.value).toBe("");
-    expect(lastNameInput.value).toBe("");
-    expect(emailInput.value).toBe("");
-    expect(passwordInput.value).toBe("");
-
-    //input all the fields
-    fireEvent.change(firstNameInput, { target: { value: "Test" } });
-    fireEvent.change(lastNameInput, { target: { value: "Admin" } });
-    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
-    fireEvent.change(passwordInput, { target: { value: "Abcd1234" } });
-
-    //check that the fields have been filled
-    expect(firstNameInput.value).toBe("Test");
-    expect(lastNameInput.value).toBe("Admin");
-    expect(emailInput.value).toBe("test@test.com");
-    expect(passwordInput.value).toBe("Abcd1234");
 
     //click signup button
     fireEvent.click(signupButton);
 
+    //check if signup was called
+    //since we are using the signup function from firebase we will assume that it works as expected
     await waitFor(() => {
       expect(signup).toHaveBeenCalledWith("test@test.com", "Abcd1234");
       expect(signup).toHaveBeenCalledTimes(1);
@@ -102,66 +108,51 @@ describe("SignUp Page", () => {
   });
 
   it("should show error message on signup failure", async () => {
-    signup.mockResolvedValueOnce({
-      code: "auth/password-does-not-meet-requirements",
+    //mock failed signup and trow an error
+    signup.mockRejectedValueOnce({
+      code: "auth/invalid-credential",
     });
 
-    useLocation.mockReturnValue({
-      state: { userType: "learner" },
-    });
-    render(
-      <MemoryRouter>
-        <SignUp />
-      </MemoryRouter>
-    );
+    renderSignUp("learner");
 
-    const firstNameInput = screen.getByTestId("first-name");
-    const lastNameInput = screen.getByTestId("last-name");
-    const emailInput = screen.getByTestId("signup-email");
-    const passwordInput = screen.getByTestId("signup-password");
+    fillInForm({
+      firstName: "Test",
+      lastName: "learner",
+      email: "",
+      password: "",
+    });
+
     const signupButton = screen.getByTestId("signup-button");
-
-    fireEvent.change(firstNameInput, { target: { value: "Test" } });
-    fireEvent.change(lastNameInput, { target: { value: "Admin" } });
-    fireEvent.change(emailInput, { target: { value: "" } });
-    fireEvent.change(passwordInput, { target: { value: "" } });
-
     fireEvent.click(signupButton);
     //screen.debug();
 
+    //check if the correct error message is displayed
     await waitFor(() => {
-      expect(screen.getByTestId("signupErrorMessage")).toBeInTheDocument();
+      expect(
+        screen.getByText("Your email or password is invalid. Please try again.")
+      ).toBeVisible();
     });
   });
 
-  //todo test that we are saving the correct user information to the database
+  //test that we are saving the correct user information to the database
   it("should create a document in the database that corresponds to the new learner", async () => {
     signup.mockResolvedValueOnce({
       user: { uid: "12345", email: "learner@gmail.com" },
     });
 
-    useLocation.mockReturnValue({
-      state: { userType: "learner" },
-    });
-    //moch firestore document write
+    //mock firestore document write
     setDoc.mockResolvedValueOnce();
 
-    render(
-      <MemoryRouter>
-        <SignUp />
-      </MemoryRouter>
-    );
+    renderSignUp("learner");
 
-    const firstNameInput = screen.getByTestId("first-name");
-    const lastNameInput = screen.getByTestId("last-name");
-    const emailInput = screen.getByTestId("signup-email");
-    const passwordInput = screen.getByTestId("signup-password");
+    fillInForm({
+      firstName: "Test",
+      lastName: "learner",
+      email: "learner@gmail.com",
+      password: "Pass_word123",
+    });
+
     const signupButton = screen.getByTestId("signup-button");
-
-    fireEvent.change(firstNameInput, { target: { value: "Test" } });
-    fireEvent.change(lastNameInput, { target: { value: "learner" } });
-    fireEvent.change(emailInput, { target: { value: "learner@gmail.com" } });
-    fireEvent.change(passwordInput, { target: { value: "Pass_word123" } });
 
     fireEvent.click(signupButton);
     //screen.debug();
@@ -169,6 +160,7 @@ describe("SignUp Page", () => {
     await waitFor(() => {
       expect(signup).toHaveBeenCalledWith("learner@gmail.com", "Pass_word123");
       expect(setDoc).toHaveBeenCalledTimes(1);
+      //check that we are passing the correct data to the database
       expect(setDoc).toHaveBeenCalledWith(
         doc(expect.anything(), "learners", "12345"),
         {
@@ -198,28 +190,17 @@ describe("SignUp Page", () => {
       user: { uid: "123456", email: "admin@gmail.com" },
     });
 
-    useLocation.mockReturnValue({
-      state: { userType: "admin" },
-    });
-    //moch firestore document write
     setDoc.mockResolvedValueOnce();
 
-    render(
-      <MemoryRouter>
-        <SignUp />
-      </MemoryRouter>
-    );
+    renderSignUp("admin");
+    fillInForm({
+      firstName: "Test",
+      lastName: "admin",
+      email: "admin@gmail.com",
+      password: "Pass_word123",
+    });
 
-    const firstNameInput = screen.getByTestId("first-name");
-    const lastNameInput = screen.getByTestId("last-name");
-    const emailInput = screen.getByTestId("signup-email");
-    const passwordInput = screen.getByTestId("signup-password");
     const signupButton = screen.getByTestId("signup-button");
-
-    fireEvent.change(firstNameInput, { target: { value: "Test" } });
-    fireEvent.change(lastNameInput, { target: { value: "admin" } });
-    fireEvent.change(emailInput, { target: { value: "admin@gmail.com" } });
-    fireEvent.change(passwordInput, { target: { value: "Pass_word123" } });
 
     fireEvent.click(signupButton);
     //screen.debug();
