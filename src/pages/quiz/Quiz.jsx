@@ -190,7 +190,7 @@ const Quiz = () => {
   }, [result]);
 
   return (
-    <div className="flex">
+    <div data-testid="quiz-page" className="flex">
       <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
 
       {(quizStarted && !quizSubmitted) || isAdmin ? (
@@ -205,7 +205,7 @@ const Quiz = () => {
                 className="w-44 text-lg"
                 onClick={() => navigate(`/module/${moduleId}/editquiz`)}
               >
-                <PencilSquareIcon className="h-6 w-6 text-white" />  Edit Quiz
+                <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Quiz
               </Button>
             ) : null}
           </div>
