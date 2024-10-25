@@ -122,7 +122,14 @@ const SignUp = () => {
             emailRef={emailRef}
             passwordRef={passwordRef}
           />
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && (
+            <p
+              data-testid="signupErrorMessage"
+              className="text-red-500 text-base"
+            >
+              {error}
+            </p>
+          )}
           <Button
             data-testid="signup-button"
             className="w-full mt-2 mb-2"

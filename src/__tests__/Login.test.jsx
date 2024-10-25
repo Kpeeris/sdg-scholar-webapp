@@ -80,12 +80,15 @@ describe("Login Page", () => {
     fireEvent.change(passwordInput, { target: { value: "" } });
 
     //click login button
-    screen.debug();
+    //screen.debug();
     fireEvent.click(loginButton);
     screen.debug();
 
     await waitFor(() => {
-      expect(screen.getByTestId("loginErrorMessage")).toBeInTheDocument();
+      expect(
+        screen.getByText("Your email or password is invalid. Please try again.")
+      ).toBeVisible();
+      //expect(screen.getByTestId("loginErrorMessage")).toBeInTheDocument();
     });
   });
 });

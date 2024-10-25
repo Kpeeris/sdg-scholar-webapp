@@ -68,13 +68,13 @@ describe("SignUp Page", () => {
 
     //input all the fields
     fireEvent.change(firstNameInput, { target: { value: "Test" } });
-    fireEvent.change(lastNameInput, { target: { value: "User" } });
+    fireEvent.change(lastNameInput, { target: { value: "Admin" } });
     fireEvent.change(emailInput, { target: { value: "test@test.com" } });
     fireEvent.change(passwordInput, { target: { value: "Abcd1234" } });
 
     //check that the fields have been filled
     expect(firstNameInput.value).toBe("Test");
-    expect(lastNameInput.value).toBe("User");
+    expect(lastNameInput.value).toBe("Admin");
     expect(emailInput.value).toBe("test@test.com");
     expect(passwordInput.value).toBe("Abcd1234");
 
@@ -90,5 +90,34 @@ describe("SignUp Page", () => {
     });
 
     expect(signup).toHaveBeenCalledWith("test@test.com", "Abcd1234");
+  });
+
+  it("should show error message on signup failure", async () => {
+    signup.mockResolvedValueOnce({
+      code: "auth/password-does-not-meet-requirements",
+    });
+    render(
+      <MemoryRouter>
+        <SignUp />
+      </MemoryRouter>
+    );
+
+    const firstNameInput = screen.getByTestId("first-name");
+    const lastNameInput = screen.getByTestId("last-name");
+    const emailInput = screen.getByTestId("signup-email");
+    const passwordInput = screen.getByTestId("signup-password");
+    const signupButton = screen.getByTestId("signup-button");
+
+    fireEvent.change(firstNameInput, { target: { value: "Test" } });
+    fireEvent.change(lastNameInput, { target: { value: "Admin" } });
+    fireEvent.change(emailInput, { target: { value: "" } });
+    fireEvent.change(passwordInput, { target: { value: "" } });
+
+    fireEvent.click(signupButton);
+    //screen.debug();
+
+    await waitFor(() => {
+      expect(screen.getByTestId("signupErrorMessage")).toBeInTheDocument();
+    });
   });
 });
