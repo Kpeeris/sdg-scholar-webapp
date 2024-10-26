@@ -28,13 +28,13 @@ function Dropdown() {
           variant="ghost"
           className="focus-visible:ring-none focus-visible:outline-none "
         >
-          Goals
+          SDGs
         </Button>
       </DropdownMenuTrigger>
 
       {/* dropdown list */}
       <DropdownMenuContent className="w-56 z-50 relative">
-        <DropdownMenuLabel>SDG Goals</DropdownMenuLabel>
+        <DropdownMenuLabel>SDGs</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <ScrollArea className="h-72">
           {ListOfGoals.map(({ id, title, path }) => {
