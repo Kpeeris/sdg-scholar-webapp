@@ -10,11 +10,6 @@ const PublicRoute = ({ element }) => {
 
   // loading screen
   if (loading) {
-    // return (
-    //   <div className="flex justify-center text-orange-500 text-3xl">
-    //     Loading...
-    //   </div>
-    // );
     return <LoadingPage />;
   }
   // If the user is logged in, redirect them to the homepage
