@@ -6,22 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+// import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
 
 const GoalInfo = () => {
-  const [isAnimate, setIsAnimate] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isClosing, setClosing] = useState(false);
-
-  const handleCloes = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsOpen(false);
-      setClosing(false);
-    }, 300);
-  };
   return (
     <div>
       {/* information icon */}
