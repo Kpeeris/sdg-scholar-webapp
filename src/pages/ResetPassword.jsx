@@ -17,8 +17,8 @@ const ResetPassword = () => {
     const [error, setError] = useState(null);
 
     const firebaseErrorMessages = {
-        "auth/invalid-email": "This email is invalid. Please try again.",
-        "auth/user-not-found": "No user found with this email address.",
+        "auth/invalid-email": "The email is invalid. Please try again.",
+        "auth/missing-email": "An email is needed to reset your password. Please try again",
     };
 
       const handleResetPassword = async () => {
@@ -28,12 +28,6 @@ const ResetPassword = () => {
 
         try {
             const email = emailRef.current.value;
-
-            if (!email) {
-                setError("Please enter an email address.");
-                setLoading(false);
-                return;
-            }
 
             await resetPassword(email);
 
@@ -53,12 +47,16 @@ const ResetPassword = () => {
       imageAlt="Forgot Password SVG"
       rightContent={
         <div className="space-y-4">
-            <h1>Forgot Password? </h1>
-            <p>Enter your email to receive a password reset link</p>          
-            <div className="w-full flex flex-col items-left gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" placeholder="Email" ref={emailRef} />
-            </div>
+            {/* <h1>Forgot Password? </h1>
+            <p>Enter your email to receive a password reset link</p>  */}
+          <div className="space-y-2 pb-2 text-center">
+            <h1>Forgot Password?</h1>
+            <p>Enter your email to receive a password reset link</p>
+          </div>         
+          <div className="w-full flex flex-col items-left gap-2 pb-4">
+              <Label htmlFor="email">Email</Label>
+              <Input type="email" id="email" placeholder="Email" ref={emailRef} />
+          </div>
           
           {message && <p className="text-green-600 text-base">{message}</p>}
           {error && <p className="text-red-500 text-base">{error}</p>}

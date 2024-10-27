@@ -33,17 +33,22 @@ export const SignUpUser = () => {
       imageAlt="Signup SVG"
       rightContent={
         <div className="space-y-4">
-          <h1>Create Your Account</h1>
-          <p>How are you planning to use SDG Scholar?</p>
+          <div className="space-y-2 pb-2 text-center">
+            <h1>Create Your Account</h1>
+            <p>How are you planning to use SDG Scholar?</p>
+          </div>
 
           {/* Pass the handleUserTypeSelection to UserTypeCard */}
           <UserTypeCard onSelectType={handleUserTypeSelection} />
 
           {/* Create Account Button */}
-          <Button className="w-full mb-2" variant="default" onClick={handleConfirm}>
-            Create Account
-          </Button>
-          <hr className="w-full mt-4 border-white" />
+          <div className="pt-2 pb-3">
+            <Button className="w-full" variant="default" onClick={handleConfirm}>
+              Create Account
+            </Button>
+          </div>
+          
+          {/* <hr className="w-full mt-4 border-white" /> */}
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>

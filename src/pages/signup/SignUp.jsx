@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 import db from "../../../firebaseFiles/firebaseConfig.js";
-import { signup } from "../../../firebaseFiles/firebaseAuth.js"; // Import the signup function
+import { signup } from "../../../firebaseFiles/firebaseAuth.js";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 const SignUp = () => {
@@ -16,6 +16,7 @@ const SignUp = () => {
   const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
   const navigate = useNavigate();
 
   const { state } = useLocation(); // Get state from previous page
@@ -31,7 +32,6 @@ const SignUp = () => {
   }
 
   const firebaseErrorMessages = {
-    "auth/user-not-found": "No user found with this email address.",
     "auth/missing-email": "An email is required to sign up. Please try again.",
     "auth/missing-password":
       "A password is required to sign up. Please try again.",
@@ -40,17 +40,13 @@ const SignUp = () => {
       "Your email or password is invalid. Please try again.",
     "auth/password-does-not-meet-requirements":
       "Your password does not meet the requirements. Please try again.",
+    "auth/email-already-in-use":
+      "This email is already registered as an account. Please try a different email.",
   };
 
   const handleSignup = async () => {
     setLoading(true);
     setError(null);
-
-    if (!firstNameRef.current.value) {
-      setError("A first name is required to sign up. Please try again.");
-      setLoading(false);
-      return;
-    }
 
     if (!userType) {
       setError(
@@ -63,6 +59,18 @@ const SignUp = () => {
           </Link>
         </>
       );
+      setLoading(false);
+      return;
+    }
+
+    if (!firstNameRef.current.value) {
+      setError("A first name is required to sign up. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      setError("Passwords do not match. Please try again.");
       setLoading(false);
       return;
     }
@@ -114,13 +122,17 @@ const SignUp = () => {
       imageAlt="Signup SVG"
       rightContent={
         <div className="space-y-4">
-          <h1>Create Your Account</h1>
-          <p>Enter your details to start creating your account</p>
+          <div className="space-y-2 pb-4 text-center">
+            <h1>Create Your Account</h1>
+            <p>Enter your details to start creating your account</p>
+          </div>
+
           <SignUpForm
             firstNameRef={firstNameRef}
             lastNameRef={lastNameRef}
             emailRef={emailRef}
             passwordRef={passwordRef}
+            confirmPasswordRef={confirmPasswordRef}
           />
           {error && (
             <p
