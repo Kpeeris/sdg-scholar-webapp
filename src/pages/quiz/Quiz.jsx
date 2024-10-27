@@ -211,6 +211,25 @@ const Quiz = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
+  const targetRef = useRef(null);
+
+  const handleOusideClick = (e) => {
+    if (targetRef.current && !targetRef.current.contains(e.target)) {
+      setDialogVisible(true);
+    }
+  };
+
+  // Use effect to add/remove event listener for clicks
+  useEffect(() => {
+    // Attach the click event listener
+    document.addEventListener("mousedown", handleOusideClick);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOusideClick);
+    };
+  }, []);
+
   return (
     <div className="flex">
       {isLoading ? (
@@ -219,7 +238,7 @@ const Quiz = () => {
         <>
           <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
           {(quizStarted && !quizSubmitted) || isAdmin ? (
-            <div className="ml-[250px] flex-1">
+            <div ref={targetRef} className="ml-[250px] h-screen flex-1">
               <div className="flex justify-between">
                 <h1>{moduleTitle} Content</h1>
                 {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
@@ -256,7 +275,7 @@ const Quiz = () => {
                 <div className="flex flex-col items-center">
                   <br />
                   <Button
-                    className="w-44"
+                    className="w-44 mb-16"
                     onClick={() => {
                       setDialogVisible(true);
                     }}
@@ -362,28 +381,36 @@ const Quiz = () => {
       )}
       {dialogVisible ? (
         <Dialog open={dialogVisible} onOpenChange={setDialogVisible}>
-          <DialogTitle>
-            <DialogContent>
-              <DialogHeader>
-                <DialogDescription className="text-center text-lg ">
-                  Are you sure you&apos;re ready to submit the quiz? <br />
-                  Make sure you have answered all questions!
-                </DialogDescription>
-                <Separator className="my-4" />
-                <div className="flex-col flex items-center justify-center pt-3">
-                  <Button
-                    className="w-32"
-                    onClick={() => {
-                      handleSubmitClick();
-                      setDialogVisible(false);
-                    }}
-                  >
-                    Yes
-                  </Button>
-                </div>
-              </DialogHeader>
-            </DialogContent>
-          </DialogTitle>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Submit Quiz</DialogTitle>
+              <DialogDescription className="text-base">
+                Make sure you have answered all of the questions!
+                <br />
+                This action will submit the quiz do you want to proceed?
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-end items-center">
+              <Button
+                variant="outline"
+                className="mx-2"
+                onClick={() => {
+                  setDialogVisible(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="mx-2"
+                onClick={() => {
+                  handleSubmitClick();
+                  setDialogVisible(false);
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+          </DialogContent>
         </Dialog>
       ) : null}
     </div>
