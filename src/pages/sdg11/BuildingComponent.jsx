@@ -65,6 +65,13 @@ const BuildingComponent = ({
 
   const lastLetter = targetNum.slice(-1);
   const getScore = async (id) => {
+    if (!userData) {
+      console.log("No user data found");
+      return;
+    } else if (!userData.email) {
+      console.log("No email found in user data");
+      return;
+    }
     let email = userData.email;
 
     const learnersRef = collection(db, "learners");
