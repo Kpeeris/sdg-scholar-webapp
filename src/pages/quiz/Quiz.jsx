@@ -44,11 +44,13 @@ const Quiz = () => {
 
   const [result, setResult] = useState(0);
   const [score, setScore] = useState(0);
+  //const [isLoading, setIsLoading] = useState(true);
 
   const questionRefs = useRef([]);
 
   const [docs, setDocs] = useState({});
-  const { userData, role } = useAuthContext();
+  //eslint-disable-next-line
+  const { user, userData, role } = useAuthContext();
 
   let isAdmin = role === "admin";
 
@@ -205,7 +207,7 @@ const Quiz = () => {
                 className="w-44 text-lg"
                 onClick={() => navigate(`/module/${moduleId}/editquiz`)}
               >
-                <PencilSquareIcon className="h-6 w-6 text-white" />  Edit Quiz
+                <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Quiz
               </Button>
             ) : null}
           </div>
@@ -240,7 +242,7 @@ const Quiz = () => {
             </div>
           )}
         </div>
-      ) : //if user is not an Admin and the quiz is not submitted
+      ) : //if user is not an Admin and the quiz is not submitted and the score is 0
       !quizSubmitted && !isAdmin && score === 0 ? (
         <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
           <div className="relative h-72 w-72">
