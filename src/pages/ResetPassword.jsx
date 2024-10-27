@@ -17,8 +17,8 @@ const ResetPassword = () => {
     const [error, setError] = useState(null);
 
     const firebaseErrorMessages = {
-        "auth/invalid-email": "This email is invalid. Please try again.",
-        "auth/user-not-found": "No user found with this email address.",
+        "auth/invalid-email": "The email is invalid. Please try again.",
+        "auth/missing-email": "An email is needed to reset your password. Please try again",
     };
 
       const handleResetPassword = async () => {
@@ -28,12 +28,6 @@ const ResetPassword = () => {
 
         try {
             const email = emailRef.current.value;
-
-            if (!email) {
-                setError("Please enter an email address.");
-                setLoading(false);
-                return;
-            }
 
             await resetPassword(email);
 
