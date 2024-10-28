@@ -16,6 +16,7 @@ vi.mock("firebase/firestore", () => {
     doc: vi.fn(),
     setDoc: vi.fn(),
     serverTimestamp: vi.fn(),
+    connectFirestoreEmulator: vi.fn(),
   };
 });
 
