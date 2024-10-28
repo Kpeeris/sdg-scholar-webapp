@@ -46,7 +46,7 @@ export function AccountPopover() {
         {/* round icon with initials (displayed on the nav bar) */}
         <Button 
             variant="accountInfo" 
-            className="w-11 h-11 text-lg text-gray-700 tracking-normal"
+            className="w-12 h-12 text-lg text-gray-700 font-medium tracking-normal"
             >
             {`${userData?.firstName?.[0]?.toUpperCase() || ""}${userData?.lastName?.[0]?.toUpperCase() || ""}`}
         </Button>
@@ -56,7 +56,7 @@ export function AccountPopover() {
         <PopoverContent className="w-80 z-50 p-5" align="end">
             <div className="flex items-center gap-3 mb-4">
                 {/* round icon with initials */}
-                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-xl text-gray-700">
+                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-lg text-gray-700 font-medium">
                     {`${userData?.firstName?.[0]?.toUpperCase() || ""}${userData?.lastName?.[0]?.toUpperCase() || ""}`}
                 </div>
 
@@ -65,7 +65,7 @@ export function AccountPopover() {
                     <p className="text-sm font-bold text-gray-900 leading-tight">
                         {`${userData?.firstName} ${userData?.lastName}`}
                     </p>
-                    <p className="text-sm text-gray-800 leading-tight">
+                    <p className="text-sm text-gray-800 leading-tight font-medium">
                         {user?.email || "No Email Available"}
                     </p>
                     <p className="text-sm text-gray-700">
