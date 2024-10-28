@@ -37,7 +37,8 @@ const BuildingComponent = ({
   clipPath,
 }) => {
   const navigate = useNavigate();
-  const { userData, role } = useAuthContext();
+  //eslint-disable-next-line
+  const { user, userData, role } = useAuthContext();
   const [description, setDescription] = useState("");
   const [targetNum, setTargetNum] = useState("");
   const [score, setScore] = useState(0);
@@ -50,7 +51,7 @@ const BuildingComponent = ({
         const docRef = doc(db, `quizzes/sdg11t${id}`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log(docSnap.data().targetText);
+          //console.log(docSnap.data().targetText);
           setDescription(docSnap.data().targetText);
           setTargetNum(docSnap.data().targetNumber);
         } else {
@@ -65,8 +66,18 @@ const BuildingComponent = ({
 
   const lastLetter = targetNum.slice(-1);
   const getScore = async (id) => {
+    if (!userData) {
+      console.log("No user data found");
+      return;
+    } else if (!userData.email) {
+      console.log("No email found in user data");
+      return;
+    }
     let email = userData.email;
+    // console.log("the email is: ", email);
+    // console.log("the userData: ", userData);
 
+    //TODO: make the email from the db lowercase before comparing
     const learnersRef = collection(db, "learners");
     const queryByEmail = query(learnersRef, where("email", "==", email));
     const querySnapshot = await getDocs(queryByEmail);
