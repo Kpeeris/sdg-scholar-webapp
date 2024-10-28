@@ -185,7 +185,7 @@ const Quiz = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (quizStarted) {
+    if (quizStarted || isAdmin) {
       getQuestions();
     } else {
       console.log("quiz not started");
