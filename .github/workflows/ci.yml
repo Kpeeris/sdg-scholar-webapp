@@ -61,7 +61,7 @@ jobs:
 
       - name: Start Firebase Emulator
         run: |
-          npx firebase emulators: start & 
+          firebase emulators: start & 
           sleep 10
 
       - name: Run Tests
