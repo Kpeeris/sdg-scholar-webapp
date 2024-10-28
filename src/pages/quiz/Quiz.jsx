@@ -22,13 +22,11 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import pana from "/src/assets/images/pana.svg";
 import ConfettiExplosion from "react-confetti-explosion";
 import { round } from "mathjs";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/components/LoadingPage.jsx";
-import { set } from "react-hook-form";
 
 const Quiz = () => {
   // used to navigate to new page when button is clicked
@@ -190,7 +188,8 @@ const Quiz = () => {
     } else {
       console.log("quiz not started");
     }
-  }, [quizStarted]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizStarted, isAdmin]);
 
   useEffect(() => {
     if (totalQuestions > 0) {
@@ -214,7 +213,11 @@ const Quiz = () => {
   const targetRef = useRef(null);
 
   const handleOusideClick = (e) => {
-    if (targetRef.current && !targetRef.current.contains(e.target)) {
+    if (
+      !isAdmin &&
+      targetRef.current &&
+      !targetRef.current.contains(e.target)
+    ) {
       setDialogVisible(true);
     }
   };
@@ -228,7 +231,8 @@ const Quiz = () => {
     return () => {
       document.removeEventListener("mousedown", handleOusideClick);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin]);
 
   return (
     <div className="flex">
@@ -237,10 +241,10 @@ const Quiz = () => {
       ) : (
         <>
           <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
-          {(quizStarted && !quizSubmitted) || isAdmin ? (
+          {isAdmin || (quizStarted && !quizSubmitted) ? (
             <div ref={targetRef} className="ml-[250px] h-screen flex-1">
               <div className="flex justify-between">
-                <h1>{moduleTitle} Content</h1>
+                <h1>{moduleTitle}</h1>
                 {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
                 {moduleTitle}
               </h2> */}
