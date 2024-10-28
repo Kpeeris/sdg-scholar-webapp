@@ -36,6 +36,17 @@ describe("Quiz Page", () => {
     expect(screen.getByTestId("quiz-page")).toBeInTheDocument();
   });
 
+  describe("Learner", () => {
+    it("should render the 'Are you ready?' page for learner", async () => {
+      //whether is admin or learner the page should render
+      render(
+        <MemoryRouter>
+          <Quiz />
+        </MemoryRouter>
+      );
+      screen.debug();
+    });
+  });
   //if admin should render the quiz with edit content button
   //if learner should render "are you ready" page then quiz page without edit button
   //if the user has already taken the quiz, should render the score page

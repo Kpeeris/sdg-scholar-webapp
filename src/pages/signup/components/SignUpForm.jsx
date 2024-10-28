@@ -101,6 +101,7 @@ export const SignUpForm = ({
         <Label htmlFor="password">Confirm Password</Label>
         <div className="relative">
           <Input
+            data-testid="confirm-password"
             type={confirmPasswordVisible ? "text" : "password"} // Toggle between text and password
             id="confirm-password"
             placeholder="Confirm Password"

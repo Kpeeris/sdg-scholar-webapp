@@ -45,16 +45,19 @@ const fillInForm = ({ firstName, lastName, email, password }) => {
   const lastNameInput = screen.getByTestId("last-name");
   const emailInput = screen.getByTestId("signup-email");
   const passwordInput = screen.getByTestId("signup-password");
+  const confirmPasswordInput = screen.getByTestId("confirm-password");
 
   fireEvent.change(firstNameInput, { target: { value: firstName } });
   fireEvent.change(lastNameInput, { target: { value: lastName } });
   fireEvent.change(emailInput, { target: { value: email } });
   fireEvent.change(passwordInput, { target: { value: password } });
+  fireEvent.change(confirmPasswordInput, { target: { value: password } });
 
   expect(firstNameInput.value).toBe(firstName);
   expect(lastNameInput.value).toBe(lastName);
   expect(emailInput.value).toBe(email);
   expect(passwordInput.value).toBe(password);
+  expect(confirmPasswordInput.value).toBe(password);
 };
 
 describe("SignUp Page", () => {
