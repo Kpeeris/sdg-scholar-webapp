@@ -35,6 +35,7 @@ describe("Quiz Page", () => {
     );
     expect(screen.getByTestId("quiz-page")).toBeInTheDocument();
   });
+
   //if admin should render the quiz with edit content button
   //if learner should render "are you ready" page then quiz page without edit button
   //if the user has already taken the quiz, should render the score page
