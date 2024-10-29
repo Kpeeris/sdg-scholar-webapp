@@ -14,6 +14,10 @@ import db from "../../firebaseFiles/firebaseConfig.js";
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
+
 import sanitizeHtml from 'sanitize-html';
 
 const Content = () => {
@@ -56,9 +60,10 @@ const Content = () => {
     })
   }*/}
 
-  const saveImage = () => {
+  // TO DO: SAVE IMAGE FOR SARAH ------------------------------------------
+  // const saveImage = () => {
 
-  }
+  // }
 
 
   const transform = (node) => {
