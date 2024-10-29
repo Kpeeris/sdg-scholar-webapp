@@ -235,7 +235,13 @@ const Content = () => {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat([ "img" ]),
       //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
       allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"]),
-      allowedAttributes: {...sanitizeHtml.defaults.allowedAttributes, "p": ["class", "style"], "span": ["class", "style"]},
+      allowedAttributes: {...sanitizeHtml.defaults.allowedAttributes, 
+        "p": ["class", "style"], 
+        "span": ["class", "style"], 
+        "s": ["class", "style"],
+        "strong": ["class", "style"],
+        "u": ["class", "style"],
+        "em": ["class", "style"]},
       allowedStyles: {
         "*": {
           color: [/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/],
