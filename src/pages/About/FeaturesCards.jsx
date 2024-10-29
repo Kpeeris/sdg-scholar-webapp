@@ -1,8 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { GlobeAsiaAustraliaIcon, WrenchScrewdriverIcon, PuzzlePieceIcon, BellAlertIcon } from "@heroicons/react/20/solid"; 

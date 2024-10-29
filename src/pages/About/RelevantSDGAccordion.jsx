@@ -46,7 +46,7 @@ const LstAccordionContent = [
 
 const RelevantSDGAccodian = () => {
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full p-6">
       {LstAccordionContent.map((field) => (
         <AccordionItem key={field.id} value={field.id}>
           <AccordionTrigger>{field.title}</AccordionTrigger>
