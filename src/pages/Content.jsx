@@ -7,14 +7,14 @@ import { useAuthContext } from "@/AuthProvider";
 import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+//import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
 
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+//import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 import sanitizeHtml from 'sanitize-html';
 
