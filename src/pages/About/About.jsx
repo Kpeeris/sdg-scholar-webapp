@@ -7,6 +7,7 @@ import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
 import SDG_logo_Square_Transparent from "/src/assets/images/SDG_logo_Square_Transparent.svg";
 import background from "/src/assets/images/plants-background.svg";
 import RelevantSDGAccodian from "./RelevantSDGAccordian";
+import FeaturesCards from "./FeaturesCards";
 export const About = () => {
   return (
     <div data-testid="about-page">
@@ -14,47 +15,27 @@ export const About = () => {
 
       <div className="flex flex-col md:flex-row">
         {/* LHS */}
-        <div className="flex flex-col justify-between md:w-1/2 p-10">
-          <div>
-            <h1>About</h1>
-            {/* <span className="text-7xl font-extrabold">About</span> */}
-            {/* <img src={logo_horizontal} alt="SDG logo" /> */}
-            <div className="flex items-center flex-wrap">
-              <h1>SDG Scholar</h1>
-              <Icon
-                icon="streamline:global-learning"
-                width="40"
-                height="40"
-                className="ml-2 text-orange-500"
-              />
-            </div>
-            <span style={{ fontSize: "18px" }}>
-              {" "}
-              Redefining SDG Education, One Goal at a Time{" "}
-            </span>
-          </div>
-
-          <div className="mt-14">
-            <p>
-              Our platform is designed to bring together educators and learners
-              to deepen understanding and drive action toward the United Nations
-              Sustainable Development Goals (SDGs). We aim to redefine SDG
-              education by addressing and correcting misconceptions about the
-              SDGs through interactive learning. Whether you&apos;re an admin
-              guiding others or a learner on your learning journey, we provide
-              the resources and tools to help you make a positive impact.
-            </p>
-          </div>
+        <div className="flex flex-col md:w-1/2 justify-center pr-8 pl-8 pb-8">
+          <h1 className="leading-[1.2] mb-1">Redefining <span className="text-orange-500">SDG Education, </span>One Goal at a Time</h1>
+          <p>Discover the United Nations’ SDGs like never before! Explore each SDGs’ worlds—complete quizzes, unlock new places and make an impact as you learn and grow</p>
         </div>
 
         {/* RHS */}
-        <div className="md:w-1/2 flex justify-center items-center p-10">
+        <div className="md:w-1/2 flex justify-center items-center pr-8 pl-8 pb-8">
+          
           <img
             src={holding_sdg_wheel}
             alt="SDG wheel"
             className="w-auto h-auto"
           />
         </div>
+      </div>
+
+      {/* SDG Scholar Key Features */}
+      <div className="mt-12 mb-12 pb-8 pl-8">
+        <h1 className="leading-[1.3] mb-1 text-center">Dive into the Experience</h1>
+        <p className="text-center">SDG Scholar is designed to make learning about the SDGs fun, engaging, and impactful</p>
+        <FeaturesCards />
       </div>
 
       {/* What are the SDGs s */}
