@@ -3,8 +3,8 @@ import LoadingPage from "@/components/LoadingPage";
 import { Navigate } from "react-router-dom";
 
 
-const PrivateRoute = ({ element }) => {
-  const { user, loading } = useAuthContext();
+const PrivateRoute = ({ element, requiredRole }) => {
+  const { user, role, loading } = useAuthContext();
 
   console.log("PrivateRoute - loading:", loading);
   console.log("PrivateRoute - user:", user);
@@ -15,7 +15,16 @@ const PrivateRoute = ({ element }) => {
   }
 
   // If the user is not logged in, redirect to login
-  return user ? element : <Navigate to="/login" />;
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  // Check for required role, if provided
+  if (requiredRole && role !==requiredRole) {
+    return <Navigate to="/" />;
+  }
+
+  return element;
 };
 
 export default PrivateRoute;
