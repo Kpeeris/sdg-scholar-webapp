@@ -7,7 +7,7 @@ import { useAuthContext } from "@/AuthProvider";
 import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@components/ui/alert"
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
@@ -58,9 +58,10 @@ const Content = () => {
     })
   }*/}
 
-  const saveImage = () => {
+  {/*const saveImage = () => {
 
-  }
+  }*/}
+  
 
 
   const transform = (node) => {
