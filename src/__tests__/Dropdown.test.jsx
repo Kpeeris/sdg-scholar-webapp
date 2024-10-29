@@ -14,7 +14,7 @@ describe("test dropdown in navbar", async () => {
   });
   it("should appear when clicked", async () => {
     screen.debug();
-    const dropdownButton = screen.getByRole("button", { name: "Goals" });
+    const dropdownButton = screen.getByRole("button", { name: "SDGs" });
 
     await waitFor(() => {
       expect(screen.queryByText("SDG Goals")).not.toBeInTheDocument();
