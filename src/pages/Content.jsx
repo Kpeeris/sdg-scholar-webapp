@@ -28,6 +28,7 @@ const Content = () => {
 
   const [content, setContent] = useState("");
   const [pulledContent, setPulledContent] = useState("")
+  const [databaseError, setDatabaseError] = useState("")
 
   const storage = getStorage();
 
@@ -55,60 +56,69 @@ const Content = () => {
     })
   }*/}
 
+  const saveImage = () => {
+
+  }
+
 
   const transform = (node) => {
     //console.log(`NAME IS: ${node.name}`)
-    if (node.attribs && node.attribs.class) {
-      if (node.attribs.class.includes("ql-align-center")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          textAlign: "center",
-        };
+    if (node.attribs) {
+      //console.log("ATTRIBS EXIST")
+      if (typeof node.attribs.style === "string") {
+        const styleObject = {};
+        //console.log("THIS STYLE IS A STRING")
+        node.attribs.style.split(";").forEach((style) => {
+            const [key, value] = style.split(":").map(s => s.trim());
+            console.log(`KEY: ${key} AND VALUE: ${value}`)
+            if (key && value) {
+                // Convert CSS keys to camelCase for React styles (e.g., "font-size" to "fontSize")
+                const camelCaseKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                styleObject[camelCaseKey] = value;
+            }
+        });
+        node.attribs.style = styleObject;
+      } else if (!node.attribs.style && node.attribs.class) {
+        //console.log("CREATING A STYLE ATTRIB FOR CLASS ATTRIB")
+          node.attribs.style = {};
       }
-      if (node.attribs.class.includes("ql-align-right")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          textAlign: "right",
-        };
-      }
-      if (node.attribs.class.includes("ql-size-small")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "0.75em",
-        };
-      }
-      if (node.attribs.class.includes("ql-size-large")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "2em",
-        };
-      }
-      if (node.attribs.class.includes("ql-size-huge")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "3em",
-        };
-      }
-      if (node.attribs.class.includes("ql-indent-1")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          marginLeft: "3em",
-        };
-      }
+        
+    
+      if (node.attribs.class) {
+        if (node.attribs.class.includes("ql-align-center")) {
+          node.attribs.style.textAlign = "center"
+        }
+        if (node.attribs.class.includes("ql-align-right")) {
+          node.attribs.style.textAlign = "right"
+        }
+        if (node.attribs.class.includes("ql-size-small")) {
+          node.attribs.style.fontSize = "0.75em"
+        }
+        if (node.attribs.class.includes("ql-size-large")) {
+          node.attribs.style.fontSize = "2em"
+        }
+        if (node.attribs.class.includes("ql-size-huge")) {
+          //console.log("the size is: HUGE")
+          node.attribs.style.fontSize = "3em"
+        }
+        if (node.attribs.class.includes("ql-indent-1")) {
+          node.attribs.style.marginLeft = "3em"
+          
+        }
 
-      node.attribs.className = node.attribs.class; // Convert class to className
-      delete node.attribs.class; // Remove the old class attribute
-    }
+        //node.attribs.className = node.attribs.class; // Convert class to className
+        delete node.attribs.class; // Remove the old class attribute
+      }
     if (node.name == "a") {
-      node.attribs.style = {
-        ...node.attribs.style,
-        textDecoration: "underline",
-        color: "blue",
-      };
+      node.attribs.style = {textDecoration: "underline", color: "blue"}
+      //node.attribs.style.textDecoration = "underline"
+      //node.attribs.style.color = "blue"
     }
+  }
     if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
       return <br />
     }
+    
   };
 
   const getContent = async (moduleId) => {
@@ -125,6 +135,7 @@ const Content = () => {
       }
     } catch (e) {
       console.error("Error retrieving document: ", e);
+      setDatabaseError(e)
     }
   };
 
@@ -218,13 +229,23 @@ const Content = () => {
     console.log("trying to update");
     console.log("module id is: ", moduleId);
 
+    console.log(`HTML IS UNSANITIZED: ${newContent}`)
+
     const writeableContent = sanitizeHtml(newContent, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat([ "img" ]),
       //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
-      allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"])
+      allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"]),
+      allowedAttributes: {...sanitizeHtml.defaults.allowedAttributes, "p": ["class", "style"], "span": ["class", "style"]},
+      allowedStyles: {
+        "*": {
+          color: [/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/],
+          fontSize: [/^\d+(\.\d+)?(px|em|%)$/],
+          textAlign: [/^left|right|center|justify$/],
+        },
+      },
     });
 
-    console.log(`ALLOWED TAGS FOR IMAGES ARE: ${sanitizeHtml.defaults.allowedAttributes["img"]}`)
+    console.log(`WRITNG: ${writeableContent}`)
 
     try {
       console.log("doc reference is :  ", docRef);
@@ -242,6 +263,7 @@ const Content = () => {
     //setButtonState('Edit')
     if (newContent) {
       console.log("new content is --->", newContent);
+      //transform(newContent)
       adminContentWrite(newContent);
     } else {
       console.log("NO NEW CONTENT");
@@ -303,80 +325,90 @@ const Content = () => {
   return (
     <div className="flex">
       <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
-      <div className="ml-[250px] flex-1">
-        <div className="flex justify-between">
-          <h1>{moduleTitle} Content</h1>
-          <br />
-          {isAdmin ? (
-            <Button
-              className="w-44 text-lg"
-              onClick={() => setTextEditorShow(true)}
-            >
-              <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Content
-            </Button>
-          ) : null}
-        </div>
-        <hr className="w-full mt-4 border-white" />
-        <div className="relative h-96 flex flex-cols">
-          <img src={image1Url} alt="Image 1" />
-          <img src={image2Url} alt="Image 2" />
-        </div>
-        <br />
+      {databaseError ? 
         <div>
-          {textEditorShow === false ? (
-            <div>
-              {content
-                ? parse(content, {
-                    replace: (domNode) => {
-                      transform(domNode); // Apply the transformation
-                      return domNode; // Return the transformed node
-                    },
-                  })
-                : null}
-            </div>
-          ) : (
-            <div>
-              <ReactQuill
-                theme="snow"
-                modules={modules}
-                formats={formats}
-                value={content}
-                onChange={handleProcedureContentChange}
-                style={{
-                  height: "400px",
-                  maxWidth: "100%",
-                  overflowWrap: "break-word",
-                  wordWrap: "break-word",
-                }}
-              ></ReactQuill>
-            </div>
-          )}
-          <br />
-          <br />
-          <br />
-          <div>
-            {isAdmin && textEditorShow ? (
+          <Alert variant="destructive">
+            <ExclamationCircleIcon className="h-5 w-5" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{databaseError}</AlertDescription>
+          </Alert>
+        </div> : 
+        <div className="ml-[250px] flex-1">
+          <div className="flex justify-between">
+            <h1>{moduleTitle} Content</h1>
+            <br />
+            {isAdmin ? (
               <Button
-                onClick={() => {
-                  handleClick(content);
-                }}
-                style={{ marginRight: "10px" }}
+                className="w-44 text-lg"
+                onClick={() => setTextEditorShow(true)}
               >
-                Publish
-              </Button>
-            ) : null}
-            {isAdmin && textEditorShow ? (
-              <Button
-                onClick={() => {
-                  handleCancelClick();
-                }}
-              >
-                Cancel
+                <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Content
               </Button>
             ) : null}
           </div>
+          <hr className="w-full mt-4 border-white" />
+          <div className="relative h-96 flex flex-cols">
+            <img src={image1Url} alt="Image 1" />
+            <img src={image2Url} alt="Image 2" />
+          </div>
+          <br />
+          <div>
+            {textEditorShow === false ? (
+              <div>
+                {content
+                  ? parse(content, {
+                      replace: (domNode) => {
+                        transform(domNode); // Apply the transformation
+                        return domNode; // Return the transformed node
+                      },
+                    })
+                  : null}
+              </div>
+            ) : (
+              <div>
+                <ReactQuill
+                  theme="snow"
+                  modules={modules}
+                  formats={formats}
+                  value={content}
+                  onChange={handleProcedureContentChange}
+                  style={{
+                    height: "400px",
+                    maxWidth: "100%",
+                    overflowWrap: "break-word",
+                    wordWrap: "break-word",
+                  }}
+                ></ReactQuill>
+              </div>
+            )}
+            <br />
+            <br />
+            <br />
+            <div>
+              {isAdmin && textEditorShow ? (
+                <Button
+                  onClick={() => {
+                    handleClick(content);
+                  }}
+                  style={{ marginRight: "10px" }}
+                >
+                  Publish
+                </Button>
+              ) : null}
+              {isAdmin && textEditorShow ? (
+                <Button
+                  onClick={() => {
+                    handleCancelClick();
+                  }}
+                >
+                  Cancel
+                </Button>
+              ) : null}
+            </div>
+          </div>
         </div>
-      </div>
+      }
+      
     </div>
   );
 };
