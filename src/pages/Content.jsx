@@ -16,6 +16,10 @@ import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
+
 import sanitizeHtml from 'sanitize-html';
 
 const Content = () => {
@@ -61,7 +65,6 @@ const Content = () => {
   {/*const saveImage = () => {
 
   }*/}
-  
 
 
   const transform = (node) => {
@@ -95,14 +98,14 @@ const Content = () => {
           node.attribs.style.textAlign = "right"
         }
         if (node.attribs.class.includes("ql-size-small")) {
-          node.attribs.style.fontSize = "0.75em"
+          node.attribs.style.fontSize = "0.875em"
         }
         if (node.attribs.class.includes("ql-size-large")) {
-          node.attribs.style.fontSize = "2em"
+          node.attribs.style.fontSize = "1.25em"
         }
         if (node.attribs.class.includes("ql-size-huge")) {
           //console.log("the size is: HUGE")
-          node.attribs.style.fontSize = "3em"
+          node.attribs.style.fontSize = "2em"
         }
         if (node.attribs.class.includes("ql-indent-1")) {
           node.attribs.style.marginLeft = "3em"

@@ -50,6 +50,7 @@ function App() {
           <Route path="/signup" element={<PublicRoute element={<SignUp />} />} />
           <Route path="/signupadmin" element={<PublicRoute element={<SignUpAdmin />} />} />
           <Route path="/signupuser" element={<PublicRoute element={<SignUpUser />} />} />
+          <Route path="/resetpassword" element={<PublicRoute element={<ResetPassword />} />} />
 
           {/* Private routes, accessible only if logged in */}
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
@@ -58,10 +59,11 @@ function App() {
 
           <Route path="/module/:moduleId/content" element={<PrivateRoute element={<Content />} />} />
           <Route path="/module/:moduleId/quiz" element={<PrivateRoute element={<Quiz />} />} />
-          <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} />} />
+
+          {/* Private routes, accessible only if logged in and is an admin */}
+          <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} requiredRole="admin" />} />
 
           <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
-          <Route path="/resetpassword" element={<PublicRoute element={<ResetPassword />} />} />
 
         </Routes>
       </Layout>
