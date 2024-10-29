@@ -109,14 +109,17 @@ const Content = () => {
         //node.attribs.className = node.attribs.class; // Convert class to className
         delete node.attribs.class; // Remove the old class attribute
       }
-    if (node.name == "a") {
-      node.attribs.style = {textDecoration: "underline", color: "blue"}
-      //node.attribs.style.textDecoration = "underline"
-      //node.attribs.style.color = "blue"
+      if (node.name == "a") {
+        node.attribs.style = {textDecoration: "underline", color: "blue"}
+        //node.attribs.style.textDecoration = "underline"
+        //node.attribs.style.color = "blue"
+      }
+      
     }
-  }
+    //console.log(`node name is ${node.name}`)
     if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
-      return <br />
+      console.log("THERE IS A BREAK HERE")
+      node = <br/>
     }
     
   };
