@@ -55,6 +55,7 @@ const Quiz = () => {
   let isAdmin = role === "admin";
 
   //modify the moduleId from the url to match the format that is is the DB
+  console.log("moduleId is", moduleId);
   let realModuleId = moduleId;
   if (moduleId == "a") {
     realModuleId = "8";
@@ -141,6 +142,7 @@ const Quiz = () => {
 
   //gets the score form the db and saved in to score
   const getScore = async () => {
+    console.log("getting score");
     let email = userData.email;
 
     const learnersRef = collection(db, "learners");
@@ -170,6 +172,8 @@ const Quiz = () => {
     const fetchScore = async () => {
       await getScore();
       setIsLoading(false);
+      console.log("score is", score);
+      console.log("isLoading: ", isLoading);
     };
 
     if (userData) {
@@ -242,7 +246,11 @@ const Quiz = () => {
         <>
           <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
           {isAdmin || (quizStarted && !quizSubmitted) ? (
-            <div ref={targetRef} className="ml-[250px] h-screen flex-1">
+            <div
+              data-testid="questionsPage"
+              ref={targetRef}
+              className="ml-[250px] h-screen flex-1"
+            >
               <div className="flex justify-between">
                 <h1>{moduleTitle}</h1>
                 {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
@@ -250,6 +258,7 @@ const Quiz = () => {
               </h2> */}
                 {isAdmin ? (
                   <Button
+                    data-testid="editQuizButton"
                     className="w-44 text-lg"
                     onClick={() => navigate(`/module/${moduleId}/editquiz`)}
                   >
@@ -262,7 +271,10 @@ const Quiz = () => {
               <div>
                 {Object.values(docs).map((question, index) => {
                   return (
-                    <div key={question.id || index}>
+                    <div
+                      data-testid="questionComponent"
+                      key={question.id || index}
+                    >
                       <Question
                         ref={questionRefs.current[index]}
                         //key={question}
@@ -291,7 +303,10 @@ const Quiz = () => {
             </div>
           ) : //if user is not an Admin and the quiz is not submitted and the score is 0
           !quizSubmitted && !isAdmin && score === 0 ? (
-            <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
+            <div
+              data-testid="preQuizPage"
+              className="ml-[250px] flex-1 flex flex-col items-center justify-start"
+            >
               <div className="relative h-72 w-72">
                 <img
                   src={pana}
@@ -334,6 +349,7 @@ const Quiz = () => {
               </div>
               <div className="mt-40">
                 <Button
+                  data-testid="startQuizButton"
                   style={{ textAlign: "center" }}
                   className="w-44"
                   onClick={() => {
@@ -345,7 +361,7 @@ const Quiz = () => {
               </div>
             </div>
           ) : (
-            <div className="ml-[250px] flex-1">
+            <div data-testid="scorePage" className="ml-[250px] flex-1">
               <h1>{moduleTitle}</h1>
               {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
               <br />

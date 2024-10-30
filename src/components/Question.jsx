@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 //import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 
@@ -21,10 +21,10 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
   };
 
   const markQuestion = () => {
-    console.log(optionsArray)
+    console.log(optionsArray);
     let selectedOptions = 0;
     for (let answer of q.correctAnswers) {
-      console.log(`THERE ARE ${q.correctAnswers.length} CORRECT ANSWERS`)
+      console.log(`THERE ARE ${q.correctAnswers.length} CORRECT ANSWERS`);
       if (!checkInSelectedOptions(answer)) return 0;
       else selectedOptions++;
     }
@@ -95,7 +95,7 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
       </div>
 
       <div className="mx-10 mb-5">
-        {q.type === 'ms' ? (
+        {q.type === "ms" ? (
           Object.values(q.options).map((option, index) => {
             return (
               <div key={index} className="flex items-center my-2 space-x-2">
@@ -111,20 +111,24 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
               </div>
             );
           })
-        ) : (
-          q.type === 'mcq' ? (
-            <RadioGroup onValueChange={(value) => {optionsArray[value]["checked"] = true}}>
-              {Object.values(q.options).map((option, index) => {
-                return (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={index} id={index} />
-                    <label className="text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{option}</label>
-                  </div>
-                )
-              })}
-            </RadioGroup>
-          ) : (null)
-        )}
+        ) : q.type === "mcq" ? (
+          <RadioGroup
+            onValueChange={(value) => {
+              optionsArray[value]["checked"] = true;
+            }}
+          >
+            {Object.values(q.options).map((option, index) => {
+              return (
+                <div key={index} className="flex items-center space-x-2">
+                  <RadioGroupItem value={index} id={index} />
+                  <label className="text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {option}
+                  </label>
+                </div>
+              );
+            })}
+          </RadioGroup>
+        ) : null}
         {admin ? <Button>Edit</Button> : null}
       </div>
     </Card>

@@ -82,7 +82,7 @@ describe("Login Page", () => {
     //click login button
     //screen.debug();
     fireEvent.click(loginButton);
-    screen.debug();
+    //screen.debug();
 
     await waitFor(() => {
       expect(
