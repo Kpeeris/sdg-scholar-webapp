@@ -1,14 +1,17 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
 import Quiz from "../pages/quiz/Quiz";
 import { it, expect, describe, vi, beforeEach, beforeAll } from "vitest";
-import { MemoryRouter, useParams } from "react-router-dom";
+import {
+  MemoryRouter,
+  useParams,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
 import { db } from "./setup";
 import { doc, setDoc } from "firebase/firestore";
-
-// Mock user data
-// const mockUser = { email: "testuser@example.com" };
-// const mockUserData = { email: "testuser@example.com", role: "learner" };
 
 // Mock the useAuthContext hook
 vi.mock("@/AuthProvider", () => {
@@ -23,6 +26,7 @@ vi.mock("react-router-dom", async () => {
   return {
     ...actual,
     useParams: vi.fn(),
+    useLocation: vi.fn(),
   };
 });
 
@@ -34,10 +38,13 @@ const renderComponent = (userRole, userEmail, TargetNum) => {
     role: userRole,
     loading: false,
   });
+  useLocation.mockReturnValue({ pathname: `/module/${TargetNum}/quiz` });
   useParams.mockReturnValue({ moduleId: TargetNum });
   render(
-    <MemoryRouter>
-      <Quiz />
+    <MemoryRouter initialEntries={[`/module/${TargetNum}/quiz`]}>
+      <Routes>
+        <Route path="/module/:moduleId/quiz" element={<Quiz />} />
+      </Routes>
     </MemoryRouter>
   );
 };
@@ -67,14 +74,14 @@ const setUpData = async () => {
         {
           id: "Q1",
           questionText: "What is the capital of France?",
-          options: ["London", "Berlin", "Paris", "Dublin"],
+          options: ["London", "Kenya", "Paris", "Dublin"],
           correctAnswers: ["Paris"],
           type: "mcq",
         },
         {
           id: "Q2",
           questionText: "What is the capital of Germany?",
-          options: ["London", "Berlin", "Paris", "Dublin"],
+          options: ["Sydney", "Berlin", "Jakarta", "Chennai"],
           correctAnswers: ["Berlin"],
           type: "mcq",
         },
@@ -172,36 +179,6 @@ const setUpData = async () => {
   }
 };
 
-// for some reason, the deleteQuizData function is not working as expected
-// const deleteQuizData = async () => {
-//   console.log("Clearing quizzes");
-//   const quizCollection = collection(db, "quizzes");
-//   const quizSnapshot = await getDocs(quizCollection);
-
-//   for (const quizDoc of quizSnapshot.docs) {
-//     console.log("deleting quiz", quizDoc.id);
-
-//     const questionCollection = collection(
-//       db,
-//       "quizzes",
-//       quizDoc.id,
-//       "questions"
-//     );
-//     const questionSnapshot = await getDocs(questionCollection);
-
-//     for (const questionDoc of questionSnapshot.docs) {
-//       await deleteDoc(
-//         doc(db, "quizzes", quizDoc.id, "questions", questionDoc.id)
-//       );
-//       console.log("deleted question", questionDoc.id);
-//     }
-
-//     await deleteDoc(doc(db, "quizzes", quizDoc.id));
-//     console.log("deleted quiz", quizDoc.id);
-//   }
-//   console.log("All Quizzes cleared");
-// };
-
 describe("Quiz Component", () => {
   // Set up the database before all tests
   beforeAll(async () => {
@@ -212,11 +189,6 @@ describe("Quiz Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-
-  // Clear the database after all tests
-  //   afterAll(async () => {
-  //     deleteQuizData();
-  //   });
 
   it("should render the score page if the learner has already has a score,", async () => {
     renderComponent("learner", "test_learner@example.com", "1");
@@ -251,6 +223,7 @@ describe("Quiz Component", () => {
       expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
     });
 
+    //check if the questions are rendered
     await waitFor(() => {
       expect(screen.getAllByTestId("questionComponent")).toHaveLength(3);
       expect(
@@ -264,7 +237,6 @@ describe("Quiz Component", () => {
     });
     await waitFor(() => {
       expect(screen.getByText("Why was 6 scared of 7?")).toBeInTheDocument();
-      screen.debug();
     });
   });
 
@@ -275,10 +247,11 @@ describe("Quiz Component", () => {
       expect(screen.getByTestId("preQuizPage")).toBeInTheDocument();
     });
 
+    //click start quiz button
     const startQuizButton = screen.getByTestId("startQuizButton");
-
     fireEvent.click(startQuizButton);
 
+    //check if the page is rendered
     await waitFor(() => {
       expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
       expect(screen.queryByTestId("editQuizButton")).not.toBeInTheDocument();
@@ -288,12 +261,54 @@ describe("Quiz Component", () => {
   it("should render questionsPage AND edit quiz button for admin", async () => {
     renderComponent("admin", "test_admin@example.com", "1");
 
+    //check if the page is rendered
     await waitFor(() => {
       expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
       expect(screen.getByTestId("editQuizButton")).toBeInTheDocument();
     });
   });
 
-  //   // when you click submit on the quiz page, should update the user's quiz scores in the database
-  //   // when you click submit sould render the correct score with confetti if 100%
+  it("should render confirmation dialog if learner clicks submit quiz button ", async () => {
+    renderComponent("learner", "learner_test@example.com", "1");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("preQuizPage")).toBeInTheDocument();
+    });
+
+    // Navigate to questions page
+    const startQuizButton = screen.getByTestId("startQuizButton");
+    fireEvent.click(startQuizButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
+    });
+
+    //select answers
+    await waitFor(() => {
+      const q1Answer = screen.getByTestId("mcq:Paris");
+      const q2Answer = screen.getByTestId("mcq:Berlin");
+      const q3Answer1 = screen.getByTestId("ms:7");
+      const q3Answer2 = screen.getByTestId("ms:8");
+      const q3Answer3 = screen.getByTestId("ms:9");
+
+      expect(q1Answer).toBeInTheDocument();
+      expect(q2Answer).toBeInTheDocument();
+      expect(q3Answer1).toBeInTheDocument();
+      expect(q3Answer2).toBeInTheDocument();
+      expect(q3Answer3).toBeInTheDocument();
+
+      fireEvent.click(q1Answer);
+      fireEvent.click(q2Answer);
+      fireEvent.click(q3Answer1);
+      fireEvent.click(q3Answer2);
+      fireEvent.click(q3Answer3);
+    });
+
+    //click submit button
+    const submitButton = screen.getByTestId("submitQuizButton");
+    fireEvent.click(submitButton);
+
+    //check if confirmation dialog is rendered
+    expect(screen.getByTestId("confirmSubmitDialog")).toBeInTheDocument();
+  });
 });

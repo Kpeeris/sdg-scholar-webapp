@@ -8,8 +8,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
-  let admin = false;
-
   const [optionsArray, setOptionsArray] = useState([]);
 
   const checkInSelectedOptions = (answer) => {
@@ -100,6 +98,7 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
             return (
               <div key={index} className="flex items-center my-2 space-x-2">
                 <Checkbox
+                  data-testid={`ms:${option}`}
                   checked={optionsArray[index]["checked"]}
                   onCheckedChange={() => {
                     handleCheck(index);
@@ -120,7 +119,11 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
             {Object.values(q.options).map((option, index) => {
               return (
                 <div key={index} className="flex items-center space-x-2">
-                  <RadioGroupItem value={index} id={index} />
+                  <RadioGroupItem
+                    data-testid={`mcq:${option}`}
+                    value={index}
+                    id={index}
+                  />
                   <label className="text-md leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {option}
                   </label>
@@ -129,7 +132,6 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
             })}
           </RadioGroup>
         ) : null}
-        {admin ? <Button>Edit</Button> : null}
       </div>
     </Card>
   );

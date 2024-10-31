@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import pana from "/src/assets/images/pana.svg";
 import ConfettiExplosion from "react-confetti-explosion";
-import { round } from "mathjs";
+import { cos, round } from "mathjs";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/components/LoadingPage.jsx";
 
@@ -66,6 +66,7 @@ const Quiz = () => {
   }
 
   const handleSubmitClick = () => {
+    cosole.log("submitting quiz in handleSubmitClick");
     setQuizSubmitted(true);
     let currResult = 0;
     questionRefs.current.forEach((ref) => {
@@ -74,10 +75,11 @@ const Quiz = () => {
       }
     });
     setResult(currResult);
+    console.log("result is", { result });
     const perCent = round((currResult / totalQuestions) * 100, 1);
     saveScore(perCent);
     setScore(perCent);
-    console.log("current result is, ", { currResult });
+    console.log("current score is, ", { perCent });
   };
 
   //gets the total number of questions in the target
@@ -291,6 +293,7 @@ const Quiz = () => {
                 <div className="flex flex-col items-center">
                   <br />
                   <Button
+                    data-testid="submitQuizButton"
                     className="w-44 mb-16"
                     onClick={() => {
                       setDialogVisible(true);
@@ -401,7 +404,7 @@ const Quiz = () => {
       )}
       {dialogVisible ? (
         <Dialog open={dialogVisible} onOpenChange={setDialogVisible}>
-          <DialogContent>
+          <DialogContent data-testid="confirmSubmitDialog">
             <DialogHeader>
               <DialogTitle>Submit Quiz</DialogTitle>
               <DialogDescription className="text-base">
@@ -421,6 +424,7 @@ const Quiz = () => {
                 Cancel
               </Button>
               <Button
+                data-testid="confirmSubmitButton"
                 className="mx-2"
                 onClick={() => {
                   handleSubmitClick();
