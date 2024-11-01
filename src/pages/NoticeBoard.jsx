@@ -181,7 +181,9 @@ const NoticeBoard = () => {
             const announcementsRef = collection(db, "announcements");
             const queryToCount = query(announcementsRef);
             const querySnapshot = await getDocs(queryToCount);
-            const totalAnnouncements = querySnapshot.size;
+            // const totalAnnouncements = querySnapshot.size;
+            const totalAnnouncements = querySnapshot?.size || 0;
+
             
             const customDocId = `announcement${totalAnnouncements + 2}`;
             console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
@@ -251,7 +253,8 @@ const NoticeBoard = () => {
                 }
                 let collectionSnap = await getDocs(announcementQuery);
             
-                if (!collectionSnap.empty){
+                // if (!collectionSnap.empty){
+                if (collectionSnap && collectionSnap.docs) {
                     const newNotices = collectionSnap.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
@@ -373,9 +376,9 @@ const NoticeBoard = () => {
                 {/* <label htmlFor="message">Body</label>
                 <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
                 <div className="grid w-full gap-1.5 mb-5">
-                  <label htmlFor="message">Body</label>
+                <label htmlFor="message">Body</label>
                   <div>
-                    <ReactQuill
+                    <ReactQuill 
                     theme="snow"
                     modules={modules}
                     formats={formats}
@@ -418,6 +421,7 @@ const NoticeBoard = () => {
                         {/* Conditional Rendering of the Delete Button */}
                         {role === "admin" && (
                           <Button
+                            data-testid="delete-button" 
                             className="absolute top-2 right-4 bg-white hover:bg-transparent text-xs py-1 px-2"
                             onClick={() => handleDeleteConfirm(notice.id)}>
                             <TrashIcon className="h-6 w-6 hover:text-red-600 text-gray-700" />
