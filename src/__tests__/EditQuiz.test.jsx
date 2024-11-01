@@ -152,13 +152,17 @@ const cleanUpData = async () => {
   const quixIds = ["sdg11t1", "sdg11t2", "sdg11t3"];
   for (const quizId of quixIds) {
     const quizRef = doc(db, "quizzes", quizId);
-
+    console.log(`Deleting questions in quiz: ${quizId}`);
     const questions = await getDocs(collection(quizRef, "questions"));
-    for (const question of questions.docs) {
-      await deleteDoc(question.ref);
-    }
-    //const deletePromises = questions.docs.map((doc) => deleteDoc(doc.ref));
-    //await Promise.all(deletePromises);
+    // for (const question of questions.docs) {
+    //   await deleteDoc(question.ref);
+    // }
+    const deletePromises = questions.docs.map((doc) => {
+      console.log(`Deleting question: ${doc.id} from quiz: ${quizId}`);
+      return deleteDoc(doc.ref);
+    });
+    await Promise.all(deletePromises);
+    console.log(`Deleting quiz document: ${quizId}`);
     await deleteDoc(quizRef);
   }
   console.log("data cleaned up");
