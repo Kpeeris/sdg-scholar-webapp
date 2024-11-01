@@ -13,7 +13,7 @@ const GoalInfo = () => {
   return (
     <div>
       {/* information icon */}
-      <Dialog>
+      <Dialog data-testid="infoButton">
         <DialogTrigger asChild className="dorp-shadow-xl">
           <div className="fixed left-12 top-28 bg-white rounded-xl p-2 text-orange-500 font-bold">
             {/* <InformationCircleIcon
