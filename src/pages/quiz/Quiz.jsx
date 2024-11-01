@@ -160,8 +160,6 @@ const Quiz = () => {
         if (userScore !== undefined) {
           setScore(userScore);
           console.log(`score for sdg11t${realModuleId}:`, userScore);
-          console.log("data typoe of score", typeof userScore);
-          console.log("score is set to", score);
         } else {
           console.log(`No score found for sdg11t${realModuleId}`);
         }
