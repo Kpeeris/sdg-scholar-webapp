@@ -9,14 +9,14 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
-import { db } from "./setup";
-import {
-  doc,
-  setDoc,
-  deleteDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+// import { db } from "./setup";
+// import {
+//   doc,
+//   setDoc,
+//   deleteDoc,
+//   collection,
+//   getDocs,
+// } from "firebase/firestore";
 import { setUpData, cleanUpData } from "./dbUtils";
 
 // Mock the useAuthContext hook
