@@ -4,14 +4,7 @@ import { it, expect, describe, vi, afterEach } from "vitest";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
 // Import the mocked Firestore functions
-import {
-  getDoc,
-  getDocs,
-  doc,
-  collection,
-  query,
-  where,
-} from "firebase/firestore";
+import { getDoc, getDocs } from "firebase/firestore";
 
 vi.mock("firebase/firestore", () => ({
   getDoc: vi.fn(),
