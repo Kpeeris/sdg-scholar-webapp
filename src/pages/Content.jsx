@@ -27,6 +27,7 @@ const Content = () => {
   let isAdmin = role === "admin";
 
   const [content, setContent] = useState("");
+  const [pulledContent, setPulledContent] = useState("")
 
   const storage = getStorage();
 
@@ -38,6 +39,22 @@ const Content = () => {
   } else if (moduleId === "c") {
     dbModuleId = "10";
   }
+  {/*  const deleteEmptyQuestions = async () => {
+
+    const docRef = collection(db, `quizzes/sdg11t4/questions`);
+    const docSnap = await getDocs(docRef);
+    docSnap.forEach((doc) => {
+      if((doc.id).slice(0,3) == "sdg"){
+        console.log("not wrong")
+      } else{
+        console.log(`DELETE!${doc.id}`)
+        console.log("DELETE THIS")
+        deleteDoc(doc.ref)
+      }
+      
+    })
+  }*/}
+
 
   const transform = (node) => {
     //console.log(`NAME IS: ${node.name}`)
@@ -102,6 +119,7 @@ const Content = () => {
       if (docSnap.exists()) {
         console.log(docSnap.data().content);
         setContent(docSnap.data().content);
+        setPulledContent(docSnap.data().content);
       } else {
         console.log("Document does not exist");
       }
@@ -195,7 +213,7 @@ const Content = () => {
   //const [buttonState, setButtonState] = useState('Edit')
 
   const adminContentWrite = async (newContent) => {
-    const docRef = doc(db, `quizzes/sdg11t${moduleId}`);
+    const docRef = doc(db, `quizzes/sdg11t${dbModuleId}`);
 
     console.log("trying to update");
     console.log("module id is: ", moduleId);
@@ -232,6 +250,7 @@ const Content = () => {
 
   const handleCancelClick = () => {
     setTextEditorShow(false);
+    setContent(pulledContent)
     //setButtonState('Edit')
   };
 

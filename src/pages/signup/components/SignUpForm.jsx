@@ -8,15 +8,22 @@ export const SignUpForm = ({
   lastNameRef,
   emailRef,
   passwordRef,
+  confirmPasswordRef,
 }) => {
-  const [passwordVisible, setPasswordVisible] = useState(false); // Track password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); // Toggle visibility state
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
   return (
     <div className="space-y-6">
+      {/* First name and last name div */}
       <div className="flex justify-center items-center space-x-5">
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="first-name">First Name</Label>
@@ -41,6 +48,7 @@ export const SignUpForm = ({
         </div>
       </div>
 
+      {/* Email div */}
       <div className="w-full flex flex-col items-left gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -52,6 +60,7 @@ export const SignUpForm = ({
         />
       </div>
 
+      {/* Password and password rules div */}
       <div className="space-y-3">
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="password">Password</Label>
@@ -83,8 +92,35 @@ export const SignUpForm = ({
         <ul className="text-sm">
           <li>Minimum length of 8 characters</li>
           <li>Has uppercase and lowercase letters </li>
-          <li>At least 1 number and special character</li>
+          <li>At least 1 number and 1 special character</li>
         </ul>
+      </div>
+
+      {/* Confirm password div */}
+      <div className="w-full flex flex-col items-left gap-2 pb-4">
+        <Label htmlFor="password">Confirm Password</Label>
+        <div className="relative">
+          <Input
+            data-testid="confirm-password"
+            type={confirmPasswordVisible ? "text" : "password"} // Toggle between text and password
+            id="confirm-password"
+            placeholder="Confirm Password"
+            ref={confirmPasswordRef}
+          />
+
+          {/* Eye Icon Button to toggle visibility */}
+          <button
+            type="button"
+            className="absolute right-0 top-0 mt-3 mr-3"
+            onClick={toggleConfirmPasswordVisibility}
+          >
+            {confirmPasswordVisible ? (
+              <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+            ) : (
+              <EyeIcon className="h-5 w-5 text-gray-400" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import db from "../../../firebaseFiles/firebaseConfig.js";
 
 import SignupSVG from "@/assets/images/Signup.svg";
-import { LoginLink } from "./components/LoginLink";
+import { Link } from "react-router-dom";
 import { TwoColumnLayout } from "../../TwoColumnLayout";
 
 import { Input } from "@/components/ui/input";
@@ -57,11 +57,13 @@ export const SignUpAdmin = () => {
       imageAlt="Signup SVG"
       rightContent={
         <div className="space-y-4">
-          <h1>Create Your Account</h1>
-          <p>Enter the invite code sent to create an admin account</p>
+          <div className="space-y-2 pb-2 text-center">
+            <h1>Create Your Account</h1>
+            <p>Enter the invite code sent to create an admin account</p>
+          </div>
 
           {/* Invite Code Input with Show/Hide functionality */}
-          <div className="relative">
+          <div className="relative pb-1">
             <Input
               type={codeVisible ? "text" : "password"} // Toggle between text and password
               id="admin-code"
@@ -82,15 +84,24 @@ export const SignUpAdmin = () => {
             </button>
           </div>
 
+          {error && <p className="text-red-500 text-base">{error}</p>}
+          
           {/* Verify Button */}
           <Button className="w-full mt-2 mb-2" onClick={verifyAdminCode}>
             Verify Admin Code
           </Button>
 
-          {error && <p className="text-red-500 text-base">{error}</p>}
           <hr className="w-full mt-4 border-white" />
           <hr className="w-full mt-4 border-gray-300" />
-          <LoginLink />
+
+          <div className="flex justify-center items-center">
+            <p className="text-center text-base">Not an Admin?</p>
+            <Link to="/signupuser">
+              <Button className="p-2 text-base" variant="link">
+                Sign Up as a Learner Here
+              </Button>
+            </Link>
+          </div>  
         </div>
       }
     />
