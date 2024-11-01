@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import pana from "/src/assets/images/pana.svg";
 import ConfettiExplosion from "react-confetti-explosion";
-import { cos, round } from "mathjs";
+import { round } from "mathjs";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/components/LoadingPage.jsx";
 
@@ -55,7 +55,6 @@ const Quiz = () => {
   let isAdmin = role === "admin";
 
   //modify the moduleId from the url to match the format that is is the DB
-  console.log("moduleId is", moduleId);
   let realModuleId = moduleId;
   if (moduleId == "a") {
     realModuleId = "8";
@@ -66,7 +65,7 @@ const Quiz = () => {
   }
 
   const handleSubmitClick = () => {
-    cosole.log("submitting quiz in handleSubmitClick");
+    console.log("submitting quiz in handleSubmitClick");
     setQuizSubmitted(true);
     let currResult = 0;
     questionRefs.current.forEach((ref) => {
@@ -159,8 +158,10 @@ const Quiz = () => {
         const userScore = scores ? scores[`sdg11t${realModuleId}`] : undefined;
 
         if (userScore !== undefined) {
-          console.log(`score for sdg11t${realModuleId}:`, userScore);
           setScore(userScore);
+          console.log(`score for sdg11t${realModuleId}:`, userScore);
+          console.log("data typoe of score", typeof userScore);
+          console.log("score is set to", score);
         } else {
           console.log(`No score found for sdg11t${realModuleId}`);
         }
@@ -174,8 +175,7 @@ const Quiz = () => {
     const fetchScore = async () => {
       await getScore();
       setIsLoading(false);
-      console.log("score is", score);
-      console.log("isLoading: ", isLoading);
+      // console.log("isLoading: ", isLoading);
     };
 
     if (userData) {
@@ -183,8 +183,6 @@ const Quiz = () => {
     } else {
       console.log("No user data found");
     }
-
-    //getScore().then(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 

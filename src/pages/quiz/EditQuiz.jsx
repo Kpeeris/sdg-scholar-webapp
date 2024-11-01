@@ -212,22 +212,8 @@ export const EditQuiz = () => {
     }
   };
 
-  //everytime a fied is updated see if it meets the minimun requirementrs for a question
+  //everytime a field is updated see if it meets the minimun requirementrs for a question
   useEffect(() => {
-    //q a question must have at leat two non empty options, one answer and questionText
-    // let moreThanTwo =
-    //   options.filter((option) => option.trim() !== "").length >= 2;
-
-    // //if the question is a ms question must have at least one answer
-    // let validAns =
-    //   correctAnswers.filter((answer) => answer.trim() !== "").length >= 1;
-
-    // //if the question is a mcq it can only have one answer
-    // let validMQCAnswerNumber = !(
-    //   type === "mcq" &&
-    //   correctAnswers.filter((answer) => answer.trim() !== "").length !== 1
-    // );
-
     //if there is no type selected the question is not valid
     let noTypeSelected = type === "";
     //if there is not question text the question is not valid
@@ -251,15 +237,6 @@ export const EditQuiz = () => {
     } else {
       setIsValidQuestion(true);
     }
-    // if (questionText !== "" && validAns && moreThanTwo && validAnswerNumber) {
-    //   setIsValidQuestion(true);
-    // } else {
-    //   setIsValidQuestion(false);
-    //   if (!validAnswerNumber) {
-    //     setQuestionError("Multiple choice questions can only have one answer.");
-    //     //setTooManyAnswers(true)
-    //   }
-    // }
   }, [questionText, type, options, correctAnswers]);
 
   const handleDisabledClick = () => {
@@ -295,7 +272,7 @@ export const EditQuiz = () => {
   };
 
   return (
-    <div className="flex">
+    <div data-testid="EditQuizPage" className="flex">
       <div className="flex-1 mx-20">
         <div className="flex justify-between">
           <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
