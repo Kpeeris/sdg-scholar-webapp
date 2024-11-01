@@ -10,6 +10,7 @@ vi.mock("firebase/firestore", () => {
   return {
     ...originalModule,
     getFirestore: vi.fn(),
+    connectFirestoreEmulator: vi.fn(),
     collection: vi.fn(),
     query: vi.fn(),
     getDocs: vi.fn(),

@@ -14,6 +14,7 @@ vi.mock("firebase/firestore", () => {
   return {
     ...originalModule,
     getFirestore: vi.fn(),
+    connectFirestoreEmulator: vi.fn(),
     collection: vi.fn(() => mockCollectionRef),
     //collection: vi.fn(),
     query: vi.fn(),
