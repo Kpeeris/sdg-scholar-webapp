@@ -220,6 +220,7 @@ describe("Quiz Component", () => {
 
   afterAll(async () => {
     await cleanUpData();
+    vi.restoreAllMocks();
   });
 
   it("should render the score page if the learner has already has a score,", async () => {

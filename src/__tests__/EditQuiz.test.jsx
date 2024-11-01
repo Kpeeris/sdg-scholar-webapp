@@ -214,6 +214,8 @@ describe("EditQuiz Component", () => {
 
   afterAll(async () => {
     await cleanUpData();
+    //vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
   it("should render the EditQuiz component", async () => {
     renderComponent("admin", "test_admin@example.com", "1");
