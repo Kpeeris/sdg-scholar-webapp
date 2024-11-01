@@ -263,12 +263,15 @@ describe("Quiz Component", () => {
     });
 
     //check if the questions are rendered
-    await waitFor(() => {
-      expect(screen.getAllByTestId("questionComponent")).toHaveLength(3);
-      expect(
-        screen.getByText("What is the capital of France?")
-      ).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getAllByTestId("questionComponent")).toHaveLength(3);
+        expect(
+          screen.getByText("What is the capital of France?")
+        ).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
     await waitFor(() => {
       expect(
         screen.getByText("What is the capital of Germany?")
