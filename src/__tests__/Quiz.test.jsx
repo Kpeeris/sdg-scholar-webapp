@@ -58,9 +58,9 @@ describe("Quiz Component", () => {
     vi.clearAllMocks();
   });
 
-  afterAll(async () => {
-    await cleanUpData();
-  });
+  // afterAll(async () => {
+  //   await cleanUpData();
+  // });
 
   it("should render the score page if the learner has already has a score,", async () => {
     renderComponent("learner", "test_learner@example.com", "1");
