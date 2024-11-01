@@ -214,7 +214,8 @@ describe("Quiz Component", () => {
 
   // Clear mocks before each test
   beforeEach(() => {
-    vi.clearAllMocks();
+    //vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(async () => {
