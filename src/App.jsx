@@ -59,7 +59,9 @@ function App() {
 
           <Route path="/module/:moduleId/content" element={<PrivateRoute element={<Content />} />} />
           <Route path="/module/:moduleId/quiz" element={<PrivateRoute element={<Quiz />} />} />
-          <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} />} />
+
+          {/* Private routes, accessible only if logged in and is an admin */}
+          <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} requiredRole="admin" />} />
 
           <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
 

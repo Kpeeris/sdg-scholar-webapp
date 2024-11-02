@@ -102,11 +102,13 @@
   }
 
   blockquote {
-    @apply mt-3 border-l-2 pl-6 italic;
+
+    @apply border-l-2 mt-2 mb-2 pl-6 text-lg italic;
+
   }
 
   ul {
-    @apply my-6 ml-6 list-disc [&>li]:mt-2 [&>li:last-child]:mb-2
+    @apply ml-6 list-disc text-lg [&>li]:mt-2 [&>li:last-child]:mb-2
   }
 
   small {

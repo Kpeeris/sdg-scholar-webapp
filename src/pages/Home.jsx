@@ -19,7 +19,7 @@ export const Home = () => {
   return (
     <div data-testid="home-page">
       {/* Renders Hi message based on if their first name or last name exists */}
-      <h1 className="pb-16">
+      <h1 className="pt-4 pb-12">
         {userData?.firstName
           ? userData.lastName
             ? `Hi ${userData.firstName} ${userData.lastName}!` 
