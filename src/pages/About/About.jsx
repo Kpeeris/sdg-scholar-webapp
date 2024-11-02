@@ -71,9 +71,9 @@ export const About = () => {
       {/* Attributions */}
       <div className="flex flex-col items-center p-12">
         <h2 className="leading-[1.3] text-center text-4xl font-bold">Attributions</h2>
-        <p className="text-center max-w-4xl">We use images from <a href="https://www.freepik.com" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline">Freepik</a> to 
-        enhance our site&apos;s visuals and referenced the official <a href="https://sdgs.un.org/goals" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline">UN website</a> to develop our content. 
-        We also use <a href="https://www.npmjs.com/package/react-quill" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline">ReactQuill</a> for the text editor in our admin content pages.</p>
+        <p className="text-center max-w-4xl">We use images from <a href="https://www.freepik.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">Freepik</a> to 
+        enhance our site&apos;s visuals and referenced the official <a href="https://sdgs.un.org/goals" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">UN website</a> to develop our content. 
+        We also use <a href="https://www.npmjs.com/package/react-quill" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">ReactQuill</a> for the text editor in our admin content pages.</p>
       </div>
 
     </div>
