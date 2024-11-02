@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { LoginLink } from "./signup/components/LoginLink";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 const ResetPassword = () => {
     const emailRef = useRef(); // Reference to the email input field
@@ -59,7 +61,15 @@ const ResetPassword = () => {
           </div>
           
           {message && <p className="text-green-600 text-base">{message}</p>}
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && (
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
+          )}
 
           <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleResetPassword}>
             {loading ? "Sending..." : "Send Reset Email"}
