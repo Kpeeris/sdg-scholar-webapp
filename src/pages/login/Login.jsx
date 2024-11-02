@@ -14,6 +14,9 @@ import LoginSVG from "@/assets/images/Login.svg";
 import { Link } from "react-router-dom";
 
 import { login } from "../../../firebaseFiles/firebaseAuth.js";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 
 export const Login = () => {
   const emailRef = useRef();
@@ -39,6 +42,7 @@ export const Login = () => {
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
 
+      // Calls Firebase Authentication Login Function
       await login(email, password);
 
       setLoading(false);
@@ -46,7 +50,7 @@ export const Login = () => {
     } catch (error) {
       const customErrorMessage =
         firebaseErrorMessages[error.code] ||
-        "An unexpected error occurred. Please try again."; //error.message
+        "An unexpected error occurred. Please try again."; 
       setError(customErrorMessage);
       setLoading(false);
     }
@@ -84,12 +88,13 @@ export const Login = () => {
           </div>
 
           {error && (
-            <p
-              data-testid="loginErrorMessage"
-              className="text-red-500 text-base"
-            >
-              {error}
-            </p>
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
           )}
 
           <Button

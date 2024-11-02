@@ -44,8 +44,7 @@ function App() {
     <AuthProvider>
       <Layout>
         <Routes>
-
-          {/* Public routes */}
+          {/* Public routes, accessible when not logged in */}
           <Route path="/login" element={<PublicRoute element={<Login />} />} />
           <Route path="/signup" element={<PublicRoute element={<SignUp />} />} />
           <Route path="/signupadmin" element={<PublicRoute element={<SignUpAdmin />} />} />
@@ -56,15 +55,12 @@ function App() {
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
           <Route path="/about" element={<PrivateRoute element={<About />} />} />
           <Route path="/sdg11" element={<PrivateRoute element={<Sdg11 />} />} />
-
           <Route path="/module/:moduleId/content" element={<PrivateRoute element={<Content />} />} />
           <Route path="/module/:moduleId/quiz" element={<PrivateRoute element={<Quiz />} />} />
+          <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
 
           {/* Private routes, accessible only if logged in and is an admin */}
           <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} requiredRole="admin" />} />
-
-          <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
-
         </Routes>
       </Layout>
     </AuthProvider>

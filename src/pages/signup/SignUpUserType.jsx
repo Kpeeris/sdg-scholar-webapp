@@ -7,8 +7,13 @@ import { UserTypeCard } from "./components/UserTypeCard";
 import { Button } from "@/components/ui/button";
 import { LoginLink } from "./components/LoginLink";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 export const SignUpUser = () => {
   const [userType, setUserType] = useState(null); // Track selected user type
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   // Handle user type selection
@@ -23,7 +28,7 @@ export const SignUpUser = () => {
     } else if (userType === "learner") {
       navigate("/signup", { state: { userType: "learner" } });
     } else {
-      alert("Please select a user type to continue.");
+      setError("Please select a user type to continue.");
     }
   };
 
@@ -40,6 +45,15 @@ export const SignUpUser = () => {
 
           {/* Pass the handleUserTypeSelection to UserTypeCard */}
           <UserTypeCard onSelectType={handleUserTypeSelection} />
+          {error && (
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
+          )}
 
           {/* Create Account Button */}
           <div className="pt-2 pb-3">

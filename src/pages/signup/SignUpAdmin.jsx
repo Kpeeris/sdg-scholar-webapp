@@ -10,6 +10,9 @@ import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 
 export const SignUpAdmin = () => {
   const adminCodeRef = useRef(null);
@@ -84,7 +87,15 @@ export const SignUpAdmin = () => {
             </button>
           </div>
 
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && (
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
+          )}
           
           {/* Verify Button */}
           <Button className="w-full mt-2 mb-2" onClick={verifyAdminCode}>

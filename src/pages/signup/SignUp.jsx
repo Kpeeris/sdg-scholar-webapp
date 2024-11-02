@@ -10,6 +10,10 @@ import { Link } from "react-router-dom";
 import db from "../../../firebaseFiles/firebaseConfig.js";
 import { signup } from "../../../firebaseFiles/firebaseAuth.js";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
+
 
 const SignUp = () => {
   const firstNameRef = useRef();
@@ -134,13 +138,14 @@ const SignUp = () => {
             passwordRef={passwordRef}
             confirmPasswordRef={confirmPasswordRef}
           />
-          {error && (
-            <p
-              data-testid="signupErrorMessage"
-              className="text-red-500 text-base"
-            >
-              {error}
-            </p>
+           {error && (
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
           )}
           <Button
             data-testid="signup-button"
