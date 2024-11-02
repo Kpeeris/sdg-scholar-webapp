@@ -291,7 +291,7 @@ const NoticeBoard = () => {
 
   return (
     <div>
-      <h1 className="pb-10 px-16">Notice Board</h1>
+      <h1 className="pb-5 px-16">Notice Board</h1>
 
       {/* category selection to filter notices */}
       <div className="px-16 flex items-center justify-between">
@@ -299,7 +299,7 @@ const NoticeBoard = () => {
           variant="default"
           size="default"
           type="single"
-          className="justify-start"
+          className="justify-start mb-5"
           onValueChange={(value) => {
             if (value && value !== selectedTag) {
               setSelectedTag(value);
@@ -489,7 +489,7 @@ const NoticeBoard = () => {
                     </CardDescription>
                     {/* Conditional Rendering of the tag */}
                     <span
-                      className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
+                      className={`inline-block text-xs font-semibold px-3 py-2 rounded-full w-auto 
                         ${
                           notice.category === "All"
                             ? "bg-orange-100 text-orange-600"
@@ -508,7 +508,7 @@ const NoticeBoard = () => {
                     </span>
                   </CardHeader>
                   <CardContent>
-                    <p>
+                    <p className="-mt-2">
                       {notice.message
                         ? parse(notice.message.toString(), {
                             replace: (domNode) => {
