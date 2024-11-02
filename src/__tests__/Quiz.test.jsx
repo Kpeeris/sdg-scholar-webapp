@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore";
 
 const setQuizUpData = async () => {
+  //learner data
   await setDoc(doc(db, "learners", "learner1"), {
     email: "test_learner@example.com",
     firstName: "Test",
@@ -31,11 +32,15 @@ const setQuizUpData = async () => {
     lastname: "New",
     scores: { sdg11t1: 0, sdg11t2: 0, sdg11t3: 0 },
   });
+
+  //admin data
   await setDoc(doc(db, "admins", "admin1"), {
     email: "test_admin@example.com",
     firstName: "Test",
     lastname: "Admin",
   });
+
+  // quiz data used to seed the database
   const testQuizdata = {
     quizId: "sdg11t1",
     questions: [
@@ -63,6 +68,7 @@ const setQuizUpData = async () => {
     ],
   };
 
+  // loop through testQuizdata and add data to db
   const quizRef = doc(db, "quizzes", testQuizdata.quizId);
   for (const question of testQuizdata.questions) {
     await setDoc(doc(quizRef, "questions", question.id), {
@@ -77,26 +83,16 @@ const setQuizUpData = async () => {
 };
 
 const cleanQuizUpData = async () => {
+  //delete learners
   await deleteDoc(doc(db, "learners", "learner1"));
   await deleteDoc(doc(db, "learners", "learner2"));
 
+  //delete admin
   await deleteDoc(doc(db, "admins", "admin1"));
-
-  // const quixIds = ["sdg11t1", "sdg11t2", "sdg11t3"];
-  // for (const quizId of quixIds) {
-  //   const quizRef = doc(db, "quizzes", quizId);
-
-  //   const questions = await getDocs(collection(quizRef, "questions"));
-  //   for (const question of questions.docs) {
-  //     await deleteDoc(question.ref);
-  //   }
-  //   //const deletePromises = questions.docs.map((doc) => deleteDoc(doc.ref));
-  //   //await Promise.all(deletePromises);
-  //   await deleteDoc(quizRef);
-  // }
   const quizID = "sdg11t1";
   const quizRef = doc(db, "quizzes", quizID);
 
+  //delete questions
   const questions = await getDocs(collection(quizRef, "questions"));
   for (const question of questions.docs) {
     console.log("Deleting:", question.id);
@@ -149,10 +145,10 @@ describe("Quiz Component", () => {
 
   // Clear mocks before each test
   beforeEach(() => {
-    //vi.clearAllMocks();
     vi.resetAllMocks();
   });
 
+  // Clean up the database after all tests
   afterAll(async () => {
     await cleanQuizUpData();
     vi.restoreAllMocks();
