@@ -27,6 +27,7 @@ import ConfettiExplosion from "react-confetti-explosion";
 import { round } from "mathjs";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/components/LoadingPage.jsx";
+import cityFooter from "/src/assets/images/city_footer.png";
 
 const Quiz = () => {
   // used to navigate to new page when button is clicked
@@ -237,7 +238,7 @@ const Quiz = () => {
   }, [isAdmin]);
 
   return (
-    <div data-testid="quiz-page" className="flex">
+    <div data-testid="quiz-page" className="">
       {isLoading ? (
         <LoadingPage />
       ) : (
@@ -247,150 +248,156 @@ const Quiz = () => {
             <div
               data-testid="questionsPage"
               ref={targetRef}
-              className="ml-[250px] h-screen flex-1"
+              className="ml-[250px] relative"
             >
-              <div className="flex justify-between">
-                <h1>{moduleTitle}</h1>
-
-                {isAdmin ? (
-                  <Button
-                    data-testid="editQuizButton"
-                    className="w-44 text-lg"
-                    onClick={() => navigate(`/module/${moduleId}/editquiz`)}
-                  >
-                    <PencilSquareIcon className="h-6 w-6 text-white" /> Edit
-                    Quiz
-                  </Button>
-                ) : null}
+              <div className="">
+                <img
+                  src={cityFooter}
+                  alt="little city"
+                  className="fixed bottom-0 left-0 z-10 pointer-events-none"
+                  style={{ marginLeft: "250px", width: "calc(100% - 250px)" }}
+                />
               </div>
-              <br />
-              <div>
-                {Object.values(docs).map((question, index) => {
-                  return (
-                    <div
-                      data-testid="questionComponent"
-                      key={question.id || index}
+              <div className="fixed h-full w-full ml-[250px] top-0 left-0 bg-custom-gradient pointer-events-none"></div>
+              <div className="relative py-12 px-16 flex-1 overflow-auto">
+                <div className="flex justify-between">
+                  <h1>{moduleTitle}</h1>
+
+                  {isAdmin ? (
+                    <Button
+                      data-testid="editQuizButton"
+                      className="w-44 text-lg"
+                      onClick={() => navigate(`/module/${moduleId}/editquiz`)}
                     >
-                      <Question
-                        ref={questionRefs.current[index]}
-                        //key={question}
-                        q={question}
-                        i={index}
-                      />
-                      <br />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {isAdmin ? null : (
-                <div className="flex flex-col items-center">
-                  <br />
-                  <Button
-                    data-testid="submitQuizButton"
-                    className="w-44 mb-16"
-                    onClick={() => {
-                      setDialogVisible(true);
-                    }}
-                  >
-                    Submit Quiz
-                  </Button>
+                      <PencilSquareIcon className="h-6 w-6 text-white" /> Edit
+                      Quiz
+                    </Button>
+                  ) : null}
                 </div>
-              )}
+                <br />
+                <div>
+                  {Object.values(docs).map((question, index) => {
+                    return (
+                      <div
+                        data-testid="questionComponent"
+                        key={question.id || index}
+                      >
+                        <Question
+                          ref={questionRefs.current[index]}
+                          //key={question}
+                          q={question}
+                          i={index}
+                        />
+                        <br />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {isAdmin ? null : (
+                  <div className="flex flex-col items-center justify-center">
+                    <br />
+                    <Button
+                      data-testid="submitQuizButton"
+                      className="w-40 mb-16"
+                      onClick={() => {
+                        setDialogVisible(true);
+                      }}
+                    >
+                      Submit Quiz
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           ) : //if user is not an Admin and the quiz is not submitted and the score is 0
           !quizSubmitted && !isAdmin && score === 0 ? (
-            <div
-              data-testid="preQuizPage"
-              className="ml-[250px] flex-1 flex flex-col items-center justify-start"
-            >
-              <div className="relative h-72 w-72">
-                <img
-                  src={pana}
-                  alt="Start Quiz"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div
-                style={{
-                  height: "50px",
-                  width: "800px",
-                  paddingLeft: "100px",
-                  paddingRight: "100px",
-                }}
-              >
-                <div>
-                  <h2 style={{ fontWeight: "bold", textAlign: "center" }}>
-                    Ready for the Quiz?
-                  </h2>
+            <div data-testid="preQuizPage" className="ml-[250px] ">
+              <div className="p-12 mt-4 flex flex-col items-center">
+                <div className="relative h-72 w-72">
+                  <img
+                    src={pana}
+                    alt="Start Quiz"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+                <div>
+                  <div>
+                    <h2 style={{ fontWeight: "bold", textAlign: "center" }}>
+                      Ready for the Quiz?
+                    </h2>
+                  </div>
 
-                <ul className="space-y-0">
-                  <li>
-                    Test yourself on the knowledge you learned about this target
-                  </li>
-                  <li>
-                    Your progress will{" "}
-                    <span style={{ fontWeight: "bold" }}>not</span> be saved if
-                    you exit the quiz before clicking ‘Submit’
-                  </li>
-                  <li>Each question is required and weighted equally</li>
-                  <li>
-                    <span style={{ fontWeight: "bold" }}>
-                      You must score 100%
-                    </span>{" "}
-                    to complete the quiz and unlock the building
-                  </li>
-                  <li>You have unlimited attempts to complete the quiz</li>
-                </ul>
-              </div>
-              <div className="mt-40">
-                <Button
-                  data-testid="startQuizButton"
-                  style={{ textAlign: "center" }}
-                  className="w-44"
-                  onClick={() => {
-                    setQuizStarted(true);
-                  }}
-                >
-                  Start Quiz
-                </Button>
+                  <ul className="space-y-0">
+                    <li>
+                      Test yourself on the knowledge you learned about this
+                      target
+                    </li>
+                    <li>
+                      Your progress will{" "}
+                      <span style={{ fontWeight: "bold" }}>not</span> be saved
+                      if you exit the quiz before clicking ‘Submit’
+                    </li>
+                    <li>Each question is required and weighted equally</li>
+                    <li>
+                      <span style={{ fontWeight: "bold" }}>
+                        You must score 100%
+                      </span>{" "}
+                      to complete the quiz and unlock the building
+                    </li>
+                    <li>You have unlimited attempts to complete the quiz</li>
+                  </ul>
+                </div>
+                <div className="mt-8">
+                  <Button
+                    data-testid="startQuizButton"
+                    style={{ textAlign: "center" }}
+                    className="w-44"
+                    onClick={() => {
+                      setQuizStarted(true);
+                    }}
+                  >
+                    Start Quiz
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
             <div data-testid="scorePage" className="ml-[250px] flex-1">
-              <h1>{moduleTitle}</h1>
-              {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
-              <br />
-              <div className="flex-1 flex flex-col items-center justify-center">
-                <p>You scored</p>
+              <div className="px-12 pt-12 h-screen flex-1">
+                <h1>{moduleTitle}</h1>
+                {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
                 <br />
-                {result === totalQuestions ? (
-                  <>{isExploding && <ConfettiExplosion />}</>
-                ) : null}
-                <div
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "#FFE4B2",
-                    height: "100px",
-                    width: "100px",
-                  }}
-                  className="flex items-center justify-center"
-                >
-                  <h2 className="text-orange-500">{score}%</h2>
+                <div className="flex-1 flex flex-col items-center justify-center">
+                  <p>You scored</p>
+                  <br />
+                  {result === totalQuestions ? (
+                    <>{isExploding && <ConfettiExplosion />}</>
+                  ) : null}
+                  <div
+                    style={{
+                      borderRadius: "50%",
+                      backgroundColor: "#FFE4B2",
+                      height: "100px",
+                      width: "100px",
+                    }}
+                    className="flex items-center justify-center"
+                  >
+                    <h2 className="text-orange-500">{score}%</h2>
+                  </div>
+                  <br />
+                  <Button
+                    className="w-32"
+                    onClick={() => {
+                      setQuizStarted(true);
+                      setQuizSubmitted(false);
+                      saveScore(0);
+                      setScore(0);
+                    }}
+                  >
+                    Take Quiz Again
+                  </Button>
                 </div>
-                <br />
-                <Button
-                  className="w-32"
-                  onClick={() => {
-                    setQuizStarted(true);
-                    setQuizSubmitted(false);
-                    saveScore(0);
-                    setScore(0);
-                  }}
-                >
-                  Take Quiz Again
-                </Button>
               </div>
             </div>
           )}
