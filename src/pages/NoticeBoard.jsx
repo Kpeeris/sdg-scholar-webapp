@@ -41,17 +41,16 @@ import { useAuthContext } from "@/AuthProvider";
 
 import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from "sanitize-html";
 import parse from "html-react-parser";
 
 const NoticeBoard = () => {
-    const [notices, setNotices] = useState([]);
-    const [lastOnPage, setLastOnPage] = useState(null);
-    const [hasMore, setHasMore] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [selectedTag, setSelectedTag] = useState("All");
-    //const [content, setContent] = useState("");
-
+  const [notices, setNotices] = useState([]);
+  const [lastOnPage, setLastOnPage] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [selectedTag, setSelectedTag] = useState("All");
+  //const [content, setContent] = useState("");
 
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -65,10 +64,10 @@ const NoticeBoard = () => {
       ["bold", "italic", "underline", "strike", "blockquote"],
       //[ { list: "bullet" }],
       ["link"],
-      [{ list: "bullet" }]
+      [{ list: "bullet" }],
     ],
   };
-  
+
   var formats = [
     "header",
     "height",
@@ -132,11 +131,15 @@ const NoticeBoard = () => {
         color: "blue",
       };
     }
-    if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
-      return <br />
+    if (
+      node.name == "p" &&
+      node.children.length === 1 &&
+      node.children[0].name == "br"
+    ) {
+      return <br />;
     }
   };
-  
+
   const handleProcedureContentChange = (newContent) => {
     setMessage(newContent);
     console.log("MESSAGE---->", message);
@@ -171,113 +174,120 @@ const NoticeBoard = () => {
       console.error("Error deleting notice: ", e);
     }
   };
-    const { userData, role } = useAuthContext();
-      const handlePost = async () => {
-        
-        try {
-            const creationTime = Timestamp.now();
+  const { userData, role } = useAuthContext();
+  const handlePost = async () => {
+    try {
+      const creationTime = Timestamp.now();
 
-           // Count the total announcement there are to generate the custom id
-            const announcementsRef = collection(db, "announcements");
-            const queryToCount = query(announcementsRef);
-            const querySnapshot = await getDocs(queryToCount);
-            // const totalAnnouncements = querySnapshot.size;
-            const totalAnnouncements = querySnapshot?.size || 0;
+      // Count the total announcement there are to generate the custom id
+      const announcementsRef = collection(db, "announcements");
+      const queryToCount = query(announcementsRef);
+      const querySnapshot = await getDocs(queryToCount);
+      // const totalAnnouncements = querySnapshot.size;
+      const totalAnnouncements = querySnapshot?.size || 0;
 
-            
-            const customDocId = `announcement${totalAnnouncements + 2}`;
-            console.log("the id is: " + customDocId, "total announcments: " + totalAnnouncements);
-            
-            const authorName = `${userData?.firstName || 'Unauthorised'} ${userData?.lastName || 'User'}`;
+      const customDocId = `announcement${totalAnnouncements + 2}`;
+      console.log(
+        "the id is: " + customDocId,
+        "total announcments: " + totalAnnouncements
+      );
 
-            const message2 = sanitizeHtml(message)
+      const authorName = `${userData?.firstName || "Unauthorised"} ${
+        userData?.lastName || "User"
+      }`;
 
-            await addDoc(announcementsRef, {
-              title,
-              message: message2,
-              category,
-              creationTime,
-              author: authorName
-            });
-            
-            setPostReload(postReload + 1);
-            console.log("Notice Saved");
-          } catch (error) {
-            console.error("Could not write to database: ", error);
-          } finally {
-            setTitle('');
-            setMessage('');
-            setCategory('General');
-          }
+      const message2 = sanitizeHtml(message);
+
+      await addDoc(announcementsRef, {
+        title,
+        message: message2,
+        category,
+        creationTime,
+        author: authorName,
+      });
+
+      setPostReload(postReload + 1);
+      console.log("Notice Saved");
+    } catch (error) {
+      console.error("Could not write to database: ", error);
+    } finally {
+      setTitle("");
+      setMessage("");
+      setCategory("General");
     }
-    
-    const getAnnouncements = async (loadMore = false) => {
-        setLoading(true);
-        try {
-                let collectionRef = collection(db, `announcements`);
-                let announcementQuery;
-                
-                // pagination logic
-                if (!(loadMore && lastOnPage)) {
-                    // this is the first time we are fetching the announcements
-                    if (selectedTag == "All") {
-                        // Fetch all the announcements
-                        announcementQuery = query(collectionRef, orderBy("creationTime", "desc"), limit(10));
-                      } else {
-                        // Fetch announcements whose category matches the selected tag
-                        announcementQuery = query(collectionRef,
-                          where("category", "==", selectedTag),
-                          orderBy("creationTime", "desc"),
-                          limit(10)
-                        );
-                      }
-                    
-                } else {
-                    // to fetch more announcements
-                    if (selectedTag == "All") {
-                        announcementQuery = query(
-                          collectionRef,
-                          orderBy("creationTime", "desc"),
-                          startAfter(lastOnPage),
-                          limit(10)
-                        );
-                      } else {
-                        announcementQuery = query(
-                          collectionRef,
-                          where("category", "==", selectedTag), // Filter by selected category
-                          orderBy("creationTime", "desc"),
-                          startAfter(lastOnPage),
-                          limit(10)
-                        );
-                      }
-                }
-                let collectionSnap = await getDocs(announcementQuery);
-            
-                // if (!collectionSnap.empty){
-                if (collectionSnap && collectionSnap.docs) {
-                    const newNotices = collectionSnap.docs.map((doc) => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    }));
-                    setNotices((prevNotices) => (loadMore ? [...prevNotices, ...newNotices] : newNotices));
+  };
 
-                    
-                    let lastNoticePosition = collectionSnap.docs.length - 1;
-                    setLastOnPage(collectionSnap.docs[lastNoticePosition]);
-                    
-                    if (collectionSnap.docs.length < 10) {
-                        setHasMore(false);
-                    }
-                
-                } else {
-                    setHasMore(false);
-                }
-          } catch (e) {
-            console.error("Error retrieving announcements: ", e);
-          }
-          setLoading(false);
-          return 0;
-        };
+  const getAnnouncements = async (loadMore = false) => {
+    setLoading(true);
+    try {
+      let collectionRef = collection(db, `announcements`);
+      let announcementQuery;
+
+      // pagination logic
+      if (!(loadMore && lastOnPage)) {
+        // this is the first time we are fetching the announcements
+        if (selectedTag == "All") {
+          // Fetch all the announcements
+          announcementQuery = query(
+            collectionRef,
+            orderBy("creationTime", "desc"),
+            limit(10)
+          );
+        } else {
+          // Fetch announcements whose category matches the selected tag
+          announcementQuery = query(
+            collectionRef,
+            where("category", "==", selectedTag),
+            orderBy("creationTime", "desc"),
+            limit(10)
+          );
+        }
+      } else {
+        // to fetch more announcements
+        if (selectedTag == "All") {
+          announcementQuery = query(
+            collectionRef,
+            orderBy("creationTime", "desc"),
+            startAfter(lastOnPage),
+            limit(10)
+          );
+        } else {
+          announcementQuery = query(
+            collectionRef,
+            where("category", "==", selectedTag), // Filter by selected category
+            orderBy("creationTime", "desc"),
+            startAfter(lastOnPage),
+            limit(10)
+          );
+        }
+      }
+      let collectionSnap = await getDocs(announcementQuery);
+
+      // if (!collectionSnap.empty){
+      if (collectionSnap && collectionSnap.docs) {
+        const newNotices = collectionSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotices((prevNotices) =>
+          loadMore ? [...prevNotices, ...newNotices] : newNotices
+        );
+
+        let lastNoticePosition = collectionSnap.docs.length - 1;
+        setLastOnPage(collectionSnap.docs[lastNoticePosition]);
+
+        if (collectionSnap.docs.length < 10) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (e) {
+      console.error("Error retrieving announcements: ", e);
+    }
+    setLoading(false);
+    return 0;
+  };
 
   return (
     <div>
@@ -350,88 +360,138 @@ const NoticeBoard = () => {
             SDGs
           </ToggleGroupItem>
         </ToggleGroup>
-      {role === "admin" && (
-        <Dialog className="max-w-3xl">
-          <DialogTrigger asChild>
-            <Button><PencilSquareIcon className="h-6 w-6 text-white" />  New Notice</Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-3xl w-full">
-              <DialogHeader><DialogTitle className="flex justify-center text-4xl">Create New Notice</DialogTitle></DialogHeader>
+        {role === "admin" && (
+          <Dialog className="max-w-3xl">
+            <DialogTrigger asChild>
+              <Button>
+                <PencilSquareIcon className="h-6 w-6 text-white" /> New Notice
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl w-full">
+              <DialogHeader>
+                <DialogTitle className="flex justify-center text-4xl">
+                  Create New Notice
+                </DialogTitle>
+              </DialogHeader>
               <div className="p-1">
                 <label htmlFor="title">Title</label>
-                <Input placeholder="Write your notice here..." id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                {title === '' && <span style={{ color: 'red' }}>please add a title</span>}
-                <br/>
+                <Input
+                  placeholder="Write your notice here..."
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                {title === "" && (
+                  <span style={{ color: "red" }}>please add a title</span>
+                )}
+                <br />
                 <label>Category</label>
-                
+
                 {/* my plan: if they don't select one, write All to the notice.category */}
-                <ToggleGroup variant="default" size="default" type="single" className="justify-start" onValueChange={(value) => setCategory(value || "General")}>
-                    <ToggleGroupItem value="General" className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300">General</ToggleGroupItem>
-                    <ToggleGroupItem value="Project Initiatives" className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300">Project Initiatives</ToggleGroupItem>
-                    <ToggleGroupItem value="Quizzes" className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300">Quizzes</ToggleGroupItem>
-                    <ToggleGroupItem value="SDGs" className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300">SDGs</ToggleGroupItem>
+                <ToggleGroup
+                  variant="default"
+                  size="default"
+                  type="single"
+                  className="justify-start"
+                  onValueChange={(value) => setCategory(value || "General")}
+                >
+                  <ToggleGroupItem
+                    value="General"
+                    className="bg-rose-100 border-2 border-transparent hover:border-rose-300 text-rose-600 data-[state=on]:border-rose-300"
+                  >
+                    General
+                  </ToggleGroupItem>
+                  <ToggleGroupItem
+                    value="Project Initiatives"
+                    className="bg-green-100 border-2 border-transparent hover:border-green-300 text-green-600 data-[state=on]:border-green-300"
+                  >
+                    Project Initiatives
+                  </ToggleGroupItem>
+                  <ToggleGroupItem
+                    value="Quizzes"
+                    className="bg-purple-100 border-2 border-transparent hover:border-purple-300 text-purple-600 data-[state=on]:border-purple-300"
+                  >
+                    Quizzes
+                  </ToggleGroupItem>
+                  <ToggleGroupItem
+                    value="SDGs"
+                    className="bg-sky-100 border-2 border-transparent hover:border-sky-300 text-sky-600 data-[state=on]:border-sky-300"
+                  >
+                    SDGs
+                  </ToggleGroupItem>
                 </ToggleGroup>
-                <br/>
+                <br />
 
                 {/* <label htmlFor="message">Body</label>
                 <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
                 <div className="grid w-full gap-1.5 mb-5">
-                <label htmlFor="message">Body</label>
-                  <div>
-                    <ReactQuill 
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    value={message}
-                    onChange={handleProcedureContentChange}
-                    style={{
-                      height: "200px",
-                      width: "100%",
-                      maxWidth: "100%",
-                      whiteSpace: "pre-wrap",
-                      overflowWrap: "break-word",
-                      wordWrap: "break-word",
-                      overflow: "hidden",
-                    }}></ReactQuill>
+                  <label htmlFor="message">Body</label>
+                  <div className="w-full p-1">
+                    <ReactQuill
+                      theme="snow"
+                      modules={modules}
+                      formats={formats}
+                      value={message}
+                      onChange={handleProcedureContentChange}
+                      className="break-all"
+                      style={{
+                        height: "250px",
+                        width: "100%",
+                        maxWidth: "100%",
+                        whiteSpace: "pre-wrap",
+                        overflow: "hidden",
+                        paddingTop: "10px",
+                        display: "inline-block",
+                        paddingBottom: "45px",
+                      }}
+                    ></ReactQuill>
                   </div>
-                  
+
                   {/*<Textarea placeholder="Type your message here." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>*/}
                 </div>
               </div>
 
-            <DialogClose asChild>
-              <Button onClick={handlePost} disabled={title === ''}>Post</Button>
-            </DialogClose>
-            
-          </DialogContent>
-        </Dialog>
+              <DialogClose asChild>
+                <Button onClick={handlePost} disabled={title === ""}>
+                  Post
+                </Button>
+              </DialogClose>
+            </DialogContent>
+          </Dialog>
         )}
-     </div>
-    
-    <div>
+      </div>
+
+      <div>
         {notices.length > 0 ? (
           <ul className="pl-9 pr-16 list-none space-y-4">
             {notices.map((notice) => (
               <li key={notice.id}>
                 <Card className="relative inline-block w-full">
-                    <CardHeader className="flex flex-col items-start justify-between">
-                        <CardTitle>{notice.title}</CardTitle>
-                        
-          
-                        {/* Conditional Rendering of the Delete Button */}
-                        {role === "admin" && (
-                          <Button
-                            data-testid="delete-button" 
-                            className="absolute top-2 right-4 bg-white hover:bg-transparent text-xs py-1 px-2"
-                            onClick={() => handleDeleteConfirm(notice.id)}>
-                            <TrashIcon className="h-6 w-6 hover:text-red-600 text-gray-700" />
-                          </Button>
-                        )}
-  
-                        <CardDescription>{notice.author} &bull; {new Date(notice.creationTime.seconds * 1000).toLocaleString()}</CardDescription>
-                        {/* Conditional Rendering of the tag */}
-                        <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
-                        ${ notice.category === "All"
+                  <CardHeader className="flex flex-col items-start justify-between">
+                    <CardTitle>{notice.title}</CardTitle>
+
+                    {/* Conditional Rendering of the Delete Button */}
+                    {role === "admin" && (
+                      <Button
+                        data-testid="delete-button"
+                        className="absolute top-2 right-4 bg-white hover:bg-transparent text-xs py-1 px-2"
+                        onClick={() => handleDeleteConfirm(notice.id)}
+                      >
+                        <TrashIcon className="h-6 w-6 hover:text-red-600 text-gray-700" />
+                      </Button>
+                    )}
+
+                    <CardDescription>
+                      {notice.author} &bull;{" "}
+                      {new Date(
+                        notice.creationTime.seconds * 1000
+                      ).toLocaleString()}
+                    </CardDescription>
+                    {/* Conditional Rendering of the tag */}
+                    <span
+                      className={`inline-block text-xs font-semibold px-3 py-1 rounded-full w-auto 
+                        ${
+                          notice.category === "All"
                             ? "bg-orange-100 text-orange-600"
                             : notice.category === "General"
                             ? "bg-rose-100 text-rose-600"
@@ -448,12 +508,16 @@ const NoticeBoard = () => {
                     </span>
                   </CardHeader>
                   <CardContent>
-                    <p>{notice.message ? parse((notice.message).toString(), {
-                    replace: (domNode) => {
-                      transform(domNode); // Apply the transformation
-                      return domNode; // Return the transformed node
-                    },
-                  }) : ""}</p>
+                    <p>
+                      {notice.message
+                        ? parse(notice.message.toString(), {
+                            replace: (domNode) => {
+                              transform(domNode); // Apply the transformation
+                              return domNode; // Return the transformed node
+                            },
+                          })
+                        : ""}
+                    </p>
                   </CardContent>
                 </Card>
               </li>
@@ -488,15 +552,21 @@ const NoticeBoard = () => {
             </DialogHeader>
             <DialogFooter className="flex justify-end space-x-2">
               <DialogClose asChild>
-                <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteConfirmOpen(false)}
+                >
+                  Cancel
+                </Button>
               </DialogClose>
 
               <Button onClick={handleDelete}>Confirm</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
-     )}
-  </div>
-)}
+      )}
+    </div>
+  );
+};
 
 export default NoticeBoard;
