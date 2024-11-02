@@ -251,9 +251,7 @@ const Quiz = () => {
             >
               <div className="flex justify-between">
                 <h1>{moduleTitle}</h1>
-                {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
-                {moduleTitle}
-              </h2> */}
+
                 {isAdmin ? (
                   <Button
                     data-testid="editQuizButton"

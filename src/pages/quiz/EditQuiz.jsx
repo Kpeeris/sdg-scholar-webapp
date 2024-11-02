@@ -275,9 +275,10 @@ export const EditQuiz = () => {
     <div data-testid="EditQuizPage" className="flex">
       <div className="flex-1 mx-20">
         <div className="flex justify-between">
-          <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
-            {moduleTitle}
-          </h2>
+          <h1>Editing {moduleTitle}</h1>
+          {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
+            
+          </h2> */}
 
           <Button
             style={{ fontSize: "1.125rem", lineHeight: "1.75rem" }}

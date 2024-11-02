@@ -19,8 +19,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
-
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from "sanitize-html";
 
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
@@ -33,8 +32,8 @@ const Content = () => {
   let isAdmin = role === "admin";
 
   const [content, setContent] = useState("");
-  const [pulledContent, setPulledContent] = useState("")
-  const [databaseError, setDatabaseError] = useState("")
+  const [pulledContent, setPulledContent] = useState("");
+  const [databaseError, setDatabaseError] = useState("");
 
   const storage = getStorage();
 
@@ -46,7 +45,8 @@ const Content = () => {
   } else if (moduleId === "c") {
     dbModuleId = "10";
   }
-  {/*  const deleteEmptyQuestions = async () => {
+  {
+    /*  const deleteEmptyQuestions = async () => {
 
     const docRef = collection(db, `quizzes/sdg11t4/questions`);
     const docSnap = await getDocs(docRef);
@@ -60,12 +60,14 @@ const Content = () => {
       }
       
     })
-  }*/}
+  }*/
+  }
 
-  {/*const saveImage = () => {
+  {
+    /*const saveImage = () => {
 
-  }*/}
-
+  }*/
+  }
 
   const transform = (node) => {
     //console.log(`NAME IS: ${node.name}`)
@@ -75,59 +77,61 @@ const Content = () => {
         const styleObject = {};
         //console.log("THIS STYLE IS A STRING")
         node.attribs.style.split(";").forEach((style) => {
-            const [key, value] = style.split(":").map(s => s.trim());
-            console.log(`KEY: ${key} AND VALUE: ${value}`)
-            if (key && value) {
-                // Convert CSS keys to camelCase for React styles (e.g., "font-size" to "fontSize")
-                const camelCaseKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-                styleObject[camelCaseKey] = value;
-            }
+          const [key, value] = style.split(":").map((s) => s.trim());
+          console.log(`KEY: ${key} AND VALUE: ${value}`);
+          if (key && value) {
+            // Convert CSS keys to camelCase for React styles (e.g., "font-size" to "fontSize")
+            const camelCaseKey = key.replace(/-([a-z])/g, (g) =>
+              g[1].toUpperCase()
+            );
+            styleObject[camelCaseKey] = value;
+          }
         });
         node.attribs.style = styleObject;
       } else if (!node.attribs.style && node.attribs.class) {
         //console.log("CREATING A STYLE ATTRIB FOR CLASS ATTRIB")
-          node.attribs.style = {};
+        node.attribs.style = {};
       }
-        
-    
+
       if (node.attribs.class) {
         if (node.attribs.class.includes("ql-align-center")) {
-          node.attribs.style.textAlign = "center"
+          node.attribs.style.textAlign = "center";
         }
         if (node.attribs.class.includes("ql-align-right")) {
-          node.attribs.style.textAlign = "right"
+          node.attribs.style.textAlign = "right";
         }
         if (node.attribs.class.includes("ql-size-small")) {
-          node.attribs.style.fontSize = "0.875em"
+          node.attribs.style.fontSize = "0.875em";
         }
         if (node.attribs.class.includes("ql-size-large")) {
-          node.attribs.style.fontSize = "1.25em"
+          node.attribs.style.fontSize = "1.25em";
         }
         if (node.attribs.class.includes("ql-size-huge")) {
           //console.log("the size is: HUGE")
-          node.attribs.style.fontSize = "2em"
+          node.attribs.style.fontSize = "2em";
         }
         if (node.attribs.class.includes("ql-indent-1")) {
-          node.attribs.style.marginLeft = "3em"
-          
+          node.attribs.style.marginLeft = "3em";
         }
 
         //node.attribs.className = node.attribs.class; // Convert class to className
         delete node.attribs.class; // Remove the old class attribute
       }
       if (node.name == "a") {
-        node.attribs.style = {textDecoration: "underline", color: "blue"}
+        node.attribs.style = { textDecoration: "underline", color: "blue" };
         //node.attribs.style.textDecoration = "underline"
         //node.attribs.style.color = "blue"
       }
-      
     }
     //console.log(`node name is ${node.name}`)
-    if (node.name == "p" && node.children.length === 1 && node.children[0].name == "br"){
-      console.log("THERE IS A BREAK HERE")
-      node = <br/>
+    if (
+      node.name == "p" &&
+      node.children.length === 1 &&
+      node.children[0].name == "br"
+    ) {
+      console.log("THERE IS A BREAK HERE");
+      node = <br />;
     }
-    
   };
 
   const getContent = async (moduleId) => {
@@ -144,7 +148,7 @@ const Content = () => {
       }
     } catch (e) {
       console.error("Error retrieving document: ", e);
-      setDatabaseError(e)
+      setDatabaseError(e);
     }
   };
 
@@ -238,19 +242,21 @@ const Content = () => {
     console.log("trying to update");
     console.log("module id is: ", moduleId);
 
-    console.log(`HTML IS UNSANITIZED: ${newContent}`)
+    console.log(`HTML IS UNSANITIZED: ${newContent}`);
 
     const writeableContent = sanitizeHtml(newContent, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat([ "img" ]),
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
       //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
       allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"]),
-      allowedAttributes: {...sanitizeHtml.defaults.allowedAttributes, 
-        "p": ["class", "style"], 
-        "span": ["class", "style"], 
-        "s": ["class", "style"],
-        "strong": ["class", "style"],
-        "u": ["class", "style"],
-        "em": ["class", "style"]},
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        p: ["class", "style"],
+        span: ["class", "style"],
+        s: ["class", "style"],
+        strong: ["class", "style"],
+        u: ["class", "style"],
+        em: ["class", "style"],
+      },
       allowedStyles: {
         "*": {
           color: [/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/],
@@ -260,12 +266,12 @@ const Content = () => {
       },
     });
 
-    console.log(`WRITNG: ${writeableContent}`)
+    console.log(`WRITNG: ${writeableContent}`);
 
     try {
       console.log("doc reference is :  ", docRef);
       await updateDoc(docRef, { content: writeableContent });
-      console.log(`WRITING:         ${writeableContent}`)
+      console.log(`WRITING:         ${writeableContent}`);
       console.log("update successful");
     } catch (e) {
       console.error("Error retrieving document: ", e);
@@ -287,7 +293,7 @@ const Content = () => {
 
   const handleCancelClick = () => {
     setTextEditorShow(false);
-    setContent(pulledContent)
+    setContent(pulledContent);
     //setButtonState('Edit')
   };
 
@@ -340,17 +346,23 @@ const Content = () => {
   return (
     <div className="flex">
       <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
-      {databaseError ? 
+      {databaseError ? (
         <div>
           <Alert variant="destructive">
             <ExclamationCircleIcon className="h-5 w-5" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{databaseError}</AlertDescription>
           </Alert>
-        </div> : 
+        </div>
+      ) : (
         <div className="ml-[250px] flex-1">
           <div className="flex justify-between">
-            <h1>{moduleTitle} Content</h1>
+            {textEditorShow ? (
+              <h1> Editing {moduleTitle} Content</h1>
+            ) : (
+              <h1>{moduleTitle} Content</h1>
+            )}
+            {/* <h1>{moduleTitle} Content</h1> */}
             <br />
             {isAdmin ? (
               <Button
@@ -422,8 +434,7 @@ const Content = () => {
             </div>
           </div>
         </div>
-      }
-      
+      )}
     </div>
   );
 };
