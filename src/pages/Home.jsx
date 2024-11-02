@@ -5,8 +5,15 @@ import ListOfGoals from "@/components/ListOfGoals";
 import { useAuthContext } from "@/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/20/solid";
+
+import { useState, useEffect } from "react";
+import { collection, doc, getDoc } from "firebase/firestore";
+import db from "../../firebaseFiles/firebaseConfig.js";
 
 export const Home = () => {
+  const { user, userData, role } = useAuthContext();
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     if (path) {
@@ -14,7 +21,45 @@ export const Home = () => {
     }
   };
 
-  const { userData } = useAuthContext();
+  // Fetch learner's sdg 11 scores and count completed targets
+  const [goalsWithScores, setGoalsWithScores] = useState(ListOfGoals);
+  const fetchLearnerScores = async (uid) => {
+    try {
+      const learnerDocRef = doc(collection(db, "learners"), uid);
+      const learnerDoc = await getDoc(learnerDocRef);
+
+      if (learnerDoc.exists()) {
+        const learnerData = learnerDoc.data();
+        const scores = learnerData.scores;
+
+        // Map through ListOfGoals and add count for completed sdg 11 targets
+        const updatedGoals = ListOfGoals.map((goal) => {
+          if (goal.id === 11) { 
+            const completedTargets = Object.keys(scores || {}).reduce((count, key) => {
+              if (key.startsWith("sdg11t") && scores[key] === 100) {
+                return count + 1;
+              }
+              return count;
+            }, 0);
+
+            return { ...goal, score: `${completedTargets}/10` }; 
+          }
+          return goal;
+        });
+        setGoalsWithScores(updatedGoals);
+      } else {
+        console.log("No learner data found for this UID.");
+      }
+    } catch (error) {
+      console.error("Error fetching learner score.", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.uid && role === "learner") {
+      fetchLearnerScores(user.uid);
+    }
+  }, [user, role]);
 
   return (
     <div data-testid="home-page">
@@ -43,7 +88,7 @@ export const Home = () => {
               variant="white"
               className="w-2/6 border-white mt-6 font-semibold text-lg"
             >
-              Explore SDG 11 <ArrowRightIcon className="h-6 w-6 mx-4" />
+              Explore SDG 11 <ArrowRightIcon className="h-6 w-6 mx-4 y" />
             </Button>
           </Link>
 
@@ -69,14 +114,11 @@ export const Home = () => {
         </Link>
       </div>
 
-      {/* <span className="text-7xl font-bold flex justify-center my-20">
-        Your Goals
-      </span> */}
       <h1 className="mt-16 mb-8 text-center">Your SDGs</h1>
 
       {/* grid of modules */}
       <div className=" grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {ListOfGoals.map((goal) => (
+        {goalsWithScores.map((goal) => (
           <div
             key={goal.id}
             className={`relative aspect-square rounded-xl `}
@@ -90,6 +132,14 @@ export const Home = () => {
                 : { backgroundColor: "#e2e8f0" }
             }
           >
+            {/* score and star Icon for sdg 11 */}
+            {goal.score && (
+              <div className="absolute top-2.5 left-2 flex items-center bg-white rounded-full px-2 py-1 text-base font-semibold">
+              <span>{goal.score}</span>
+              <StarIcon className="h-5 w-5 ml-1 text-primary" />
+            </div>
+            )}
+            
             <img
               src={goal.image}
               alt={goal.title}
@@ -98,7 +148,6 @@ export const Home = () => {
           </div>
         ))}
       </div>
-      {/* <Module /> */}
     </div>
   );
 };
