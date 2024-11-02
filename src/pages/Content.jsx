@@ -420,7 +420,7 @@ const Content = () => {
                     ></ReactQuill>
                   </div>
 
-                  <div className="mb-24 mt-20">
+                  <div className="mb-24 mt-10">
                     <Button
                       onClick={() => {
                         handleClick(content);

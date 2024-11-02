@@ -262,7 +262,6 @@ const Quiz = () => {
               <div className="relative py-12 px-16 flex-1 overflow-auto">
                 <div className="flex justify-between">
                   <h1>{moduleTitle}</h1>
-
                   {isAdmin ? (
                     <Button
                       data-testid="editQuizButton"
@@ -274,6 +273,24 @@ const Quiz = () => {
                     </Button>
                   ) : null}
                 </div>
+                <ul className="space-y-0">
+                  <li>
+                    Test yourself on the knowledge you learned about this target
+                  </li>
+                  <li>
+                    Your progress will{" "}
+                    <span style={{ fontWeight: "bold" }}>not</span> be saved if
+                    you exit the quiz before clicking ‘Submit’
+                  </li>
+                  <li>Each question is required and weighted equally</li>
+                  <li>
+                    <span style={{ fontWeight: "bold" }}>
+                      You must score 100%
+                    </span>{" "}
+                    to complete the quiz and unlock the building
+                  </li>
+                  <li>You have unlimited attempts to complete the quiz</li>
+                </ul>
                 <br />
                 <div>
                   {Object.values(docs).map((question, index) => {
