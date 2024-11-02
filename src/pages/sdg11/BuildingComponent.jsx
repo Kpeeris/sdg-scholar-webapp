@@ -54,6 +54,8 @@ const BuildingComponent = ({
           //console.log(docSnap.data().targetText);
           setDescription(docSnap.data().targetText);
           setTargetNum(docSnap.data().targetNumber);
+          console.log("Document text:", docSnap.data().targetText);
+          console.log("Document num:", docSnap.data().targetNumber);
         } else {
           console.log("Document does not exist");
         }
@@ -112,7 +114,10 @@ const BuildingComponent = ({
     <div>
       {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
       {role !== "admin" && score !== 100 ? (
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div
+          data-testid={`dark-${buildingName}`}
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
+        >
           <img
             src={dark_image}
             alt={buildingName}
@@ -137,6 +142,7 @@ const BuildingComponent = ({
         <DialogTrigger asChild>
           {/* have to change the text in the button depending on start or restart */}
           <Button
+            data-testid={`open-${buildingName}`}
             variant="success"
             onMouseEnter={() => setIsVisible(true)}
             onMouseLeave={() => setIsVisible(false)}
@@ -151,7 +157,7 @@ const BuildingComponent = ({
             Open
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent data-testid={`${buildingName}-dialog`}>
           <DialogHeader>
             <DialogTitle className="flex justify-center text-4xl">
               Target {targetNum}
@@ -165,6 +171,7 @@ const BuildingComponent = ({
               {buildingName}
             </DialogTitle>
             <Button
+              data-testid={`${buildingName}-navigate`}
               variant="success"
               onClick={() => navigate(`/module/${lastLetter}/content`)}
               style={{}}

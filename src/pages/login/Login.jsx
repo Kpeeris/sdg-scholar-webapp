@@ -83,13 +83,21 @@ export const Login = () => {
             </Link>
           </div>
 
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && (
+            <p
+              data-testid="loginErrorMessage"
+              className="text-red-500 text-base"
+            >
+              {error}
+            </p>
+          )}
 
           <Button
             className="w-full mt-2 mb-2"
             variant={loading ? "secondary" : "default"}
             disabled={loading}
             onClick={handleLogin}
+            data-testid="login-button"
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>

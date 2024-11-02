@@ -65,6 +65,7 @@ const Quiz = () => {
   }
 
   const handleSubmitClick = () => {
+    console.log("submitting quiz in handleSubmitClick");
     setQuizSubmitted(true);
     let currResult = 0;
     questionRefs.current.forEach((ref) => {
@@ -73,10 +74,11 @@ const Quiz = () => {
       }
     });
     setResult(currResult);
+    console.log("result is", { result });
     const perCent = round((currResult / totalQuestions) * 100, 1);
     saveScore(perCent);
     setScore(perCent);
-    console.log("current result is, ", { currResult });
+    console.log("current score is, ", { perCent });
   };
 
   //gets the total number of questions in the target
@@ -141,6 +143,7 @@ const Quiz = () => {
 
   //gets the score form the db and saved in to score
   const getScore = async () => {
+    console.log("getting score");
     let email = userData.email;
 
     const learnersRef = collection(db, "learners");
@@ -155,8 +158,8 @@ const Quiz = () => {
         const userScore = scores ? scores[`sdg11t${realModuleId}`] : undefined;
 
         if (userScore !== undefined) {
-          console.log(`score for sdg11t${realModuleId}:`, userScore);
           setScore(userScore);
+          console.log(`score for sdg11t${realModuleId}:`, userScore);
         } else {
           console.log(`No score found for sdg11t${realModuleId}`);
         }
@@ -170,6 +173,7 @@ const Quiz = () => {
     const fetchScore = async () => {
       await getScore();
       setIsLoading(false);
+      // console.log("isLoading: ", isLoading);
     };
 
     if (userData) {
@@ -177,8 +181,6 @@ const Quiz = () => {
     } else {
       console.log("No user data found");
     }
-
-    //getScore().then(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
@@ -235,14 +237,18 @@ const Quiz = () => {
   }, [isAdmin]);
 
   return (
-    <div className="flex">
+    <div data-testid="quiz-page" className="flex">
       {isLoading ? (
         <LoadingPage />
       ) : (
         <>
           <SideMenu moduleTitle={`Target 11.${moduleId}`} moduleId={moduleId} />
           {isAdmin || (quizStarted && !quizSubmitted) ? (
-            <div ref={targetRef} className="ml-[250px] h-screen flex-1">
+            <div
+              data-testid="questionsPage"
+              ref={targetRef}
+              className="ml-[250px] h-screen flex-1"
+            >
               <div className="flex justify-between">
                 <h1>{moduleTitle}</h1>
                 {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
@@ -250,6 +256,7 @@ const Quiz = () => {
               </h2> */}
                 {isAdmin ? (
                   <Button
+                    data-testid="editQuizButton"
                     className="w-44 text-lg"
                     onClick={() => navigate(`/module/${moduleId}/editquiz`)}
                   >
@@ -262,7 +269,10 @@ const Quiz = () => {
               <div>
                 {Object.values(docs).map((question, index) => {
                   return (
-                    <div key={question.id || index}>
+                    <div
+                      data-testid="questionComponent"
+                      key={question.id || index}
+                    >
                       <Question
                         ref={questionRefs.current[index]}
                         //key={question}
@@ -279,6 +289,7 @@ const Quiz = () => {
                 <div className="flex flex-col items-center">
                   <br />
                   <Button
+                    data-testid="submitQuizButton"
                     className="w-44 mb-16"
                     onClick={() => {
                       setDialogVisible(true);
@@ -291,7 +302,10 @@ const Quiz = () => {
             </div>
           ) : //if user is not an Admin and the quiz is not submitted and the score is 0
           !quizSubmitted && !isAdmin && score === 0 ? (
-            <div className="ml-[250px] flex-1 flex flex-col items-center justify-start">
+            <div
+              data-testid="preQuizPage"
+              className="ml-[250px] flex-1 flex flex-col items-center justify-start"
+            >
               <div className="relative h-72 w-72">
                 <img
                   src={pana}
@@ -334,6 +348,7 @@ const Quiz = () => {
               </div>
               <div className="mt-40">
                 <Button
+                  data-testid="startQuizButton"
                   style={{ textAlign: "center" }}
                   className="w-44"
                   onClick={() => {
@@ -345,7 +360,7 @@ const Quiz = () => {
               </div>
             </div>
           ) : (
-            <div className="ml-[250px] flex-1">
+            <div data-testid="scorePage" className="ml-[250px] flex-1">
               <h1>{moduleTitle}</h1>
               {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
               <br />
@@ -385,7 +400,7 @@ const Quiz = () => {
       )}
       {dialogVisible ? (
         <Dialog open={dialogVisible} onOpenChange={setDialogVisible}>
-          <DialogContent>
+          <DialogContent data-testid="confirmSubmitDialog">
             <DialogHeader>
               <DialogTitle>Submit Quiz</DialogTitle>
               <DialogDescription className="text-base">
@@ -405,6 +420,7 @@ const Quiz = () => {
                 Cancel
               </Button>
               <Button
+                data-testid="confirmSubmitButton"
                 className="mx-2"
                 onClick={() => {
                   handleSubmitClick();
