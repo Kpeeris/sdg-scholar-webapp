@@ -11,7 +11,7 @@ import SignUpUser from "./pages/signup/SignUpUserType";
 import NoticeBoard from "./pages/NoticeBoard";
 
 import { useEffect } from "react";
-import { logout } from "../firebase/firebaseAuth"; // Adjust the path if needed
+import { logout } from "../firebase/auth/firebaseAuth"; // Adjust the path if needed
 
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";

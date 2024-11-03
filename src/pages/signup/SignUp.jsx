@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 import db from "../../../firebase/firebaseConfig.js";
-import { signup } from "../../../firebase/firebaseAuth.js";
+import { signup } from "../../../firebase/auth/firebaseAuth.js";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";

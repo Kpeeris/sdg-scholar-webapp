@@ -7,7 +7,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { useState, useEffect } from "react";
-import { app } from "./firebaseConfig";
+import { app } from "../firebaseConfig";
 
 // Initialize Authentication
 const auth = getAuth(app);

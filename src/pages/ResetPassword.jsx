@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { resetPassword } from "../../firebase/firebaseAuth";
+import { resetPassword } from "../../firebase/auth/firebaseAuth";
 
 import { TwoColumnLayout } from "../TwoColumnLayout";
 

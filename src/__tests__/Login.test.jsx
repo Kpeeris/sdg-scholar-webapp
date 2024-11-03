@@ -1,6 +1,6 @@
 import Login from "@/pages/login/Login";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { login } from "../../firebase/firebaseAuth";
+import { login } from "../../firebase/auth/firebaseAuth";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach } from "vitest";
 import { it, expect, describe, vi } from "vitest";

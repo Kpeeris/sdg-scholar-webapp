@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { logout } from "../../../firebase/firebaseAuth"; // Adjust the path if needed
+import { logout } from "../../../firebase/auth/firebaseAuth"; // Adjust the path if needed
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../AuthProvider";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
