@@ -309,16 +309,16 @@ export const EditQuiz = () => {
           <DialogTrigger asChild>
             <Button variant="white" className="text-lg mb-6">
               <PlusIcon className="h-6 w-6 mr-2 text-black" strokeWidth="2" />
-              Add New Question
+              Add Question
             </Button>
           </DialogTrigger>
           <DialogContent className="lg:max-w-[1000px] px-20">
             <DialogTitle className="flex justify-center text-4xl">
-              New Question
+              Add Question
             </DialogTitle>
 
             {/* Add Question text */}
-            <div className="flex justify-start ">
+            <div className="flex justify-between ">
               <div className="mb-4 mr-8 w-4/6">
                 <label htmlFor="questionText" className="text-xl">
                   <strong>Question</strong>
@@ -331,12 +331,12 @@ export const EditQuiz = () => {
                   onChange={(e) => setQuestionText(e.target.value)}
                 />
                 {questionText === "" && (
-                  <span style={{ color: "red" }}>Please add a question</span>
+                  <p className="text-red-500 text-sm ml-1">Please add a question</p>
                 )}
               </div>
 
               {/* Choose Question type */}
-              <div>
+              <div className="flex-1">
                 <label htmlFor="questionType" className="text-xl">
                   <strong>Question Type</strong>
                 </label>
@@ -344,7 +344,7 @@ export const EditQuiz = () => {
                   id="questionType"
                   onValueChange={handleQuestionTypeSelect}
                 >
-                  <SelectTrigger className="w-auto mt-1">
+                  <SelectTrigger className="w-full mt-1">
                     <SelectValue placeholder="Select a Question Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -360,24 +360,22 @@ export const EditQuiz = () => {
                   </SelectContent>
                 </Select>
                 {type === "" && (
-                  <span style={{ color: "red" }}>Please selct a type</span>
+                  <p className="text-red-500 text-sm ml-1">Please select a question type</p>
                 )}
               </div>
             </div>
 
             {/* Add Options */}
-            <div className="flex justify-around">
+            <div className="flex justify-between items-center">
               <div>
-                <h4>
-                  <strong>Answer Choices</strong>
-                </h4>
-                <h6>
+                  <p className="text-xl font-bold">Answer Choices</p>
+                <p className="text-base">
                   Select the correct answers below by checking the box next to
                   each option
-                </h6>
+                </p>
               </div>
               {/* create a new option */}
-              <Button varient="white" onClick={handleAddOption}>
+              <Button onClick={handleAddOption}>
                 Add Option
               </Button>
             </div>

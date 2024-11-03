@@ -363,35 +363,40 @@ const NoticeBoard = () => {
           <Dialog className="max-w-3xl">
             <DialogTrigger asChild>
               <Button className="text-lg">
-                <PlusIcon className="h-5 w-5 mr-1 text-white" /> New Notice
+                <PlusIcon className="h-5 w-5 mr-1 text-white" strokeWidth="2"  /> Add Notice
               </Button>
+
             </DialogTrigger>
             <DialogContent className="max-w-3xl w-full">
               <DialogHeader>
                 <DialogTitle className="flex justify-center text-4xl">
-                  Create New Notice
+                  Add Notice
                 </DialogTitle>
               </DialogHeader>
               <div className="p-1">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title" className="text-xl"><strong>Title</strong></label>
                 <Input
+                  className="mt-1"
                   placeholder="Write your notice here..."
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 {title === "" && (
-                  <span style={{ color: "red" }}>please add a title</span>
+                  <p className="text-red-500 text-sm ml-1">Please add a title</p>
                 )}
                 <br />
-                <label>Category</label>
+
+                <label htmlFor="title" className="text-lg"><strong>Category</strong></label>
+
+               
 
                 {/* my plan: if they don't select one, write All to the notice.category */}
                 <ToggleGroup
                   variant="default"
                   size="default"
                   type="single"
-                  className="justify-start"
+                  className="justify-start mt-2"
                   onValueChange={(value) => setCategory(value || "General")}
                 >
                   <ToggleGroupItem
@@ -423,9 +428,9 @@ const NoticeBoard = () => {
 
                 {/* <label htmlFor="message">Body</label>
                 <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
-                <div className="grid w-full gap-1.5 mb-5">
-                  <label htmlFor="message">Body</label>
-                  <div className="w-full p-1">
+                <div className="grid w-full mb-2">
+                  <label htmlFor="message" className="text-lg"><strong>Body</strong></label>
+                  <div className="w-full">
                     <ReactQuill
                       theme="snow"
                       modules={modules}

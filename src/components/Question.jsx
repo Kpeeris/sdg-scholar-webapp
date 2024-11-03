@@ -92,7 +92,7 @@ const Question = forwardRef(({ q, i, mode, onDelete }, ref) => {
         <p>{q.questionText}</p>
       </div>
 
-      <div className="mx-10 mb-5">
+      <div className="mx-10 mt-2 mb-5">
         {q.type === "ms" ? (
           Object.values(q.options).map((option, index) => {
             return (

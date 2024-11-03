@@ -92,7 +92,7 @@ const Quiz = () => {
         setTotalQuestions(docSnap.data().totalQuestions);
         return docSnap.data().totalQuestions;
       } else {
-        console.log("nQuestions Document does not exist");
+        console.log("Questions Document does not exist");
       }
     } catch (e) {
       console.error("Error retrieving document: ", e);
@@ -273,7 +273,7 @@ const Quiz = () => {
                     </Button>
                   ) : null}
                 </div>
-                <ul className="space-y-0">
+                <ul className="space-y-0 pt-3">
                   <li>
                     Test yourself on the knowledge you learned about this target
                   </li>
@@ -316,7 +316,7 @@ const Quiz = () => {
                     <br />
                     <Button
                       data-testid="submitQuizButton"
-                      className="w-40 mb-16"
+                      className="text-lg mb-16"
                       onClick={() => {
                         setDialogVisible(true);
                       }}
@@ -340,7 +340,7 @@ const Quiz = () => {
                 </div>
                 <div>
                   <div>
-                    <h2 style={{ fontWeight: "bold", textAlign: "center" }}>
+                    <h2 style={{ fontWeight: "bold", textAlign: "center"}} className="pt-5">
                       Ready for the Quiz?
                     </h2>
                   </div>
@@ -365,11 +365,10 @@ const Quiz = () => {
                     <li>You have unlimited attempts to complete the quiz</li>
                   </ul>
                 </div>
-                <div className="mt-8">
+                <div className="pt-4">
                   <Button
                     data-testid="startQuizButton"
-                    style={{ textAlign: "center" }}
-                    className="w-44"
+                    className="text-lg"
                     onClick={() => {
                       setQuizStarted(true);
                     }}
@@ -404,7 +403,7 @@ const Quiz = () => {
                   </div>
                   <br />
                   <Button
-                    className="w-32"
+                    className="text-lg"
                     onClick={() => {
                       setQuizStarted(true);
                       setQuizSubmitted(false);
