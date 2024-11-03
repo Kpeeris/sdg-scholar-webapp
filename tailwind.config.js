@@ -33,7 +33,7 @@ export default {
         genieOpen: {
           //start position
           "0%": {
-            transform: "scale(0.5) translate(0,64px)",
+            transform: "scale(0.5) translate(0,10%)",
             opacity: "0",
             transformOrigin: "top left",
           },
@@ -52,7 +52,7 @@ export default {
           },
           "50%": { opacity: "1" },
           "100%": {
-            transform: "scale(0.5) translate(0,64px)",
+            transform: "scale(0) translate(10%,10%)",
             opacity: "0",
             transformOrigin: "top left",
           },
