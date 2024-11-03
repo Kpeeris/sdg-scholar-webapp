@@ -6,7 +6,7 @@ import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach } from "vitest";
 import { it, expect, describe, vi } from "vitest";
 
-vi.mock("../../firebaseFiles/firebaseAuth", () => ({
+vi.mock("../../firebase/auth/firebaseAuth", () => ({
   signup: vi.fn(),
 }));
 
