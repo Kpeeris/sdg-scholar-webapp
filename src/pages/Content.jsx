@@ -382,15 +382,19 @@ const Content = () => {
               ) : null}
             </div>
             <br />
-            <div className="relative h-96 flex flex-cols">
-              <img src={image1Url} alt="Image 1" />
-              <img src={image2Url} alt="Image 2" />
+            <div className="relative flex">
+              <div>
+                <img src={image1Url} alt="Image 1" className="h-60" />
+              </div>
+              <div>
+                <img src={image2Url} alt="Image 2" className="h-60" />
+              </div>
             </div>
             <br />
             <div className="relative">
               {textEditorShow === false ? (
                 // content from ReactQuill
-                <div className="bg-gradient-to-b from-white rounded-lg mb-32 p-11">
+                <div className="bg-white rounded-lg mb-32 p-11">
                   {content
                     ? parse(content, {
                         replace: (domNode) => {
@@ -438,30 +442,6 @@ const Content = () => {
                   </div>
                 </div>
               )}
-              {/* <br />
-              <br />
-              <br />
-              <div>
-                {isAdmin && textEditorShow ? (
-                    <Button
-                      onClick={() => {
-                        handleClick(content);
-                      }}
-                      style={{ marginRight: "10px" }}
-                    >
-                      Publish
-                    </Button>
-                ) : null}
-                {isAdmin && textEditorShow ? (
-                  <Button
-                    onClick={() => {
-                      handleCancelClick();
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                ) : null}
-              </div> */}
             </div>
           </div>
         </div>
