@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Function to check if someone is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Function to check if someone is an admin
+    function isAdmin() {
+      return isAuthenticated() && firestore.get(/databases/(default)/documents/admins/$(request.auth.uid)) != null;
+    }
+    
+    match /{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}

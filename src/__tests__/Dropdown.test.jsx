@@ -13,41 +13,19 @@ describe("test dropdown in navbar", async () => {
     );
   });
   it("should appear when clicked", async () => {
-    screen.debug();
-    const dropdownButton = screen.getByRole("button", { name: "Goals" });
+    //screen.debug();
+    const dropdownButton = screen.getByRole("button", { name: "SDGs" });
+    //console.log("dropdownButton", dropdownButton);
 
     await waitFor(() => {
-      expect(screen.queryByText("SDG Goals")).not.toBeInTheDocument();
+      expect(dropdownButton).toHaveAttribute("aria-expanded", "false");
+      //expect(screen.queryByText("SDGs")).not.toBeInTheDocument();
     });
 
     userEvent.click(dropdownButton);
 
     await waitFor(() => {
-      expect(screen.getByText("SDG Goals")).toBeInTheDocument();
+      expect(dropdownButton).toHaveAttribute("aria-expanded", "true");
     });
   });
-
-  //HAVING TROUBLE TESTING SHADCN COMPONENTS
-  //   it("should disappear when clicked again", async () => {
-  //     screen.debug();
-  //     const dropdownButton = screen.getByRole("button", { name: "Goals" });
-
-  //     await waitFor(() => {
-  //       expect(screen.queryByText("SDG Goals")).not.toBeInTheDocument();
-  //     });
-
-  //     await userEvent.click(dropdownButton);
-
-  //     await waitFor(() => {
-  //       expect(screen.getByText("SDG Goals")).toBeInTheDocument();
-  //     });
-
-  //     await waitFor(() => {
-  //       userEvent.click(document.body);
-  //     });
-
-  //     await waitFor(() => {
-  //       expect(screen.queryByText("SDG Goals")).not.toBeInTheDocument();
-  //     });
-  //   });
 });

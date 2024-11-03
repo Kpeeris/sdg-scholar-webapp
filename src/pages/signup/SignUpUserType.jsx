@@ -7,8 +7,13 @@ import { UserTypeCard } from "./components/UserTypeCard";
 import { Button } from "@/components/ui/button";
 import { LoginLink } from "./components/LoginLink";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 export const SignUpUser = () => {
   const [userType, setUserType] = useState(null); // Track selected user type
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   // Handle user type selection
@@ -23,7 +28,7 @@ export const SignUpUser = () => {
     } else if (userType === "learner") {
       navigate("/signup", { state: { userType: "learner" } });
     } else {
-      alert("Please select a user type to continue.");
+      setError("Please select a user type to continue.");
     }
   };
 
@@ -33,17 +38,31 @@ export const SignUpUser = () => {
       imageAlt="Signup SVG"
       rightContent={
         <div className="space-y-4">
-          <h1>Create Your Account</h1>
-          <p>How are you planning to use SDG Scholar?</p>
+          <div className="space-y-2 pb-2 text-center">
+            <h1>Create Your Account</h1>
+            <p>How are you planning to use SDG Scholar?</p>
+          </div>
 
           {/* Pass the handleUserTypeSelection to UserTypeCard */}
           <UserTypeCard onSelectType={handleUserTypeSelection} />
+          {error && (
+            <Alert variant="destructive" className="flex items-center">
+              <ExclamationCircleIcon className="h-5 w-5 mr-2" />
+              <div>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </div>
+            </Alert>
+          )}
 
           {/* Create Account Button */}
-          <Button className="w-full mb-2" variant="default" onClick={handleConfirm}>
-            Create Account
-          </Button>
-          <hr className="w-full mt-4 border-white" />
+          <div className="pt-2 pb-3">
+            <Button className="w-full" variant="default" onClick={handleConfirm}>
+              Create Account
+            </Button>
+          </div>
+          
+          {/* <hr className="w-full mt-4 border-white" /> */}
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>

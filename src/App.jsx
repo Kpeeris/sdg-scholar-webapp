@@ -10,17 +10,41 @@ import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
 import NoticeBoard from "./pages/NoticeBoard";
 
+import { useEffect } from "react";
+import { logout } from "../firebase/auth/firebaseAuth"; // Adjust the path if needed
+
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import ResetPassword from "./pages/ResetPassword";
 
 function App() {
+  useEffect(() => {
+    const handleUnload = () => {
+      logout()
+        .then(() => console.log("User signed out before closign the tab"))
+        .catch((error) => console.error("Error logging out:", error));
+    };
+
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("unload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, []);
+
   return (
     <AuthProvider>
       <Layout>
         <Routes>
-          {/* Public routes */}
+          {/* Public routes, accessible when not logged in */}
           <Route path="/login" element={<PublicRoute element={<Login />} />} />
           <Route
             path="/signup"
@@ -34,12 +58,15 @@ function App() {
             path="/signupuser"
             element={<PublicRoute element={<SignUpUser />} />}
           />
+          <Route
+            path="/resetpassword"
+            element={<PublicRoute element={<ResetPassword />} />}
+          />
 
           {/* Private routes, accessible only if logged in */}
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
           <Route path="/about" element={<PrivateRoute element={<About />} />} />
           <Route path="/sdg11" element={<PrivateRoute element={<Sdg11 />} />} />
-
           <Route
             path="/module/:moduleId/content"
             element={<PrivateRoute element={<Content />} />}
@@ -49,17 +76,16 @@ function App() {
             element={<PrivateRoute element={<Quiz />} />}
           />
           <Route
-            path="/module/:moduleId/editquiz"
-            element={<PrivateRoute element={<EditQuiz />} />}
-          />
-
-          <Route
             path="/noticeboard"
             element={<PrivateRoute element={<NoticeBoard />} />}
           />
+
+          {/* Private routes, accessible only if logged in and is an admin */}
           <Route
-            path="/resetpassword"
-            element={<PublicRoute element={<ResetPassword />} />}
+            path="/module/:moduleId/editquiz"
+            element={
+              <PrivateRoute element={<EditQuiz />} requiredRole="admin" />
+            }
           />
         </Routes>
       </Layout>

@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
-import db from "../../../firebaseFiles/firebaseConfig";
+import db from "../../../firebase/firebaseConfig";
 import {
   doc,
   getDoc,
@@ -37,7 +37,8 @@ const BuildingComponent = ({
   clipPath,
 }) => {
   const navigate = useNavigate();
-  const { userData, role } = useAuthContext();
+  //eslint-disable-next-line
+  const { user, userData, role } = useAuthContext();
   const [description, setDescription] = useState("");
   const [targetNum, setTargetNum] = useState("");
   const [score, setScore] = useState(0);
@@ -50,9 +51,11 @@ const BuildingComponent = ({
         const docRef = doc(db, `quizzes/sdg11t${id}`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log(docSnap.data().targetText);
+          //console.log(docSnap.data().targetText);
           setDescription(docSnap.data().targetText);
           setTargetNum(docSnap.data().targetNumber);
+          console.log("Document text:", docSnap.data().targetText);
+          console.log("Document num:", docSnap.data().targetNumber);
         } else {
           console.log("Document does not exist");
         }
@@ -65,8 +68,18 @@ const BuildingComponent = ({
 
   const lastLetter = targetNum.slice(-1);
   const getScore = async (id) => {
+    if (!userData) {
+      console.log("No user data found");
+      return;
+    } else if (!userData.email) {
+      console.log("No email found in user data");
+      return;
+    }
     let email = userData.email;
+    // console.log("the email is: ", email);
+    // console.log("the userData: ", userData);
 
+    //TODO: make the email from the db lowercase before comparing
     const learnersRef = collection(db, "learners");
     const queryByEmail = query(learnersRef, where("email", "==", email));
     const querySnapshot = await getDocs(queryByEmail);
@@ -101,7 +114,10 @@ const BuildingComponent = ({
     <div>
       {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
       {role !== "admin" && score !== 100 ? (
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div
+          data-testid={`dark-${buildingName}`}
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
+        >
           <img
             src={dark_image}
             alt={buildingName}
@@ -126,6 +142,7 @@ const BuildingComponent = ({
         <DialogTrigger asChild>
           {/* have to change the text in the button depending on start or restart */}
           <Button
+            data-testid={`open-${buildingName}`}
             variant="success"
             onMouseEnter={() => setIsVisible(true)}
             onMouseLeave={() => setIsVisible(false)}
@@ -140,20 +157,23 @@ const BuildingComponent = ({
             Open
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent data-testid={`${buildingName}-dialog`}>
           <DialogHeader>
-            <DialogTitle className="flex justify-center text-4xl">
+            <DialogTitle className="flex justify-center text-4xl pb-2">
               Target {targetNum}
             </DialogTitle>
 
-            <DialogDescription>{description}</DialogDescription>
+            <DialogDescription className="text-center pb-2">
+              {description}
+            </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center">
             <img src={full_image} alt={buildingName} />
-            <DialogTitle className="flex justify-center">
+            <DialogTitle className="flex justify-center pb-5">
               {buildingName}
             </DialogTitle>
             <Button
+              data-testid={`${buildingName}-navigate`}
               variant="success"
               onClick={() => navigate(`/module/${lastLetter}/content`)}
               style={{}}

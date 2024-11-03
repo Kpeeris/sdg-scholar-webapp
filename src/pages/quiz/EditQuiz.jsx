@@ -8,7 +8,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import db from "../../../firebaseFiles/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+//import { set } from "react-hook-form";
 
 export const EditQuiz = () => {
   //gets the moduleId from the url
@@ -49,12 +50,15 @@ export const EditQuiz = () => {
 
   const [questionText, setQuestionText] = useState("");
   const [isValidQuestion, setIsValidQuestion] = useState(false);
-  const [type, setType] = useState("mcq");
+  const [type, setType] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [minError, setMinError] = useState("");
+  const [questionError, setQuestionError] = useState("");
   const [questionSaved, setQuestionSaved] = useState(0);
   const [docs, setDocs] = useState({});
+  const [isNewQuestionOpen, setIsNewQuestionOpen] = useState(false);
+
+  //const [tooManyAnswers, setTooManyAnswers] = useState(false)
 
   const [deletionReload, setDeletionReload] = useState(0);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -140,10 +144,10 @@ export const EditQuiz = () => {
       // reset all the defult caragories
       setQuestionText("");
       setIsValidQuestion(false);
-      setType("mcq");
+      setType("");
       setOptions(["", ""]);
       setCorrectAnswers([]);
-      setMinError("");
+      setQuestionError("");
       setQuestionSaved(questionSaved + 1);
     }
   };
@@ -165,16 +169,16 @@ export const EditQuiz = () => {
     if (options.length >= 3) {
       const newOptions = options.filter((_, i) => i !== index);
       setOptions(newOptions);
-      setMinError("");
+      setQuestionError("");
       setCorrectAnswers((prev) =>
         prev.filter((option) => option !== options[index])
       );
     } else {
-      setMinError("You must have a minimum of 2 options");
+      setQuestionError("You must have a minimum of 2 options");
     }
 
     setTimeout(() => {
-      setMinError("");
+      setQuestionError("");
     }, 5000);
   };
 
@@ -191,33 +195,96 @@ export const EditQuiz = () => {
     }
   };
 
-  //everytime a fied is updated see if it meets the minimun requirementrs for a question
-  useEffect(() => {
-    //q a question must have at leat two non empty options, one answer and questionText
-    let moreThanTwo =
-      options.filter((option) => option.trim() !== "").length >= 2;
-    let validAns =
-      correctAnswers.filter((answer) => answer.trim() !== "").length >= 1;
-    if (questionText !== "" && validAns && moreThanTwo) {
-      setIsValidQuestion(true);
-    } else {
+  const handleQuestionTypeSelect = (value) => {
+    setType(value);
+  };
+
+  const handlNewQuestionOpen = (open) => {
+    setIsNewQuestionOpen(open);
+
+    if (!open) {
+      setQuestionText("");
       setIsValidQuestion(false);
+      setType("");
+      setOptions(["", ""]);
+      setCorrectAnswers([]);
+      setQuestionError("");
+    }
+  };
+
+  //everytime a field is updated see if it meets the minimun requirementrs for a question
+  useEffect(() => {
+    //if there is no type selected the question is not valid
+    let noTypeSelected = type === "";
+    //if there is not question text the question is not valid
+    let noQuestionText = questionText === "";
+    //if the type is mcq and there is more than one answer the question is not valid
+    let invalidMQCAnswerNumber =
+      type === "mcq" &&
+      correctAnswers.filter((answer) => answer.trim() !== "").length !== 1;
+    //if the type is ms and there is no answer the question is not valid
+    let invalidMSAnswerNumber =
+      type === "ms" &&
+      correctAnswers.filter((answer) => answer.trim() !== "").length === 0;
+
+    if (
+      noTypeSelected ||
+      noQuestionText ||
+      invalidMQCAnswerNumber ||
+      invalidMSAnswerNumber
+    ) {
+      setIsValidQuestion(false);
+    } else {
+      setIsValidQuestion(true);
     }
   }, [questionText, type, options, correctAnswers]);
 
+  const handleDisabledClick = () => {
+    //if there is no type selected the question is not valid
+    let noTypeSelected = type === "";
+    //if there is not question text the question is not valid
+    let noQuestionText = questionText === "";
+    //if the type is mcq and there is more than one answer the question is not valid
+    let invalidMQCAnswerNumber =
+      type === "mcq" &&
+      correctAnswers.filter((answer) => answer.trim() !== "").length !== 1;
+    //if the type is ms and there is no answer the question is not valid
+    let invalidMSAnswerNumber =
+      type === "ms" &&
+      correctAnswers.filter((answer) => answer.trim() !== "").length === 0;
+
+    if (!isValidQuestion) {
+      if (noQuestionText) {
+        setQuestionError("Must add a question");
+      } else if (noTypeSelected) {
+        setQuestionError("Must select a question type");
+      } else if (invalidMQCAnswerNumber) {
+        setQuestionError("Multiple choice questions must have one answer");
+      } else if (invalidMSAnswerNumber) {
+        setQuestionError(
+          "Multiple select question must have at least one answer"
+        );
+      }
+      setTimeout(() => {
+        setQuestionError("");
+      }, 6000);
+    }
+  };
+
   return (
-    <div className="flex">
+    <div data-testid="EditQuizPage" className="flex">
       <div className="flex-1 mx-20">
         <div className="flex justify-between">
-          <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
-            {moduleTitle}
-          </h2>
+          <h1>Editing {moduleTitle}</h1>
+          {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
+            
+          </h2> */}
 
           <Button
-            style={{ fontSize: "1.125rem", lineHeight: "1.75rem" }}
+            className="text-lg"
             onClick={() => navigate(`/module/${moduleId}/quiz`)}
           >
-            <PaperAirplaneIcon className="h-6 w-6 mr-2 text-white" />
+            <PaperAirplaneIcon className="h-5 w-5 mr-1 text-white" />
             Publish Quiz
           </Button>
         </div>
@@ -238,7 +305,7 @@ export const EditQuiz = () => {
         </div>
 
         {/* Modal to build a new question */}
-        <Dialog>
+        <Dialog open={isNewQuestionOpen} onOpenChange={handlNewQuestionOpen}>
           <DialogTrigger asChild>
             <Button variant="white" className="text-lg mb-6">
               <PlusIcon className="h-6 w-6 mr-2 text-black" strokeWidth="2" />
@@ -264,7 +331,7 @@ export const EditQuiz = () => {
                   onChange={(e) => setQuestionText(e.target.value)}
                 />
                 {questionText === "" && (
-                  <span style={{ color: "red" }}>please add a question</span>
+                  <span style={{ color: "red" }}>Please add a question</span>
                 )}
               </div>
 
@@ -273,14 +340,17 @@ export const EditQuiz = () => {
                 <label htmlFor="questionType" className="text-xl">
                   <strong>Question Type</strong>
                 </label>
-                <Select id="questionType">
+                <Select
+                  id="questionType"
+                  onValueChange={handleQuestionTypeSelect}
+                >
                   <SelectTrigger className="w-auto mt-1">
                     <SelectValue placeholder="Select a Question Type" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Type</SelectLabel>
-                      <SelectItem value="mselect">
+                      <SelectItem value="ms">
                         Multiple Select Question
                       </SelectItem>
                       <SelectItem value="mcq">
@@ -289,6 +359,9 @@ export const EditQuiz = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {type === "" && (
+                  <span style={{ color: "red" }}>Please selct a type</span>
+                )}
               </div>
             </div>
 
@@ -342,17 +415,20 @@ export const EditQuiz = () => {
             ))}
 
             {/* Error message if user trues to delete when only 2 options left */}
-            {minError && (
+            {questionError && (
               <Alert variant="destructive">
                 <ExclamationCircleIcon className="h-5 w-5" />
                 <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{minError}</AlertDescription>
+                <AlertDescription>{questionError}</AlertDescription>
               </Alert>
             )}
 
             {/* Save the quiestion to database when you click save */}
 
-            <div className="flex justify-center">
+            <div
+              className="flex justify-center"
+              onMouseDown={handleDisabledClick}
+            >
               <DialogClose asChild>
                 <Button
                   disabled={isValidQuestion === false}

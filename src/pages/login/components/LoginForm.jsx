@@ -16,7 +16,13 @@ export const LoginForm = ({ emailRef, passwordRef }) => {
       {/* Email input */}
       <div className="w-full flex flex-col items-left gap-2">
         <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" placeholder="Email" ref={emailRef} />
+        <Input
+          type="email"
+          data-testid="email"
+          id="email"
+          placeholder="Email"
+          ref={emailRef}
+        />
       </div>
 
       {/* Password input with show/hide functionality */}
@@ -26,6 +32,7 @@ export const LoginForm = ({ emailRef, passwordRef }) => {
           <Input
             type={passwordVisible ? "text" : "password"} // Toggle between text and password
             id="password"
+            data-testid="password"
             placeholder="Password"
             ref={passwordRef}
           />

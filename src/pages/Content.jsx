@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../components/SideMenu";
 import { useParams } from "react-router-dom";
-//import EditableBlock from '../components/EditableBlock';
-
-//import storage from '../../firebaseFiles/firebaseConfig.js';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useAuthContext } from "@/AuthProvider";
 
@@ -12,10 +9,15 @@ import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "../../firebaseFiles/firebaseConfig.js";
+import db from "../../firebase/firebaseConfig.js";
 
 import parse from "html-react-parser";
-//import sanitizeHtml from 'sanitize-html';
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import cityFooter from "/src/assets/images/city_footer.png";
+import sanitizeHtml from "sanitize-html";
 
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
@@ -27,11 +29,9 @@ const Content = () => {
 
   let isAdmin = role === "admin";
 
-  //let admin = true
-
   const [content, setContent] = useState("");
-
-  //const [showCancel, setShowCancel] = useState(false)
+  const [pulledContent, setPulledContent] = useState("");
+  const [databaseError, setDatabaseError] = useState("");
 
   const storage = getStorage();
 
@@ -43,55 +43,92 @@ const Content = () => {
   } else if (moduleId === "c") {
     dbModuleId = "10";
   }
+  {
+    /*  const deleteEmptyQuestions = async () => {
+
+    const docRef = collection(db, `quizzes/sdg11t4/questions`);
+    const docSnap = await getDocs(docRef);
+    docSnap.forEach((doc) => {
+      if((doc.id).slice(0,3) == "sdg"){
+        console.log("not wrong")
+      } else{
+        console.log(`DELETE!${doc.id}`)
+        console.log("DELETE THIS")
+        deleteDoc(doc.ref)
+      }
+      
+    })
+  }*/
+  }
+
+  {
+    /*const saveImage = () => {
+
+  }*/
+  }
 
   const transform = (node) => {
-    if (node.attribs && node.attribs.class) {
-      if (node.attribs.class.includes("ql-align-center")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          textAlign: "center",
-        };
+    //console.log(`NAME IS: ${node.name}`)
+    if (node.attribs) {
+      //console.log("ATTRIBS EXIST")
+      if (typeof node.attribs.style === "string") {
+        const styleObject = {};
+        //console.log("THIS STYLE IS A STRING")
+        node.attribs.style.split(";").forEach((style) => {
+          const [key, value] = style.split(":").map((s) => s.trim());
+          console.log(`KEY: ${key} AND VALUE: ${value}`);
+          if (key && value) {
+            // Convert CSS keys to camelCase for React styles (e.g., "font-size" to "fontSize")
+            const camelCaseKey = key.replace(/-([a-z])/g, (g) =>
+              g[1].toUpperCase()
+            );
+            styleObject[camelCaseKey] = value;
+          }
+        });
+        node.attribs.style = styleObject;
+      } else if (!node.attribs.style && node.attribs.class) {
+        //console.log("CREATING A STYLE ATTRIB FOR CLASS ATTRIB")
+        node.attribs.style = {};
       }
-      if (node.attribs.class.includes("ql-align-right")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          textAlign: "right",
-        };
+
+      if (node.attribs.class) {
+        if (node.attribs.class.includes("ql-align-center")) {
+          node.attribs.style.textAlign = "center";
+        }
+        if (node.attribs.class.includes("ql-align-right")) {
+          node.attribs.style.textAlign = "right";
+        }
+        if (node.attribs.class.includes("ql-size-small")) {
+          node.attribs.style.fontSize = "0.875em";
+        }
+        if (node.attribs.class.includes("ql-size-large")) {
+          node.attribs.style.fontSize = "1.25em";
+        }
+        if (node.attribs.class.includes("ql-size-huge")) {
+          //console.log("the size is: HUGE")
+          node.attribs.style.fontSize = "2em";
+        }
+        if (node.attribs.class.includes("ql-indent-1")) {
+          node.attribs.style.marginLeft = "3em";
+        }
+
+        //node.attribs.className = node.attribs.class; // Convert class to className
+        delete node.attribs.class; // Remove the old class attribute
       }
-      if (node.attribs.class.includes("ql-size-small")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "0.75em",
-        };
+      if (node.name == "a") {
+        node.attribs.style = { textDecoration: "underline", color: "blue" };
+        //node.attribs.style.textDecoration = "underline"
+        //node.attribs.style.color = "blue"
       }
-      if (node.attribs.class.includes("ql-size-large")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "2em",
-        };
-      }
-      if (node.attribs.class.includes("ql-size-huge")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          fontSize: "3em",
-        };
-      }
-      if (node.attribs.class.includes("ql-indent-1")) {
-        node.attribs.style = {
-          ...node.attribs.style,
-          marginLeft: "3em",
-        };
-      }
-      if (node.name === "a" && node.attribs.href) {
-        //node.attribs.className = 'quill-link';
-        node.attribs.style = {
-          ...node.attribs.style,
-          textDecoration: "underline",
-          color: "blue",
-        };
-      }
-      node.attribs.className = node.attribs.class; // Convert class to className
-      delete node.attribs.class; // Remove the old class attribute
+    }
+    //console.log(`node name is ${node.name}`)
+    if (
+      node.name == "p" &&
+      node.children.length === 1 &&
+      node.children[0].name == "br"
+    ) {
+      console.log("THERE IS A BREAK HERE");
+      node = <br />;
     }
   };
 
@@ -103,17 +140,19 @@ const Content = () => {
       if (docSnap.exists()) {
         console.log(docSnap.data().content);
         setContent(docSnap.data().content);
+        setPulledContent(docSnap.data().content);
       } else {
         console.log("Document does not exist");
       }
     } catch (e) {
       console.error("Error retrieving document: ", e);
+      setDatabaseError(e);
     }
   };
 
   useEffect(() => {
     getContent(dbModuleId);
-    console.log(content);
+    console.log(`${content}`);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -196,14 +235,41 @@ const Content = () => {
   //const [buttonState, setButtonState] = useState('Edit')
 
   const adminContentWrite = async (newContent) => {
-    const docRef = doc(db, `quizzes/sdg11t${moduleId}`);
+    const docRef = doc(db, `quizzes/sdg11t${dbModuleId}`);
 
     console.log("trying to update");
     console.log("module id is: ", moduleId);
 
+    console.log(`HTML IS UNSANITIZED: ${newContent}`);
+
+    const writeableContent = sanitizeHtml(newContent, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+      //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
+      allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"]),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        p: ["class", "style"],
+        span: ["class", "style"],
+        s: ["class", "style"],
+        strong: ["class", "style"],
+        u: ["class", "style"],
+        em: ["class", "style"],
+      },
+      allowedStyles: {
+        "*": {
+          color: [/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/],
+          fontSize: [/^\d+(\.\d+)?(px|em|%)$/],
+          textAlign: [/^left|right|center|justify$/],
+        },
+      },
+    });
+
+    console.log(`WRITNG: ${writeableContent}`);
+
     try {
       console.log("doc reference is :  ", docRef);
-      await updateDoc(docRef, { content: newContent });
+      await updateDoc(docRef, { content: writeableContent });
+      console.log(`WRITING:         ${writeableContent}`);
       console.log("update successful");
     } catch (e) {
       console.error("Error retrieving document: ", e);
@@ -216,6 +282,7 @@ const Content = () => {
     //setButtonState('Edit')
     if (newContent) {
       console.log("new content is --->", newContent);
+      //transform(newContent)
       adminContentWrite(newContent);
     } else {
       console.log("NO NEW CONTENT");
@@ -224,13 +291,11 @@ const Content = () => {
 
   const handleCancelClick = () => {
     setTextEditorShow(false);
+    setContent(pulledContent);
     //setButtonState('Edit')
   };
 
   const retrieveImages = async () => {
-    //const dbString = `/sdg11/target${dbModuleId}/GOAL_11_TARGET_11.1.png`
-    //const testDbString= "New Ardoch Logo (1) 1.png"
-    //console.log(`trying to hit: ${dbString}`)
     console.log(`${isNaN(Number(dbModuleId))}`);
     try {
       getDownloadURL(
@@ -266,16 +331,10 @@ const Content = () => {
         console.error("Unknown error occurred:", error.message);
       }
     }
-    //const storageRef1 = ref(storage, `/sdg11/target${dbModuleId}/GOAL_11_TARGET_11.1.png`)
-    //const storageRef2 = ref(storage, `/sdg11/target${dbModuleId}/MC_Target_11.1.png`)
   };
 
   useEffect(() => {
     retrieveImages();
-
-    // console.log(
-    //   `url of image 1 is ${image1Url}. url of mage 2 is ${image2Url}`
-    // );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -285,80 +344,108 @@ const Content = () => {
   return (
     <div className="flex">
       <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
-      <div className="ml-[250px] flex-1">
-        <div className="flex justify-between">
-          <h1>{moduleTitle} Content</h1>
-          <br />
-          {isAdmin ? (
-            <Button
-              className="w-44 text-lg"
-              onClick={() => setTextEditorShow(true)}
-            >
-              Edit Content
-            </Button>
-          ) : null}
-        </div>
-        <hr className="w-full mt-4 border-white" />
-        <div className="relative h-96 flex flex-cols">
-          <img src={image1Url} alt="Image 1" />
-          <img src={image2Url} alt="Image 2" />
-        </div>
-        <br />
+      {databaseError ? (
         <div>
-          {textEditorShow === false ? (
-            <div>
-              {content
-                ? parse(content, {
-                    replace: (domNode) => {
-                      transform(domNode); // Apply the transformation
-                      return domNode; // Return the transformed node
-                    },
-                  })
-                : null}
+          <Alert variant="destructive">
+            <ExclamationCircleIcon className="h-5 w-5" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{databaseError}</AlertDescription>
+          </Alert>
+        </div>
+      ) : (
+        <div className="ml-[250px]">
+          <div className="">
+            <img
+              src={cityFooter}
+              alt="little city"
+              className="fixed bottom-0 left-0 z-10 pointer-events-none"
+              style={{ marginLeft: "250px", width: "calc(100% - 250px)" }}
+            />
+          </div>
+          <div className="fixed h-full w-full ml-[250px] top-0 left-0 z-0 bg-custom-gradient pointer-events-none"></div>
+          <div className="py-12 px-16 overflow-auto">
+            <div className="flex justify-between">
+              {textEditorShow ? (
+                <h1> Editing {moduleTitle} Content</h1>
+              ) : (
+                <h1>{moduleTitle} Content</h1>
+              )}
+              <br />
+              {isAdmin && !textEditorShow ? (
+                <Button
+                  className="text-lg"
+                  onClick={() => setTextEditorShow(true)}
+                >
+                  <PencilSquareIcon className="h-5 w-5 mr-1 text-white" /> Edit
+                  Content
+                </Button>
+              ) : null}
             </div>
-          ) : (
-            <div>
-              <ReactQuill
-                theme="snow"
-                modules={modules}
-                formats={formats}
-                value={content}
-                onChange={handleProcedureContentChange}
-                style={{
-                  height: "300px",
-                  maxWidth: "100%",
-                  overflowWrap: "break-word",
-                  wordWrap: "break-word",
-                }}
-              ></ReactQuill>
+            <br />
+            <div className="relative flex">
+              <div>
+                <img src={image1Url} alt="Image 1" className="h-60" />
+              </div>
+              <div>
+                <img src={image2Url} alt="Image 2" className="h-60" />
+              </div>
             </div>
-          )}
-          <br />
-          <br />
-          <br />
-          <div>
-            {isAdmin && textEditorShow ? (
-              <Button
-                onClick={() => {
-                  handleClick(content);
-                }}
-                style={{ marginRight: "10px" }}
-              >
-                Publish
-              </Button>
-            ) : null}
-            {isAdmin && textEditorShow ? (
-              <Button
-                onClick={() => {
-                  handleCancelClick();
-                }}
-              >
-                Cancel
-              </Button>
-            ) : null}
+            <br />
+            <div className="relative">
+              {textEditorShow === false ? (
+                // content from ReactQuill
+                <div className="bg-white rounded-lg mb-32 p-11">
+                  {content
+                    ? parse(content, {
+                        replace: (domNode) => {
+                          transform(domNode); // Apply the transformation
+                          return domNode; // Return the transformed node
+                        },
+                      })
+                    : null}
+                </div>
+              ) : (
+                <div>
+                  <div className="bg-white pb-11">
+                    <ReactQuill
+                      theme="snow"
+                      modules={modules}
+                      formats={formats}
+                      value={content}
+                      onChange={handleProcedureContentChange}
+                      style={{
+                        height: "400px",
+                        maxWidth: "100%",
+                        overflowWrap: "break-word",
+                        wordWrap: "break-word",
+                      }}
+                    ></ReactQuill>
+                  </div>
+
+                  <div className="mb-24 mt-10 space-x-3">
+                    <Button
+                      onClick={() => {
+                        handleClick(content);
+                      }}
+                    >
+                      Publish
+                    </Button>
+
+                    <Button
+                      onClick={() => {
+                        handleCancelClick();
+                      }}
+                      variant="outline"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

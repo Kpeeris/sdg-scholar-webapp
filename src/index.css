@@ -86,7 +86,7 @@
   }
 
   h2 {
-    @apply scroll-m-20 pb-2 text-3xl font-semibold first:mt-0;
+    @apply scroll-m-20 text-3xl font-semibold first:mt-0;
   }
 
   h3 {
@@ -98,15 +98,15 @@
   }
 
   p {
-    @apply text-lg leading-7 [&:not(:first-child)]:mt-6;
+    @apply text-lg leading-7 [&:not(:first-child)]:mt-1;
   }
 
   blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
+    @apply border-l-2 mt-2 mb-2 pl-6 text-lg italic;
   }
 
   ul {
-    @apply my-6 ml-6 list-disc [&>li]:mt-2 [&>li:last-child]:mb-2;
+    @apply ml-6 list-disc text-lg [&>li]:mt-2 [&>li:last-child]:mb-2;
   }
 
   small {

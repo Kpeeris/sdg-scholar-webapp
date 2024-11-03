@@ -4,9 +4,9 @@ const FullScreenDiv = ({ children }) => {
   useEffect(() => {
     const { availWidth, availHeight } = window.screen;
     setScreenSize({ width: availWidth, height: availHeight });
-    console.log(
-      `Available width: ${availWidth}, Available height: ${availHeight}`
-    );
+    // console.log(
+    //   `Available width: ${availWidth}, Available height: ${availHeight}`
+    // );
   }, []);
   return (
     <div
