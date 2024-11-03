@@ -112,6 +112,10 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(0deg, rgba(135, 206, 235, 0.25) 0%, rgba(76, 117, 133, 0.00) 47.5%)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

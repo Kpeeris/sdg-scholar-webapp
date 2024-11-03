@@ -18,7 +18,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-
+import cityFooter from "/src/assets/images/city_footer.png";
 import sanitizeHtml from "sanitize-html";
 
 const Content = () => {
@@ -355,82 +355,115 @@ const Content = () => {
           </Alert>
         </div>
       ) : (
-        <div className="ml-[250px] flex-1">
-          <div className="flex justify-between">
-            {textEditorShow ? (
-              <h1> Editing {moduleTitle} Content</h1>
-            ) : (
-              <h1>{moduleTitle} Content</h1>
-            )}
-            {/* <h1>{moduleTitle} Content</h1> */}
-            <br />
-            {isAdmin ? (
-              <Button
-                className="w-44 text-lg"
-                onClick={() => setTextEditorShow(true)}
-              >
-                <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Content
-              </Button>
-            ) : null}
+        <div className="ml-[250px]">
+          <div className="">
+            <img
+              src={cityFooter}
+              alt="little city"
+              className="fixed bottom-0 left-0 z-10 pointer-events-none"
+              style={{ marginLeft: "250px", width: "calc(100% - 250px)" }}
+            />
           </div>
-          <hr className="w-full mt-4 border-white" />
-          <div className="relative h-96 flex flex-cols">
-            <img src={image1Url} alt="Image 1" />
-            <img src={image2Url} alt="Image 2" />
-          </div>
-          <br />
-          <div>
-            {textEditorShow === false ? (
-              <div>
-                {content
-                  ? parse(content, {
-                      replace: (domNode) => {
-                        transform(domNode); // Apply the transformation
-                        return domNode; // Return the transformed node
-                      },
-                    })
-                  : null}
-              </div>
-            ) : (
-              <div>
-                <ReactQuill
-                  theme="snow"
-                  modules={modules}
-                  formats={formats}
-                  value={content}
-                  onChange={handleProcedureContentChange}
-                  style={{
-                    height: "400px",
-                    maxWidth: "100%",
-                    overflowWrap: "break-word",
-                    wordWrap: "break-word",
-                  }}
-                ></ReactQuill>
-              </div>
-            )}
-            <br />
-            <br />
-            <br />
-            <div>
-              {isAdmin && textEditorShow ? (
+          <div className="fixed h-full w-full ml-[250px] top-0 left-0 z-0 bg-custom-gradient pointer-events-none"></div>
+          <div className="py-12 px-16 overflow-auto">
+            <div className="flex justify-between">
+              {textEditorShow ? (
+                <h1> Editing {moduleTitle} Content</h1>
+              ) : (
+                <h1>{moduleTitle} Content</h1>
+              )}
+              <br />
+              {isAdmin && !textEditorShow ? (
                 <Button
-                  onClick={() => {
-                    handleClick(content);
-                  }}
-                  style={{ marginRight: "10px" }}
+                  className="w-44 text-lg"
+                  onClick={() => setTextEditorShow(true)}
                 >
-                  Publish
+                  <PencilSquareIcon className="h-6 w-6 text-white" /> Edit
+                  Content
                 </Button>
               ) : null}
-              {isAdmin && textEditorShow ? (
-                <Button
-                  onClick={() => {
-                    handleCancelClick();
-                  }}
-                >
-                  Cancel
-                </Button>
-              ) : null}
+            </div>
+            <br />
+            <div className="relative h-96 flex flex-cols">
+              <img src={image1Url} alt="Image 1" />
+              <img src={image2Url} alt="Image 2" />
+            </div>
+            <br />
+            <div className="relative">
+              {textEditorShow === false ? (
+                // content from ReactQuill
+                <div className="bg-gradient-to-b from-white rounded-lg mb-32 p-11">
+                  {content
+                    ? parse(content, {
+                        replace: (domNode) => {
+                          transform(domNode); // Apply the transformation
+                          return domNode; // Return the transformed node
+                        },
+                      })
+                    : null}
+                </div>
+              ) : (
+                <div>
+                  <div className="bg-white pb-11">
+                    <ReactQuill
+                      theme="snow"
+                      modules={modules}
+                      formats={formats}
+                      value={content}
+                      onChange={handleProcedureContentChange}
+                      style={{
+                        height: "400px",
+                        maxWidth: "100%",
+                        overflowWrap: "break-word",
+                        wordWrap: "break-word",
+                      }}
+                    ></ReactQuill>
+                  </div>
+
+                  <div className="mb-24 mt-10">
+                    <Button
+                      onClick={() => {
+                        handleClick(content);
+                      }}
+                      style={{ marginRight: "10px" }}
+                    >
+                      Publish
+                    </Button>
+
+                    <Button
+                      onClick={() => {
+                        handleCancelClick();
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {/* <br />
+              <br />
+              <br />
+              <div>
+                {isAdmin && textEditorShow ? (
+                    <Button
+                      onClick={() => {
+                        handleClick(content);
+                      }}
+                      style={{ marginRight: "10px" }}
+                    >
+                      Publish
+                    </Button>
+                ) : null}
+                {isAdmin && textEditorShow ? (
+                  <Button
+                    onClick={() => {
+                      handleCancelClick();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                ) : null}
+              </div> */}
             </div>
           </div>
         </div>
