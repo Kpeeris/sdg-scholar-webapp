@@ -184,6 +184,7 @@ describe("SignUp Page", () => {
             sdg11t9: 0,
             sdg11t10: 0,
           },
+          sdg11FirstView: false,
         }
       );
     });
