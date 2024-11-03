@@ -43,6 +43,8 @@ import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import sanitizeHtml from "sanitize-html";
 import parse from "html-react-parser";
+import { PlusIcon } from "@heroicons/react/24/solid";
+
 
 const NoticeBoard = () => {
   const [notices, setNotices] = useState([]);
@@ -363,8 +365,8 @@ const NoticeBoard = () => {
         {role === "admin" && (
           <Dialog className="max-w-3xl">
             <DialogTrigger asChild>
-              <Button>
-                <PencilSquareIcon className="h-6 w-6 text-white" /> New Notice
+              <Button className="text-lg">
+                <PlusIcon className="h-5 w-5 mr-1 text-white" /> New Notice
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl w-full">

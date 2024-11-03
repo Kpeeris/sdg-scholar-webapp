@@ -265,10 +265,10 @@ const Quiz = () => {
                   {isAdmin ? (
                     <Button
                       data-testid="editQuizButton"
-                      className="w-44 text-lg"
+                      className="text-lg"
                       onClick={() => navigate(`/module/${moduleId}/editquiz`)}
                     >
-                      <PencilSquareIcon className="h-6 w-6 text-white" /> Edit
+                      <PencilSquareIcon className="h-5 w-5 mr-1 text-white" /> Edit
                       Quiz
                     </Button>
                   ) : null}

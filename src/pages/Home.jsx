@@ -79,6 +79,7 @@ export const Home = () => {
             Discover SDG 11: Sustainable
             <br /> Cities and Communities
           </h1>
+          
           <h4 className="text-2xl font-normal mt-6">
             Learn how to make cities and human settlements <br />
             inclusive, safe, resilient and sustainable
@@ -114,7 +115,7 @@ export const Home = () => {
         </Link>
       </div>
 
-      <h1 className="mt-16 mb-8 text-center">Your SDGs</h1>
+      <h2 className="leading-[1.3] mt-16 mb-8 text-center text-4xl font-bold">Your SDGs</h2>
 
       {/* grid of modules */}
       <div className=" grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">

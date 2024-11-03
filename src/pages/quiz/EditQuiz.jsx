@@ -281,10 +281,10 @@ export const EditQuiz = () => {
           </h2> */}
 
           <Button
-            style={{ fontSize: "1.125rem", lineHeight: "1.75rem" }}
+            className="text-lg"
             onClick={() => navigate(`/module/${moduleId}/quiz`)}
           >
-            <PaperAirplaneIcon className="h-6 w-6 mr-2 text-white" />
+            <PaperAirplaneIcon className="h-5 w-5 mr-1 text-white" />
             Publish Quiz
           </Button>
         </div>

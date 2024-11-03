@@ -50,14 +50,14 @@ const GoalInfo = ({ isOpen }) => {
           {/* How to Play Section */}
           <div className="bg-gray-100 rounded-lg p-6 mt-2">
             <h2 className="text-2xl font-semibold mb-2">How to Play</h2>
-            <p className="mb-6">
+            <p>
               Explore this virtual city by hovering over buildings to reveal SDG
               11 targets. Ace quizzes to unlock buildings and track your
               progress toward completing SDG 11!
             </p>
 
             {/* Icons and Explanations */}
-            <div className="flex items-center justify-around mt-8">
+            <div className="flex items-center justify-around mt-8 mb-3">
               <div className="text-center">
                 <img
                   src={LockedBuildingImage}

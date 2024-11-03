@@ -159,15 +159,15 @@ const BuildingComponent = ({
         </DialogTrigger>
         <DialogContent data-testid={`${buildingName}-dialog`}>
           <DialogHeader>
-            <DialogTitle className="flex justify-center text-4xl">
+            <DialogTitle className="flex justify-center text-4xl pb-2">
               Target {targetNum}
             </DialogTitle>
 
-            <DialogDescription>{description}</DialogDescription>
+            <DialogDescription className="text-center pb-2">{description}</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center">
             <img src={full_image} alt={buildingName} />
-            <DialogTitle className="flex justify-center">
+            <DialogTitle className="flex justify-center pb-5">
               {buildingName}
             </DialogTitle>
             <Button

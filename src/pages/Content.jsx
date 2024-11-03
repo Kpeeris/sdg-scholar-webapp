@@ -7,14 +7,12 @@ import { useAuthContext } from "@/AuthProvider";
 import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
-//import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebaseFiles/firebaseConfig.js";
 
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-//import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
@@ -375,10 +373,10 @@ const Content = () => {
               <br />
               {isAdmin && !textEditorShow ? (
                 <Button
-                  className="w-44 text-lg"
+                  className="text-lg"
                   onClick={() => setTextEditorShow(true)}
                 >
-                  <PencilSquareIcon className="h-6 w-6 text-white" /> Edit
+                  <PencilSquareIcon className="h-5 w-5 mr-1 text-white" /> Edit
                   Content
                 </Button>
               ) : null}
@@ -420,12 +418,11 @@ const Content = () => {
                     ></ReactQuill>
                   </div>
 
-                  <div className="mb-24 mt-10">
+                  <div className="mb-24 mt-10 space-x-3">
                     <Button
                       onClick={() => {
                         handleClick(content);
                       }}
-                      style={{ marginRight: "10px" }}
                     >
                       Publish
                     </Button>
@@ -434,6 +431,7 @@ const Content = () => {
                       onClick={() => {
                         handleCancelClick();
                       }}
+                      variant="outline"
                     >
                       Cancel
                     </Button>
