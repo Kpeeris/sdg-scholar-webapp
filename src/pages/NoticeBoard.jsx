@@ -17,7 +17,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import db from "../../firebaseFiles/firebaseConfig.js";
+import db from "../../firebase/firebaseConfig.js";
 // import { useAuth } from "../../firebaseFiles/firebaseAuth.js";
 import {
   collection,
@@ -44,7 +44,6 @@ import ReactQuill from "react-quill";
 import sanitizeHtml from "sanitize-html";
 import parse from "html-react-parser";
 import { PlusIcon } from "@heroicons/react/24/solid";
-
 
 const NoticeBoard = () => {
   const [notices, setNotices] = useState([]);

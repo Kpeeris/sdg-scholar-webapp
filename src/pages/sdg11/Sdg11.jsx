@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "../../../firebaseFiles/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
 
 import FULL_CITY from "/src/assets/images/City_scape.png";
@@ -10,14 +10,13 @@ import GoalInfo from "./GoalInfo";
 import FullScreenDiv from "./FullScreenDiv";
 
 export const Sdg11 = () => {
-
-  const {user, role} = useAuthContext();
+  const { user, role } = useAuthContext();
   const [isFirstView, setIsFirstView] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
 
   useEffect(() => {
     const checkFirstView = async () => {
-       // Skip if already checked in this session
+      // Skip if already checked in this session
       // if (!user?.uid || hasChecked || role != "learner") return;
       if (!user?.uid || hasChecked || role !== "learner") {
         console.log("Skipping database check.");
@@ -29,24 +28,24 @@ export const Sdg11 = () => {
 
       if (learnerDoc.exists() && learnerDoc.data().sdg11FirstView === false) {
         setIsFirstView(true);
-        console.log("First view detected. Showing GoalInfo and updating Firestore.");
+        console.log(
+          "First view detected. Showing GoalInfo and updating Firestore."
+        );
 
         // Update Firestore to set sdg11FirstView to true
         await updateDoc(learnerDocRef, { sdg11FirstView: true });
       } else {
-          console.log("Already marked as viewed.");
-
+        console.log("Already marked as viewed.");
       }
 
       // Mark as checked to avoid more reads in this session
-      setHasChecked(true); 
+      setHasChecked(true);
       console.log("Session check completed, setting hasChecked to true.");
-
     };
 
     checkFirstView();
   }, [user, hasChecked, role]);
-  
+
   return (
     <FullScreenDiv>
       <img

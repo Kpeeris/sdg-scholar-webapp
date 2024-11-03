@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import db from "../../../firebaseFiles/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 
 import SignupSVG from "@/assets/images/Signup.svg";
 import { Link } from "react-router-dom";
@@ -9,10 +9,9 @@ import { TwoColumnLayout } from "../../TwoColumnLayout";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-
 
 export const SignUpAdmin = () => {
   const adminCodeRef = useRef(null);
@@ -96,7 +95,7 @@ export const SignUpAdmin = () => {
               </div>
             </Alert>
           )}
-          
+
           {/* Verify Button */}
           <Button className="w-full mt-2 mb-2" onClick={verifyAdminCode}>
             Verify Admin Code
@@ -112,7 +111,7 @@ export const SignUpAdmin = () => {
                 Sign Up as a Learner Here
               </Button>
             </Link>
-          </div>  
+          </div>
         </div>
       }
     />

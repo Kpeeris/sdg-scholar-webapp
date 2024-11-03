@@ -7,13 +7,11 @@ import { TwoColumnLayout } from "../../TwoColumnLayout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-import db from "../../../firebaseFiles/firebaseConfig.js";
-import { signup } from "../../../firebaseFiles/firebaseAuth.js";
+import db from "../../../firebase/firebaseConfig.js";
+import { signup } from "../../../firebase/firebaseAuth.js";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-
-
 
 const SignUp = () => {
   const firstNameRef = useRef();
@@ -139,7 +137,7 @@ const SignUp = () => {
             passwordRef={passwordRef}
             confirmPasswordRef={confirmPasswordRef}
           />
-           {error && (
+          {error && (
             <Alert variant="destructive" className="flex items-center">
               <ExclamationCircleIcon className="h-5 w-5 mr-2" />
               <div>

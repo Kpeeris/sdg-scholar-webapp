@@ -1,6 +1,6 @@
 import SignUp from "@/pages/signup/SignUp";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { signup } from "../../firebaseFiles/firebaseAuth";
+import { signup } from "../../firebase/firebaseAuth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach } from "vitest";

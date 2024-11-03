@@ -13,10 +13,9 @@ import LoginSVG from "@/assets/images/Login.svg";
 
 import { Link } from "react-router-dom";
 
-import { login } from "../../../firebaseFiles/firebaseAuth.js";
+import { login } from "../../../firebase/firebaseAuth.js";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-
 
 export const Login = () => {
   const emailRef = useRef();
@@ -50,7 +49,7 @@ export const Login = () => {
     } catch (error) {
       const customErrorMessage =
         firebaseErrorMessages[error.code] ||
-        "An unexpected error occurred. Please try again."; 
+        "An unexpected error occurred. Please try again.";
       setError(customErrorMessage);
       setLoading(false);
     }

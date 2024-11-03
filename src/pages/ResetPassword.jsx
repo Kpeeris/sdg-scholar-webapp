@@ -1,5 +1,5 @@
-import { useRef, useState } from "react"; 
-import { resetPassword } from "../../firebaseFiles/firebaseAuth";
+import { useRef, useState } from "react";
+import { resetPassword } from "../../firebase/firebaseAuth";
 
 import { TwoColumnLayout } from "../TwoColumnLayout";
 
@@ -13,35 +13,40 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 const ResetPassword = () => {
-    const emailRef = useRef(); // Reference to the email input field
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState(null);
+  const emailRef = useRef(); // Reference to the email input field
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
 
-    const firebaseErrorMessages = {
-        "auth/invalid-email": "The email is invalid. Please try again.",
-        "auth/missing-email": "An email is needed to reset your password. Please try again",
-    };
+  const firebaseErrorMessages = {
+    "auth/invalid-email": "The email is invalid. Please try again.",
+    "auth/missing-email":
+      "An email is needed to reset your password. Please try again",
+  };
 
-      const handleResetPassword = async () => {
-        setLoading(true);
-        setMessage("");
-        setError(null);
+  const handleResetPassword = async () => {
+    setLoading(true);
+    setMessage("");
+    setError(null);
 
-        try {
-            const email = emailRef.current.value;
+    try {
+      const email = emailRef.current.value;
 
-            await resetPassword(email);
+      await resetPassword(email);
 
-            setMessage("A password reset link has been sent to your email if you have previously signed up for SDG Scholar.");
-        } catch (error) {
-            console.log(error);
-            const customErrorMessage = firebaseErrorMessages[error.code] || "Failed to send reset email. Please try again.";
-            setError(customErrorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
+      setMessage(
+        "A password reset link has been sent to your email if you have previously signed up for SDG Scholar."
+      );
+    } catch (error) {
+      console.log(error);
+      const customErrorMessage =
+        firebaseErrorMessages[error.code] ||
+        "Failed to send reset email. Please try again.";
+      setError(customErrorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <TwoColumnLayout
@@ -49,17 +54,17 @@ const ResetPassword = () => {
       imageAlt="Forgot Password SVG"
       rightContent={
         <div className="space-y-4">
-            {/* <h1>Forgot Password? </h1>
+          {/* <h1>Forgot Password? </h1>
             <p>Enter your email to receive a password reset link</p>  */}
           <div className="space-y-2 pb-2 text-center">
             <h1>Forgot Password?</h1>
             <p>Enter your email to receive a password reset link</p>
-          </div>         
-          <div className="w-full flex flex-col items-left gap-2 pb-4">
-              <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" placeholder="Email" ref={emailRef} />
           </div>
-          
+          <div className="w-full flex flex-col items-left gap-2 pb-4">
+            <Label htmlFor="email">Email</Label>
+            <Input type="email" id="email" placeholder="Email" ref={emailRef} />
+          </div>
+
           {message && <p className="text-green-600 text-base">{message}</p>}
           {error && (
             <Alert variant="destructive" className="flex items-center">
@@ -71,7 +76,12 @@ const ResetPassword = () => {
             </Alert>
           )}
 
-          <Button className="w-full mt-2 mb-2" variant={loading ? "secondary" : "default"} disabled={loading} onClick={handleResetPassword}>
+          <Button
+            className="w-full mt-2 mb-2"
+            variant={loading ? "secondary" : "default"}
+            disabled={loading}
+            onClick={handleResetPassword}
+          >
             {loading ? "Sending..." : "Send Reset Email"}
           </Button>
           <hr className="w-full mt-4 border-white" />

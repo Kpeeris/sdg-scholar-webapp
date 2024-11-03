@@ -11,7 +11,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import db from "../../../firebaseFiles/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
@@ -268,8 +268,8 @@ const Quiz = () => {
                       className="text-lg"
                       onClick={() => navigate(`/module/${moduleId}/editquiz`)}
                     >
-                      <PencilSquareIcon className="h-5 w-5 mr-1 text-white" /> Edit
-                      Quiz
+                      <PencilSquareIcon className="h-5 w-5 mr-1 text-white" />{" "}
+                      Edit Quiz
                     </Button>
                   ) : null}
                 </div>

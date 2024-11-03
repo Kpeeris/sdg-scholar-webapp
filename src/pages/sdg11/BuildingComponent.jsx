@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
-import db from "../../../firebaseFiles/firebaseConfig";
+import db from "../../../firebase/firebaseConfig";
 import {
   doc,
   getDoc,
@@ -163,7 +163,9 @@ const BuildingComponent = ({
               Target {targetNum}
             </DialogTitle>
 
-            <DialogDescription className="text-center pb-2">{description}</DialogDescription>
+            <DialogDescription className="text-center pb-2">
+              {description}
+            </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center">
             <img src={full_image} alt={buildingName} />

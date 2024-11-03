@@ -9,7 +9,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 
 import { useState, useEffect } from "react";
 import { collection, doc, getDoc } from "firebase/firestore";
-import db from "../../firebaseFiles/firebaseConfig.js";
+import db from "../../firebase/firebaseConfig.js";
 
 export const Home = () => {
   const { user, userData, role } = useAuthContext();
@@ -34,15 +34,18 @@ export const Home = () => {
 
         // Map through ListOfGoals and add count for completed sdg 11 targets
         const updatedGoals = ListOfGoals.map((goal) => {
-          if (goal.id === 11) { 
-            const completedTargets = Object.keys(scores || {}).reduce((count, key) => {
-              if (key.startsWith("sdg11t") && scores[key] === 100) {
-                return count + 1;
-              }
-              return count;
-            }, 0);
+          if (goal.id === 11) {
+            const completedTargets = Object.keys(scores || {}).reduce(
+              (count, key) => {
+                if (key.startsWith("sdg11t") && scores[key] === 100) {
+                  return count + 1;
+                }
+                return count;
+              },
+              0
+            );
 
-            return { ...goal, score: `${completedTargets}/10` }; 
+            return { ...goal, score: `${completedTargets}/10` };
           }
           return goal;
         });
@@ -67,11 +70,10 @@ export const Home = () => {
       <h1 className="pt-4 pb-12">
         {userData?.firstName
           ? userData.lastName
-            ? `Hi ${userData.firstName} ${userData.lastName}!` 
-            : `Hi ${userData.firstName}!`                      
-          : "Hi!"                                              
-        }
-      </h1>  
+            ? `Hi ${userData.firstName} ${userData.lastName}!`
+            : `Hi ${userData.firstName}!`
+          : "Hi!"}
+      </h1>
 
       <div className="bg-orange-200 -mx-12 h-96 flex items-center justify-around">
         <div className="flex flex-col justify-around">
@@ -79,7 +81,7 @@ export const Home = () => {
             Discover SDG 11: Sustainable
             <br /> Cities and Communities
           </h1>
-          
+
           <h4 className="text-2xl font-normal mt-6">
             Learn how to make cities and human settlements <br />
             inclusive, safe, resilient and sustainable
@@ -115,7 +117,9 @@ export const Home = () => {
         </Link>
       </div>
 
-      <h2 className="leading-[1.3] mt-16 mb-8 text-center text-4xl font-bold">Your SDGs</h2>
+      <h2 className="leading-[1.3] mt-16 mb-8 text-center text-4xl font-bold">
+        Your SDGs
+      </h2>
 
       {/* grid of modules */}
       <div className=" grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -136,11 +140,11 @@ export const Home = () => {
             {/* score and star Icon for sdg 11 */}
             {goal.score && (
               <div className="absolute top-2.5 left-2 flex items-center bg-white rounded-full px-2 py-1 text-base font-semibold">
-              <span>{goal.score}</span>
-              <StarIcon className="h-5 w-5 ml-1 text-primary" />
-            </div>
+                <span>{goal.score}</span>
+                <StarIcon className="h-5 w-5 ml-1 text-primary" />
+              </div>
             )}
-            
+
             <img
               src={goal.image}
               alt={goal.title}

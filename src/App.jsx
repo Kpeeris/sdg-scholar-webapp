@@ -10,8 +10,8 @@ import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
 import NoticeBoard from "./pages/NoticeBoard";
 
-import { useEffect } from "react"
-import { logout } from "../firebaseFiles/firebaseAuth"; // Adjust the path if needed
+import { useEffect } from "react";
+import { logout } from "../firebase/firebaseAuth"; // Adjust the path if needed
 
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -23,22 +23,22 @@ function App() {
     const handleUnload = () => {
       logout()
         .then(() => console.log("User signed out before closign the tab"))
-        .catch((error) => console.error("Error logging out:", error))
-    }
+        .catch((error) => console.error("Error logging out:", error));
+    };
 
     const handleBeforeUnload = (event) => {
-      event.preventDefault()
-      event.returnValue = ""
-    }
+      event.preventDefault();
+      event.returnValue = "";
+    };
 
-    window.addEventListener("beforeunload", handleBeforeUnload)
-    window.addEventListener("unload", handleUnload)
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("unload", handleUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload)
-      window.removeEventListener("unload", handleUnload)
-    }
-  }, [])
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, []);
 
   return (
     <AuthProvider>
@@ -46,21 +46,47 @@ function App() {
         <Routes>
           {/* Public routes, accessible when not logged in */}
           <Route path="/login" element={<PublicRoute element={<Login />} />} />
-          <Route path="/signup" element={<PublicRoute element={<SignUp />} />} />
-          <Route path="/signupadmin" element={<PublicRoute element={<SignUpAdmin />} />} />
-          <Route path="/signupuser" element={<PublicRoute element={<SignUpUser />} />} />
-          <Route path="/resetpassword" element={<PublicRoute element={<ResetPassword />} />} />
+          <Route
+            path="/signup"
+            element={<PublicRoute element={<SignUp />} />}
+          />
+          <Route
+            path="/signupadmin"
+            element={<PublicRoute element={<SignUpAdmin />} />}
+          />
+          <Route
+            path="/signupuser"
+            element={<PublicRoute element={<SignUpUser />} />}
+          />
+          <Route
+            path="/resetpassword"
+            element={<PublicRoute element={<ResetPassword />} />}
+          />
 
           {/* Private routes, accessible only if logged in */}
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
           <Route path="/about" element={<PrivateRoute element={<About />} />} />
           <Route path="/sdg11" element={<PrivateRoute element={<Sdg11 />} />} />
-          <Route path="/module/:moduleId/content" element={<PrivateRoute element={<Content />} />} />
-          <Route path="/module/:moduleId/quiz" element={<PrivateRoute element={<Quiz />} />} />
-          <Route path="/noticeboard" element={<PrivateRoute element={<NoticeBoard />} />} />
+          <Route
+            path="/module/:moduleId/content"
+            element={<PrivateRoute element={<Content />} />}
+          />
+          <Route
+            path="/module/:moduleId/quiz"
+            element={<PrivateRoute element={<Quiz />} />}
+          />
+          <Route
+            path="/noticeboard"
+            element={<PrivateRoute element={<NoticeBoard />} />}
+          />
 
           {/* Private routes, accessible only if logged in and is an admin */}
-          <Route path="/module/:moduleId/editquiz" element={<PrivateRoute element={<EditQuiz />} requiredRole="admin" />} />
+          <Route
+            path="/module/:moduleId/editquiz"
+            element={
+              <PrivateRoute element={<EditQuiz />} requiredRole="admin" />
+            }
+          />
         </Routes>
       </Layout>
     </AuthProvider>

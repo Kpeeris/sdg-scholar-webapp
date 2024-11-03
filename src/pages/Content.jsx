@@ -9,7 +9,7 @@ import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "../../firebaseFiles/firebaseConfig.js";
+import db from "../../firebase/firebaseConfig.js";
 
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";

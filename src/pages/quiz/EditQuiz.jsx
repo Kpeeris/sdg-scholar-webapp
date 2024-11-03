@@ -8,7 +8,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import db from "../../../firebaseFiles/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 
 import Question from "../../components/Question.jsx";
 import { Button } from "@/components/ui/button";
