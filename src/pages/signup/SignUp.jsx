@@ -106,6 +106,7 @@ const SignUp = () => {
           lastName,
           createdAt: serverTimestamp(),
           scores: quizScores,
+          sdg11FirstView: false,
         });
       }
 

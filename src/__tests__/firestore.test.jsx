@@ -23,7 +23,7 @@ describe("Firestore Emulator Tests", () => {
 
   it("should add a user and retrieve it", async () => {
     // Arrange
-    const userId = "user1";
+    const userId = "user2";
     const userData = {
       name: "John Doe",
       email: "john@example.com",
