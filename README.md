@@ -74,3 +74,6 @@ Illustrations used on the web app are sourced from www.freepik.com
 
 ## License
 This project is licensed under the [MIT license](./LICENSE).
+
+### Documentation
+[Handover Document](https://docs.google.com/document/d/1fY1Xld4gUUpzjbIbqShKZU_IQcBm6t7rfoudCp5yZBE/edit?usp=drive_link) (You must request access to view)
