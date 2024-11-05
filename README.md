@@ -52,7 +52,7 @@ npm install -g firebase-tools
 
 # Start Firebase emulator locally
 firebase emulators:start 
-# (You can type in control-c to stop when youre done)
+# (You can type in control-c to stop when you're done testing)
 
 # [While runs in the background open new Terminal session] run the tests
 npm run test 
