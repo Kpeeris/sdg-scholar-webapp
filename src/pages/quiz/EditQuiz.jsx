@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import db from "../../../firebase/firebaseConfig.js";
 
-import Question from "../../components/Question.jsx";
+import Question from "./Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -368,7 +368,9 @@ export const EditQuiz = () => {
                   onChange={(e) => setQuestionText(e.target.value)}
                 />
                 {questionText === "" && (
-                  <p className="text-red-500 text-sm ml-1">Please add a question</p>
+                  <p className="text-red-500 text-sm ml-1">
+                    Please add a question
+                  </p>
                 )}
               </div>
 
@@ -397,7 +399,9 @@ export const EditQuiz = () => {
                   </SelectContent>
                 </Select>
                 {type === "" && (
-                  <p className="text-red-500 text-sm ml-1">Please select a question type</p>
+                  <p className="text-red-500 text-sm ml-1">
+                    Please select a question type
+                  </p>
                 )}
               </div>
             </div>
@@ -405,16 +409,14 @@ export const EditQuiz = () => {
             {/* Add Options */}
             <div className="flex justify-between items-center">
               <div>
-                  <p className="text-xl font-bold">Answer Choices</p>
+                <p className="text-xl font-bold">Answer Choices</p>
                 <p className="text-base">
                   Select the correct answers below by checking the box next to
                   each option
                 </p>
               </div>
               {/* create a new option */}
-              <Button onClick={handleAddOption}>
-                Add Option
-              </Button>
+              <Button onClick={handleAddOption}>Add Option</Button>
             </div>
 
             {options.map((option, index) => (
