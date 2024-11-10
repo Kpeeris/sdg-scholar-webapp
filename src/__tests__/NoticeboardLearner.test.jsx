@@ -192,7 +192,7 @@ describe("Should not display admin-related elements", () => {
             render(<NoticeBoard />);
         });
 
-        const newNoticeButton = screen.queryByText("New Notice");
+        const newNoticeButton = screen.queryByText("Add Notice");
         expect(newNoticeButton).not.toBeInTheDocument();
     });
 
