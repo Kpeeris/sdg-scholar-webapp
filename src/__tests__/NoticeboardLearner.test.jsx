@@ -6,7 +6,7 @@ import {
   within,
   act,
 } from "@testing-library/react";
-import NoticeBoard from "../pages/NoticeBoard";
+import NoticeBoard from "../pages/noticeboard/NoticeBoard";
 import { getDocs } from "firebase/firestore";
 import { it, expect, describe, vi, afterEach } from "vitest";
 

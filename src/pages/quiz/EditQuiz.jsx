@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import db from "../../../firebase/firebaseConfig.js";
 
-import Question from "./Question.jsx";
+import Question from "./components/Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

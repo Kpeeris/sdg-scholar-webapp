@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SideMenu from "../components/SideMenu";
+import SideMenu from "../../components/SideMenu";
 import { useParams } from "react-router-dom";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useAuthContext } from "@/AuthProvider";
@@ -9,7 +9,7 @@ import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "../../firebase/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -136,7 +136,6 @@ const Content = () => {
   useEffect(() => {
     getContent(dbModuleId);
     console.log(`${content}`);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //text editor styling credit to https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
@@ -230,10 +229,6 @@ const Content = () => {
    */
   const adminContentWrite = async (newContent) => {
     const docRef = doc(db, `quizzes/sdg11t${dbModuleId}`);
-
-    // console.log("trying to update");
-    // console.log("module id is: ", moduleId);
-
     const writeableContent = sanitizeHtml(newContent, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 
@@ -273,10 +268,8 @@ const Content = () => {
   const handleClick = (newContent) => {
     console.log("NEW CONTENT", newContent);
     setTextEditorShow(false);
-    //setButtonState('Edit')
     if (newContent) {
       console.log("new content is --->", newContent);
-      //transform(newContent)
       adminContentWrite(newContent);
     } else {
       console.log("NO NEW CONTENT");
@@ -289,7 +282,6 @@ const Content = () => {
   const handleCancelClick = () => {
     setTextEditorShow(false);
     setContent(pulledContent);
-    //setButtonState('Edit')
   };
 
   /**
@@ -336,7 +328,6 @@ const Content = () => {
 
   useEffect(() => {
     retrieveImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const moduleTitle = `Target 11.${moduleId}`;

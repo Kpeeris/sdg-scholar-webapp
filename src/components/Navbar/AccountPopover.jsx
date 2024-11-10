@@ -20,8 +20,13 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-/* Pop-up that is located in the navbar and displays the user's details 
-  and allows them to logout */
+
+/**
+ * AccountPopover that is located in the navbar and displays the user's details 
+ * and allows them to logout
+ * 
+ * @returns {JSX.Element} The rendered AccountPopover component.
+ */
 export function AccountPopover() {
   const { user, userData, role } = useAuthContext();
 
@@ -108,6 +113,7 @@ export function AccountPopover() {
           </Dialog>
           <div className="border-t border-gray-300 my-1"></div>
 
+          {/* Log out button */}
           <Button
             onClick={handleLogout}
             variant="accManagement"

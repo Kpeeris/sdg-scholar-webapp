@@ -1,5 +1,6 @@
 import "./index.css";
 import Layout from "./layouts/Layout";
+import { useEffect } from "react";
 
 import { Route, Routes } from "react-router-dom";
 import { Home, Sdg11, Quiz, Content, About } from "./index";
@@ -8,17 +9,23 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SignUp";
 import SignUpAdmin from "./pages/signup/SignUpAdmin";
 import SignUpUser from "./pages/signup/SignUpUserType";
-import NoticeBoard from "./pages/NoticeBoard";
+import NoticeBoard from "./pages/noticeboard/NoticeBoard";
 
-import { useEffect } from "react";
-import { logout } from "../firebase/auth/firebaseAuth"; // Adjust the path if needed
+import { logout } from "../firebase/auth/firebaseAuth"; 
 
 import { AuthProvider } from "./AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
-import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "./pages/resetpassword/ResetPassword";
 
+/**
+ * Main component of the app, which sets up routes and global authentication context.
+ *  
+ * @returns {JSX.Element} The rendered App component.
+ */
 function App() {
+
+  // Handle logging out the user when the tab is closed or refreshed
   useEffect(() => {
     const handleUnload = () => {
       logout()

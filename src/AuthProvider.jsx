@@ -1,5 +1,3 @@
-// Works like a global variable, you can get access to current user, their data and role (Admin/learner)
-/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "../firebase/auth/firebaseAuth";
 
@@ -8,7 +6,16 @@ import db from "../firebase/firebaseConfig";
 
 const AuthContext = createContext();
 
-// AuthProvider that wraps the app
+/**
+ * AuthProvider component that wraps the app and provides access
+ * based on current user's authentication state, user data, and role.
+ * Fetches user data from Firestore to determine whether the user is a learner or admin.
+ * 
+ * @param {Object} props - The component props.
+ * @param {JSX.Element} props.children - The child components wrapped by the AuthProvider.
+ * 
+ * @returns {JSX.Element} The AuthContext.Provider component wrapping the children.
+ */
 export const AuthProvider = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
@@ -16,6 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [role, setRole] = useState(null);
 
+  // Fetch user's role and data when current user changes
   useEffect(() => {
     if (currentUser) {
       const fetchUserRole = async () => {
@@ -55,6 +63,7 @@ export const AuthProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
+    // Providing user, userData, role, and loading state to entire app
     <AuthContext.Provider
       value={{ user: currentUser, userData, role, loading }}
     >

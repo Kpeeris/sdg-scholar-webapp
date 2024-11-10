@@ -1,14 +1,24 @@
-import SdgCarousel from "/src/pages/About/SdgCarousel";
+import RelevantSDGAccodian from "./components/RelevantSDGAccordion";
+import FeaturesCards from "./components/FeaturesCards";
+import SdgCarousel from "./components/SdgCarousel";
+
 import holding_sdg_wheel from "/src/assets/images/holding_sdg_wheel.svg";
 import background from "/src/assets/images/plants-background.svg";
-import RelevantSDGAccodian from "./RelevantSDGAccordion";
-import FeaturesCards from "./FeaturesCards";
 
+
+/**
+ * About component that provides an overview of SDG Scholar, including its features,
+ * what SDGs are and how they relate to different fields of study
+ * 
+ * @returns {JSX.Element} The rendered About component.
+ */
 export const About = () => {
   return (
     <div data-testid="about-page">
+
       {/* About SDG Scholar */}
       <div className="flex flex-col md:flex-row">
+
         {/* LHS */}
         <div className="flex flex-col md:w-1/2 justify-center pr-8 pl-8 pb-8">
           <h1 className="leading-[1.2] mb-1">

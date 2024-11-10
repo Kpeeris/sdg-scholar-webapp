@@ -7,8 +7,15 @@ import { Button } from "../ui/button";
 
 import { Icon } from "@iconify/react";
 
+/**
+ * Navbar component that displays the site's navigation bar. 
+ * If user is not logged in, login and sign-up buttons are displayed.
+ * 
+ * @returns {JSX.Element | null} The rendered Navbar component, or null if loading or no AuthContext is provided.
+ */
 const Navbar = () => {
-  // get informatin about authorisation but only if it exists
+
+  // get information about authorisation but only if it exists
   const authContext = useAuthContext();
   if (!authContext) {
     console.error("AuthContext is not provided!");
@@ -23,7 +30,8 @@ const Navbar = () => {
     <div>
       {/* navbar container */}
       <nav className="flex items-center justify-between w-full h-20">
-        {/* logo */}
+
+        {/* logo and site name */}
         <Link to="/" className="ml-12">
           <div className="flex items-center flex-wrap">
             <h3 className="font-bold">SDG Scholar</h3>
@@ -64,6 +72,7 @@ const Navbar = () => {
           {user ? (
             <AccountPopover /> // Show AccountPopover if the user is logged in
           ) : (
+            // Show login and sign up if not logged in
             <div className="flex space-x-4 mr-12">
               <NavLink
                 to="/login"

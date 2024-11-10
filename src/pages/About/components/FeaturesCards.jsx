@@ -6,10 +6,16 @@ import {
   BellAlertIcon,
 } from "@heroicons/react/20/solid";
 
-/* Summary of the features in the app used in the About page*/
+
+/**
+ * A set of cards summarizing main features of SDG Scholar
+ * 
+ * @returns {JSX.Element} The rendered FeaturesCards component.
+ */
 const FeaturesCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+      
       {/* Interactive SDG Worlds Card */}
       <Card>
         <CardContent className="space-y-2">

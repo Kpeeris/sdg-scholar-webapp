@@ -4,10 +4,10 @@ import db from "../../../firebase/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
 
 import FULL_CITY from "/src/assets/images/City_scape.png";
-import BuildingComponent from "./BuildingComponent";
-import ListOfBuildings from "./ListOfBuildings";
-import GoalInfo from "./GoalInfo";
-import FullScreenDiv from "./FullScreenDiv";
+import BuildingComponent from "./components/BuildingComponent";
+import ListOfBuildings from "./components/ListOfBuildings";
+import GoalInfo from "./components/GoalInfo";
+import FullScreenDiv from "./components/FullScreenDiv";
 
 /**
  * SDG11 page component

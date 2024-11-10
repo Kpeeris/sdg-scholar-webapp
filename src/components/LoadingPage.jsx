@@ -1,8 +1,13 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 
+
 /**
- * LoadingPage
- * This component is used to display a loading spinner and a message
+ * LoadingPage to display a loading spinner and message.
+ * 
+ * @param {Object} props - The component props.
+ * @param {string} [props.message="Loading..."] - The message to display below the loading spinner.
+ * 
+ * @returns {JSX.Element} The rendered LoadingPage component.
  */
 const LoadingPage = ({ message = "Loading..." }) => {
   return (

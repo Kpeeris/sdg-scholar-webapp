@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import { resetPassword } from "../../firebase/auth/firebaseAuth";
+import { resetPassword } from "../../../firebase/auth/firebaseAuth";
 
 import ForgotPasswordSVG from "@/assets/images/Forgotpassword.svg";
-import { LoginLink } from "./signup/components/LoginLink";
-import { TwoColumnLayout } from "../layouts/TwoColumnLayout";
+import { LoginLink } from "../signup/components/LoginLink";
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

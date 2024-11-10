@@ -17,7 +17,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import db from "../../firebase/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 import {
   collection,
   query,
@@ -90,7 +90,6 @@ const NoticeBoard = () => {
    * @param {Object} node - The HTML node to transform
    */
   const transform = (node) => {
-    //console.log(`NAME IS: ${node.name}`)
     if (node.attribs && node.attribs.class) {
       if (node.attribs.class.includes("ql-align-center")) {
         node.attribs.style = {
@@ -160,7 +159,6 @@ const NoticeBoard = () => {
   useEffect(() => {
     setNotices([]);
     getAnnouncements();
-    //eslint-disable-next-line
   }, [selectedTag, deletionReload, postReload]);
 
   // Delete confirmation dialog state
@@ -191,8 +189,7 @@ const NoticeBoard = () => {
       console.error("Error deleting notice: ", e);
     }
   };
-  //eslint-disable-next-line
-  const { user, userData, role } = useAuthContext();
+  const { userData, role } = useAuthContext();
 
   /**
    * Post a new notice to the database

@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
-import db from "../../../firebase/firebaseConfig";
+import db from "../../../../firebase/firebaseConfig";
 import {
   doc,
   getDoc,
