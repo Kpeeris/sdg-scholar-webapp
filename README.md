@@ -65,7 +65,7 @@ SDG Scholar is deployed on Vercel using the Hobby Plan. Vercel produces preview 
 ### Contributors
 
 <a href="https://github.com/kashmain"><img src="https://avatars.githubusercontent.com/kashmain" width="50" /></a>
-<a href="[https://github.com/kaylynthomson]"><img src="https://avatars.githubusercontent.com/kaylynthomson" width="50" /></a>
+<a href="https://github.com/kaylynthomson"><img src="https://avatars.githubusercontent.com/kaylynthomson" width="50" /></a>
 <a href="https://github.com/Kpeeris"><img src="https://avatars.githubusercontent.com/Kpeeris" width="50" /></a>
 <a href="https://github.com/dithintheafternoon"><img src="https://avatars.githubusercontent.com/dithintheafternoon" width="50" /></a>
 
