@@ -390,14 +390,17 @@ const NoticeBoard = () => {
         {role === "admin" && (
           <Dialog className="max-w-3xl">
             <DialogTrigger asChild>
-              <Button className="text-lg">
+              <Button data-testid="AddNoticeButton" className="text-lg">
                 <PlusIcon className="h-5 w-5 mr-1 text-white" strokeWidth="2" />{" "}
                 Add Notice
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl w-full">
               <DialogHeader>
-                <DialogTitle className="flex justify-center text-4xl">
+                <DialogTitle
+                  data-testid="AddNoticeHeading"
+                  className="flex justify-center text-4xl"
+                >
                   Add Notice
                 </DialogTitle>
               </DialogHeader>

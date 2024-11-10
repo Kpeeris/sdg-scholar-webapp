@@ -242,14 +242,14 @@ describe("Testing of admin-specific elements and tasks", () => {
     });
 
     // Check that the "New Notice" button is visible to admin
-    const newNoticeButton = screen.getByText("Add Notice");
+    const newNoticeButton = screen.getByTestId("AddNoticeButton");
     expect(newNoticeButton).toBeInTheDocument();
     await act(async () => {
       fireEvent.click(newNoticeButton);
     });
 
     // check that dialog heading exists
-    const dialogTitle = screen.getByText("Add Notice");
+    const dialogTitle = screen.getByTestId("AddNoticeHeading");
     expect(dialogTitle).toBeInTheDocument();
 
     // fill in the title for the new notice

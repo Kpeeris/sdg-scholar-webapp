@@ -198,13 +198,9 @@ describe("Should not display admin-related elements", () => {
       render(<NoticeBoard />);
     });
 
-    const newNoticeButton = screen.queryByText("Add Notice");
+    const newNoticeButton = screen.queryByTestId("AddNoticeButton");
     expect(newNoticeButton).not.toBeInTheDocument();
   });
-
-  //   const newNoticeButton = screen.queryByText("New Notice");
-  //   expect(newNoticeButton).not.toBeInTheDocument();
-  // });
 
   it("should not display 'delete' button", async () => {
     const mockAnnouncements = createmockAnnouncements("General", 1, 0);
