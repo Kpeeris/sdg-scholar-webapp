@@ -13,17 +13,17 @@ describe("test dropdown in navbar", async () => {
     );
   });
   it("should appear when clicked", async () => {
-    //screen.debug();
     const dropdownButton = screen.getByRole("button", { name: "SDGs" });
-    //console.log("dropdownButton", dropdownButton);
 
+    //check if the dropdown is hidden
     await waitFor(() => {
       expect(dropdownButton).toHaveAttribute("aria-expanded", "false");
-      //expect(screen.queryByText("SDGs")).not.toBeInTheDocument();
     });
 
+    //click the dropdown button
     userEvent.click(dropdownButton);
 
+    //check if the dropdown is visible
     await waitFor(() => {
       expect(dropdownButton).toHaveAttribute("aria-expanded", "true");
     });

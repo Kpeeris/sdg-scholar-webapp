@@ -128,7 +128,6 @@ describe("SignUp Page", () => {
 
     const signupButton = screen.getByTestId("signup-button");
     fireEvent.click(signupButton);
-    //screen.debug();
 
     //check if the correct error message is displayed
     await waitFor(() => {
@@ -156,14 +155,14 @@ describe("SignUp Page", () => {
       password: "Pass_word123",
     });
 
+    //click signup button
     const signupButton = screen.getByTestId("signup-button");
-
     fireEvent.click(signupButton);
-    //screen.debug();
 
     await waitFor(() => {
       expect(signup).toHaveBeenCalledWith("learner@gmail.com", "Pass_word123");
       expect(setDoc).toHaveBeenCalledTimes(1);
+
       //check that we are passing the correct data to the database
       expect(setDoc).toHaveBeenCalledWith(
         doc(expect.anything(), "learners", "12345"),
@@ -205,11 +204,11 @@ describe("SignUp Page", () => {
       password: "Pass_word123",
     });
 
+    //click signup button
     const signupButton = screen.getByTestId("signup-button");
-
     fireEvent.click(signupButton);
-    //screen.debug();
 
+    //check if the the function was called with the correct arguments
     await waitFor(() => {
       expect(signup).toHaveBeenCalledWith("admin@gmail.com", "Pass_word123");
       expect(setDoc).toHaveBeenCalledTimes(1);

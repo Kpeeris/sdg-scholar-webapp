@@ -5,6 +5,19 @@ const full_buildings = import.meta.glob("/src/assets/images/full/*.png", {
   eager: true,
 });
 
+/**
+ * List of buildings
+ * @type {Array<Object>}
+ * Each object contains the following properties:
+ * @property {number} id - The corresponding target number as in the database
+ * @property {string} buildingName - The building name
+ * @property {string} target - The target number
+ * @property {string} dark_image - The dark image path
+ * @property {string} full_image - The full image path
+ * @property {string} left - The position of the button from the left of the screen
+ * @property {string} top - The position of the button from the top of the screen
+ * @property {string} clipPath - The list of x,y coords that make the silhouette of the building
+ */
 const ListOfdark_buildings = [
   {
     id: 1,
@@ -130,5 +143,3 @@ const ListOfdark_buildings = [
   },
 ];
 export default ListOfdark_buildings;
-
-// clip-path: polygon(3.69% 44.2%, 13.02% 33.9%, 15.18% 34.15%, 17.49% 38.66%, 17.52% 48.4%, 20.78% 50.82%, 9.53% 61.76%, 2.47% 54.89%, 4.03% 52.35%);

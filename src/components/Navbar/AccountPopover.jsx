@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
+/* Pop-up that is located in the navbar and displays the user's details 
+  and allows them to logout */
 export function AccountPopover() {
   const { user, userData, role } = useAuthContext();
 

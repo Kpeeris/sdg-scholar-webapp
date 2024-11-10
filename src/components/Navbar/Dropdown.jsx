@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/* Dropdown menu in navbar to navigate to different sdg pages */
 function Dropdown() {
   const navigate = useNavigate(); // Hook for navigation
 

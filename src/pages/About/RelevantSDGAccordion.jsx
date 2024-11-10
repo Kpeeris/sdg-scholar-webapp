@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+/* Summary of how SDGs are related to each field of study used in the About page*/
 const LstAccordionContent = [
   {
     id: 1,

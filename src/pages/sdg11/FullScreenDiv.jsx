@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+
+/**
+ * A full-screen div that dynamically takes up the entire screen.
+ */
 const FullScreenDiv = ({ children }) => {
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
     const { availWidth, availHeight } = window.screen;
     setScreenSize({ width: availWidth, height: availHeight });
-    // console.log(
-    //   `Available width: ${availWidth}, Available height: ${availHeight}`
-    // );
   }, []);
   return (
     <div

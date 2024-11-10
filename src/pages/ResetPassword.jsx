@@ -14,7 +14,7 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 /**
  * ResetPassword component for handling password reset requests.
  * Collects user's email and sends a reset email link
- * 
+ *
  * @returns {JSX.Element} The rendered ResetPassword component.
  */
 const ResetPassword = () => {
@@ -31,11 +31,10 @@ const ResetPassword = () => {
       "An email is needed to reset your password. Please try again",
   };
 
-   /**
+  /**
    * Handles sending the password reset email.
    * Validates email input and calls the resetPassword Firebase function
    */
-   co
   const handleResetPassword = async () => {
     setLoading(true);
     setMessage("");
@@ -80,7 +79,7 @@ const ResetPassword = () => {
 
           {/* Success message */}
           {message && <p className="text-green-600 text-base">{message}</p>}
-          
+
           {/* Display error alert */}
           {error && (
             <Alert variant="destructive" className="flex items-center">

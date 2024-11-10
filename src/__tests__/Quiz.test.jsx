@@ -18,6 +18,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+// seed the database with data
 const setQuizUpData = async () => {
   //learner data
   await setDoc(doc(db, "learners", "learner1"), {
@@ -82,6 +83,7 @@ const setQuizUpData = async () => {
   console.log("data set up");
 };
 
+// clean up the database after all tests
 const cleanQuizUpData = async () => {
   //delete learners
   await deleteDoc(doc(db, "learners", "learner1"));
@@ -156,7 +158,8 @@ describe("Quiz Component", () => {
 
   it("should render the score page if the learner has already has a score,", async () => {
     renderComponent("learner", "test_learner@example.com", "1");
-    //screen.debug();
+
+    //check if the page is rendered
     await waitFor(() => {
       expect(screen.getByTestId("scorePage")).toBeInTheDocument();
       expect(screen.getByText("80%")).toBeInTheDocument();
@@ -164,8 +167,10 @@ describe("Quiz Component", () => {
   });
 
   it("should render the pre-quiz page if the learner has 0 score,", async () => {
+    // learner_test@example.com is set to haave 0 score in the database
     renderComponent("learner", "learner_test@example.com", "1");
 
+    //check if the page is rendered
     await waitFor(
       () => {
         expect(screen.getByTestId("preQuizPage")).toBeInTheDocument();
@@ -187,8 +192,10 @@ describe("Quiz Component", () => {
 
     const startQuizButton = screen.getByTestId("startQuizButton");
 
+    //click start quiz button
     fireEvent.click(startQuizButton);
 
+    //check if the questions page is rendered
     await waitFor(() => {
       expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
     });
@@ -214,6 +221,7 @@ describe("Quiz Component", () => {
   });
 
   it("should NOT render edit quiz button for learner", async () => {
+    // user role is learner so the edit quiz button should not be rendered
     renderComponent("learner", "learner_test@example.com", "1");
 
     await waitFor(
@@ -257,7 +265,6 @@ describe("Quiz Component", () => {
     // Navigate to questions page
     const startQuizButton = screen.getByTestId("startQuizButton");
     fireEvent.click(startQuizButton);
-
     await waitFor(() => {
       expect(screen.getByTestId("questionsPage")).toBeInTheDocument();
     });

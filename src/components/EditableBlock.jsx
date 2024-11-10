@@ -7,8 +7,12 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "../../firebase/firebaseConfig.js";
 
 import parse from "html-react-parser";
-//import sanitizeHtml from 'sanitize-html';
 
+/**
+ * EditableBlock component
+ * This component is used to display the content of the target and allow the admin to edit the content
+ *
+ */
 const EditableBlock = ({ moduleId }) => {
   const [textEditorShow, setTextEditorShow] = useState(false);
 

@@ -9,6 +9,7 @@ import {
 
 import ListOfGoals from "@/components/ListOfGoals";
 
+/** Carousel component that rotates through each of the 17 sdgs and navigates to UN website */
 const SdgCarousel = () => {
   return (
     <Carousel className="w-full max-w-3xl">

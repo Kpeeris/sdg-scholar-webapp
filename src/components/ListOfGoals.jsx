@@ -1,6 +1,18 @@
 import City from "/src/assets/images/City_scape.png";
 const images = import.meta.glob("/src/assets/goals/*.svg", { eager: true });
 
+/**
+ * List of Sustainable Development Goals (SDGs)
+ * @type {Array<Object>}
+ * Each object contains the following properties:
+ * @property {number} id - The goal number
+ * @property {string} title - The goal title
+ * @property {string} link - The link to the UN website
+ * @property {string} image - The image path
+ * @property {string} path - The path to a specific page
+ * @property {string} background - The background image
+ * @property {boolean} isImage - The boolean value to check if the image is used in the home page
+ */
 const ListOfGoals = [
   {
     id: 1,
@@ -88,6 +100,7 @@ const ListOfGoals = [
     link: "https://sdgs.un.org/goals/goal11",
     image: images["/src/assets/goals/Goal_11.svg"].default,
     path: "/sdg11",
+    // the image used in the sdg11 button in the home page
     background: City,
     isImage: true,
   },

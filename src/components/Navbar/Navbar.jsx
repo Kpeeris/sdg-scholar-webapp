@@ -8,7 +8,6 @@ import { Button } from "../ui/button";
 import { Icon } from "@iconify/react";
 
 const Navbar = () => {
-
   // get informatin about authorisation but only if it exists
   const authContext = useAuthContext();
   if (!authContext) {
@@ -26,7 +25,6 @@ const Navbar = () => {
       <nav className="flex items-center justify-between w-full h-20">
         {/* logo */}
         <Link to="/" className="ml-12">
-          {/* <img src={logo_horizontal} alt="SDG logo" className="w-40 h-10" /> */}
           <div className="flex items-center flex-wrap">
             <h3 className="font-bold">SDG Scholar</h3>
             <Icon
