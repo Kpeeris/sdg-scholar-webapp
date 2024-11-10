@@ -9,6 +9,9 @@ import {
 import { describe, it, expect, afterEach } from "vitest";
 import { db } from "./setup";
 
+// TO RUN THESE TESTS YOU NEED TO HAVE FIRESTORE EMULATOR RUNNING
+// AND CHANGE FIRESTORE RULES TO ALLOW ALL READ AND WRITE
+
 // clear all data in Firestore
 const clearFirestoreData = async () => {
   const usersCollection = collection(db, "users");

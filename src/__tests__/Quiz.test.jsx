@@ -18,6 +18,9 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+// TO RUN THESE TESTS YOU NEED TO HAVE FIRESTORE EMULATOR RUNNING
+// AND CHANGE FIRESTORE RULES TO ALLOW ALL READ AND WRITE
+
 // seed the database with data
 const setQuizUpData = async () => {
   //learner data

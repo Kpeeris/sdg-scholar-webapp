@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+// eslint-disable-next-line
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -17,9 +18,9 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 /**
  * SignUp component for user registration.
- * Collects user details, validates input, and writes user data to 
+ * Collects user details, validates input, and writes user data to
  * Firestore based on user role.
- * 
+ *
  * @returns {JSX.Element} The rendered SignUp component.
  */
 const SignUp = () => {
@@ -30,7 +31,7 @@ const SignUp = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const { state } = useLocation(); // Get state from previous page
   const userType = state?.userType; // Extract the userType (admin or learner)
@@ -130,10 +131,9 @@ const SignUp = () => {
       }
 
       setLoading(false);
-
     } catch (error) {
       const customErrorMessage =
-        firebaseErrorMessages[error.code] || error.message; 
+        firebaseErrorMessages[error.code] || error.message;
       setError(customErrorMessage);
       setLoading(false);
     }
@@ -143,7 +143,6 @@ const SignUp = () => {
     <TwoColumnLayout
       imageSrc={SignupSVG}
       imageAlt="Signup SVG"
-
       // Right side content with sign up form and buttons
       rightContent={
         <div className="space-y-4">
