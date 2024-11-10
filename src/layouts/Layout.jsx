@@ -1,10 +1,15 @@
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { useLocation } from "react-router-dom";
 
-/* 
-  The layout component wraps all pages with a common Navbar. It applies global 
-  layout styles like padding and spacing to all pages except the sdg 11 page.
-*/
+/**
+ * Layout component wraps all pages with a common Navbar and applies global 
+ * layout styles like padding and spacing based on the current route.
+ * 
+ * @param {Object} props - The component props.
+ * @param {JSX.Element} props.children - The child components that are rendered within the layout.
+ * 
+ * @returns {JSX.Element} The rendered Layout component with a Navbar and dynamic padding.
+ */
 function Layout({ children }) {
   const location = useLocation();
   const noPaddingRoute = "/sdg11";

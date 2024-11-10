@@ -17,8 +17,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import db from "../../firebase/firebaseConfig.js";
-// import { useAuth } from "../../firebaseFiles/firebaseAuth.js";
+import db from "../../../firebase/firebaseConfig.js";
 import {
   collection,
   query,
@@ -43,13 +42,16 @@ import sanitizeHtml from "sanitize-html";
 import parse from "html-react-parser";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
+/**
+ * NoticeBoard component
+ * Learners can view notices and admin to create and delete notices
+ */
 const NoticeBoard = () => {
   const [notices, setNotices] = useState([]);
   const [lastOnPage, setLastOnPage] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [selectedTag, setSelectedTag] = useState("All");
-  //const [content, setContent] = useState("");
 
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -58,15 +60,18 @@ const NoticeBoard = () => {
   const [deletionReload, setDeletionReload] = useState(0);
   const [postReload, setPostReload] = useState(0);
 
+  /**
+   * Text editor toolbar and format configurations
+   * Modules: toolbar options
+   * Formats: text formats allosed by ReactQuill
+   */
   var modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike", "blockquote"],
-      //[ { list: "bullet" }],
       ["link"],
       [{ list: "bullet" }],
     ],
   };
-
   var formats = [
     "header",
     "height",
@@ -80,8 +85,11 @@ const NoticeBoard = () => {
     "link",
   ];
 
+  /**
+   * Custom transformation for parsed HTML nodes to adjust styles.
+   * @param {Object} node - The HTML node to transform
+   */
   const transform = (node) => {
-    //console.log(`NAME IS: ${node.name}`)
     if (node.attribs && node.attribs.class) {
       if (node.attribs.class.includes("ql-align-center")) {
         node.attribs.style = {
@@ -139,6 +147,10 @@ const NoticeBoard = () => {
     }
   };
 
+  /**
+   * Handle changes to the content in the text editor
+   * @param {string} newContent - The updated content from the text editor
+   */
   const handleProcedureContentChange = (newContent) => {
     setMessage(newContent);
     console.log("MESSAGE---->", message);
@@ -147,20 +159,24 @@ const NoticeBoard = () => {
   useEffect(() => {
     setNotices([]);
     getAnnouncements();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTag, deletionReload, postReload]);
 
-  // Add these state variables
+  // Delete confirmation dialog state
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [noticeToDelete, setNoticeToDelete] = useState(null);
 
-  // Function to handle opening the confirmation modal
+  /**
+   * Open the delete confirmation dialog
+   * @param {string} id - The ID of the notice to delete
+   */
   const handleDeleteConfirm = (id) => {
     setNoticeToDelete(id); // Set the notice to delete
     setDeleteConfirmOpen(true); // Open the confirmation dialog
   };
 
-  // Function to delete the post after confirmation
+  /**
+   * Delete the selected notice after confirmation from the database
+   */
   const handleDelete = async () => {
     if (!noticeToDelete) return;
     try {
@@ -174,6 +190,10 @@ const NoticeBoard = () => {
     }
   };
   const { userData, role } = useAuthContext();
+
+  /**
+   * Post a new notice to the database
+   */
   const handlePost = async () => {
     try {
       const creationTime = Timestamp.now();
@@ -216,6 +236,10 @@ const NoticeBoard = () => {
     }
   };
 
+  /**
+   * Fetch announcements from the database, supports pagination and filtering by category
+   * @param {boolean} loadMore - to indicate loading more announcements
+   */
   const getAnnouncements = async (loadMore = false) => {
     setLoading(true);
     try {
@@ -262,7 +286,6 @@ const NoticeBoard = () => {
       }
       let collectionSnap = await getDocs(announcementQuery);
 
-      // if (!collectionSnap.empty){
       if (collectionSnap && collectionSnap.docs) {
         const newNotices = collectionSnap.docs.map((doc) => ({
           id: doc.id,
@@ -359,39 +382,54 @@ const NoticeBoard = () => {
             SDGs
           </ToggleGroupItem>
         </ToggleGroup>
+
+        {/* Modal to build a new Notice */}
         {role === "admin" && (
           <Dialog className="max-w-3xl">
             <DialogTrigger asChild>
-              <Button className="text-lg">
-                <PlusIcon className="h-5 w-5 mr-1 text-white" /> New Notice
+              <Button data-testid="AddNoticeButton" className="text-lg">
+                <PlusIcon className="h-5 w-5 mr-1 text-white" strokeWidth="2" />{" "}
+                Add Notice
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl w-full">
               <DialogHeader>
-                <DialogTitle className="flex justify-center text-4xl">
-                  Create New Notice
+                <DialogTitle
+                  data-testid="AddNoticeHeading"
+                  className="flex justify-center text-4xl"
+                >
+                  Add Notice
                 </DialogTitle>
               </DialogHeader>
+
+              {/* Add Notice Title */}
               <div className="p-1">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title" className="text-xl">
+                  <strong>Title</strong>
+                </label>
                 <Input
+                  className="mt-1"
                   placeholder="Write your notice here..."
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 {title === "" && (
-                  <span style={{ color: "red" }}>please add a title</span>
+                  <p className="text-red-500 text-sm ml-1">
+                    Please add a title
+                  </p>
                 )}
                 <br />
-                <label>Category</label>
 
-                {/* my plan: if they don't select one, write All to the notice.category */}
+                <label htmlFor="title" className="text-lg">
+                  <strong>Category</strong>
+                </label>
+                {/* Select Catagory */}
                 <ToggleGroup
                   variant="default"
                   size="default"
                   type="single"
-                  className="justify-start"
+                  className="justify-start mt-2"
                   onValueChange={(value) => setCategory(value || "General")}
                 >
                   <ToggleGroupItem
@@ -421,11 +459,12 @@ const NoticeBoard = () => {
                 </ToggleGroup>
                 <br />
 
-                {/* <label htmlFor="message">Body</label>
-                <Input placeholder="Write your notice here..." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/> */}
-                <div className="grid w-full gap-1.5 mb-5">
-                  <label htmlFor="message">Body</label>
-                  <div className="w-full p-1">
+                {/* Add Notice Body */}
+                <div className="grid w-full mb-2">
+                  <label htmlFor="message" className="text-lg">
+                    <strong>Body</strong>
+                  </label>
+                  <div className="w-full">
                     <ReactQuill
                       theme="snow"
                       modules={modules}
@@ -445,11 +484,10 @@ const NoticeBoard = () => {
                       }}
                     ></ReactQuill>
                   </div>
-
-                  {/*<Textarea placeholder="Type your message here." id="message" value={message} onChange={(e) => setMessage(e.target.value)}/>*/}
                 </div>
               </div>
 
+              {/* Post Button */}
               <DialogClose asChild>
                 <Button onClick={handlePost} disabled={title === ""}>
                   Post
@@ -460,6 +498,7 @@ const NoticeBoard = () => {
         )}
       </div>
 
+      {/* Display Current Notices */}
       <div>
         {notices.length > 0 ? (
           <ul className="pl-9 pr-16 list-none space-y-4">
@@ -550,6 +589,7 @@ const NoticeBoard = () => {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="flex justify-end space-x-2">
+              {/* Don't Delete Button */}
               <DialogClose asChild>
                 <Button
                   variant="outline"
@@ -559,6 +599,7 @@ const NoticeBoard = () => {
                 </Button>
               </DialogClose>
 
+              {/* Confirm Delete Button */}
               <Button onClick={handleDelete}>Confirm</Button>
             </DialogFooter>
           </DialogContent>

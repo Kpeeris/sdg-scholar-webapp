@@ -3,6 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
+/**
+ * SignUpForm component for getting user data like first name, last name, email, and password.
+ * 
+ * @param {Object} props - The props for the SignUpForm component.
+ * @param {React.Ref} props.firstNameRef - Reference to the first name input element.
+ * @param {React.Ref} props.lastNameRef - Reference to the last name input element.
+ * @param {React.Ref} props.emailRef - Reference to the email input element.
+ * @param {React.Ref} props.passwordRef - Reference to the password input element.
+ * @param {React.Ref} props.confirmPasswordRef - Reference to the confirm password input element.
+ * 
+ * @returns {JSX.Element} The rendered SignUpForm component.
+ */
 export const SignUpForm = ({
   firstNameRef,
   lastNameRef,
@@ -13,17 +25,19 @@ export const SignUpForm = ({
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+    // Toggle password visibility function
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+    // Toggle confirm password visibility function
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
   return (
     <div className="space-y-6">
-      {/* First name and last name div */}
+      {/* First name and last name input fields */}
       <div className="flex justify-center items-center space-x-5">
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="first-name">First Name</Label>
@@ -35,7 +49,6 @@ export const SignUpForm = ({
             ref={firstNameRef}
           />
         </div>
-
         <div className="w-full flex flex-col items-left gap-2">
           <Label htmlFor="last-name">Last Name</Label>
           <Input
@@ -48,7 +61,7 @@ export const SignUpForm = ({
         </div>
       </div>
 
-      {/* Email div */}
+      {/* Email input field */}
       <div className="w-full flex flex-col items-left gap-2">
         <Label htmlFor="email">Email</Label>
         <Input

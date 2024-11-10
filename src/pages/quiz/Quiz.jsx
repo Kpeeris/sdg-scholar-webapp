@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import db from "../../../firebase/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
-import Question from "../../components/Question.jsx";
+import Question from "./components/Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,27 +29,27 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/components/LoadingPage.jsx";
 import cityFooter from "/src/assets/images/city_footer.png";
 
+/**
+ * Quiz page
+ * This page is used to display the quiz for a specific target.
+ * Handles submission and saving of scores.
+ */
 const Quiz = () => {
-  // used to navigate to new page when button is clicked
   const navigate = useNavigate();
-  //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
   const [totalQuestions, setTotalQuestions] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
-
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
-
   const [isExploding, setIsExploding] = useState(false);
-
   const [result, setResult] = useState(0);
   const [score, setScore] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const questionRefs = useRef([]);
-
   const [docs, setDocs] = useState({});
+
+  // need to have user for the useAuthContext to work
   //eslint-disable-next-line
   const { user, userData, role } = useAuthContext();
 
@@ -65,6 +65,9 @@ const Quiz = () => {
     realModuleId = "10";
   }
 
+  /**
+   * Handles the submission of the quiz, calculates the score and saves it to the database
+   */
   const handleSubmitClick = () => {
     console.log("submitting quiz in handleSubmitClick");
     setQuizSubmitted(true);
@@ -82,7 +85,9 @@ const Quiz = () => {
     console.log("current score is, ", { perCent });
   };
 
-  //gets the total number of questions in the target
+  /**
+   * Gets the total number of questions for the quiz from the database
+   */
   const getTotalQuestions = async () => {
     try {
       let docRef = doc(db, `quizzes/sdg11t${realModuleId}`);
@@ -92,7 +97,7 @@ const Quiz = () => {
         setTotalQuestions(docSnap.data().totalQuestions);
         return docSnap.data().totalQuestions;
       } else {
-        console.log("nQuestions Document does not exist");
+        console.log("Questions Document does not exist");
       }
     } catch (e) {
       console.error("Error retrieving document: ", e);
@@ -100,6 +105,9 @@ const Quiz = () => {
     return 0;
   };
 
+  /**
+   * Gets the questions for the quiz from the database
+   */
   const getQuestions = async () => {
     await getTotalQuestions();
     console.log("in getQuestions");
@@ -118,7 +126,10 @@ const Quiz = () => {
     }
   };
 
-  //save the score to the database
+  /**
+   * Saves the score to the database after the quiz is submitted
+   * @param {number} score - the score to be saved
+   */
   const saveScore = async (score) => {
     let email = userData.email;
 
@@ -142,7 +153,9 @@ const Quiz = () => {
     });
   };
 
-  //gets the score form the db and saved in to score
+  /**
+   * Gets the old score from the database for the current user
+   */
   const getScore = async () => {
     console.log("getting score");
     let email = userData.email;
@@ -170,11 +183,13 @@ const Quiz = () => {
     }
   };
 
+  /**
+   * get user score when the component mounts
+   */
   useEffect(() => {
     const fetchScore = async () => {
       await getScore();
       setIsLoading(false);
-      // console.log("isLoading: ", isLoading);
     };
 
     if (userData) {
@@ -185,6 +200,9 @@ const Quiz = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
+  /**
+   * get questions when the quiz is started or the user is an admin
+   */
   useEffect(() => {
     if (quizStarted || isAdmin) {
       getQuestions();
@@ -206,6 +224,9 @@ const Quiz = () => {
     }
   }, [totalQuestions]);
 
+  /**
+   * check if the user has 100% and add confetti
+   */
   useEffect(() => {
     if (totalQuestions > 0 && result == totalQuestions) {
       setIsExploding(true);
@@ -215,6 +236,10 @@ const Quiz = () => {
 
   const targetRef = useRef(null);
 
+  /**
+   * Handles the click event outside the quiz component and opens the submit quiz dialog
+   * @param {Event} e - the click event
+   */
   const handleOusideClick = (e) => {
     if (
       !isAdmin &&
@@ -250,6 +275,7 @@ const Quiz = () => {
               ref={targetRef}
               className="ml-[250px] relative"
             >
+              {/* Questions Page */}
               <div className="">
                 <img
                   src={cityFooter}
@@ -273,6 +299,7 @@ const Quiz = () => {
                     </Button>
                   ) : null}
                 </div>
+                {/* Instructions */}
                 <ul className="space-y-0">
                   <li>
                     Test yourself on the knowledge you learned about this target
@@ -292,6 +319,7 @@ const Quiz = () => {
                   <li>You have unlimited attempts to complete the quiz</li>
                 </ul>
                 <br />
+                {/* Questions */}
                 <div>
                   {Object.values(docs).map((question, index) => {
                     return (
@@ -311,12 +339,13 @@ const Quiz = () => {
                   })}
                 </div>
 
+                {/* Submit button */}
                 {isAdmin ? null : (
                   <div className="flex flex-col items-center justify-center">
                     <br />
                     <Button
                       data-testid="submitQuizButton"
-                      className="w-40 mb-16"
+                      className="text-lg mb-16"
                       onClick={() => {
                         setDialogVisible(true);
                       }}
@@ -330,6 +359,7 @@ const Quiz = () => {
           ) : //if user is not an Admin and the quiz is not submitted and the score is 0
           !quizSubmitted && !isAdmin && score === 0 ? (
             <div data-testid="preQuizPage" className="ml-[250px] ">
+              {/* Pre Ouix page */}
               <div className="p-12 mt-4 flex flex-col items-center">
                 <div className="relative h-72 w-72">
                   <img
@@ -340,11 +370,14 @@ const Quiz = () => {
                 </div>
                 <div>
                   <div>
-                    <h2 style={{ fontWeight: "bold", textAlign: "center" }}>
+                    <h2
+                      style={{ fontWeight: "bold", textAlign: "center" }}
+                      className="pt-5"
+                    >
                       Ready for the Quiz?
                     </h2>
                   </div>
-
+                  {/* Instructions */}
                   <ul className="space-y-0">
                     <li>
                       Test yourself on the knowledge you learned about this
@@ -365,11 +398,10 @@ const Quiz = () => {
                     <li>You have unlimited attempts to complete the quiz</li>
                   </ul>
                 </div>
-                <div className="mt-8">
+                <div className="pt-4">
                   <Button
                     data-testid="startQuizButton"
-                    style={{ textAlign: "center" }}
-                    className="w-44"
+                    className="text-lg"
                     onClick={() => {
                       setQuizStarted(true);
                     }}
@@ -381,9 +413,9 @@ const Quiz = () => {
             </div>
           ) : (
             <div data-testid="scorePage" className="ml-[250px] flex-1">
+              {/* Score Page */}
               <div className="px-12 pt-12 h-screen flex-1">
                 <h1>{moduleTitle}</h1>
-                {/* <h2 style={{ fontWeight: "bold" }}>{moduleTitle}</h2> */}
                 <br />
                 <div className="flex-1 flex flex-col items-center justify-center">
                   <p>You scored</p>
@@ -404,7 +436,7 @@ const Quiz = () => {
                   </div>
                   <br />
                   <Button
-                    className="w-32"
+                    className="text-lg"
                     onClick={() => {
                       setQuizStarted(true);
                       setQuizSubmitted(false);
@@ -420,6 +452,7 @@ const Quiz = () => {
           )}
         </>
       )}
+      {/* Confirm Sumbit Pop-up */}
       {dialogVisible ? (
         <Dialog open={dialogVisible} onOpenChange={setDialogVisible}>
           <DialogContent data-testid="confirmSubmitDialog">

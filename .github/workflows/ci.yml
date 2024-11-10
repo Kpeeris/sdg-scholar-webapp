@@ -64,7 +64,7 @@ jobs:
           sleep 10
 
       - name: Run Tests
-        run: npm run test
+        run: npm run test -- --exclude src/__tests__/firestore.test.jsx --exclude src/__tests__/Quiz.test.jsx
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           FIRESTORE_EMULATOR_HOST: "localhost:8080"

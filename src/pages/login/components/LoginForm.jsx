@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // Importing icons from Heroicons
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; 
+
+/**
+ * LoginForm component that displays a login form with email and password inputs.
+ * 
+ * @param {Object} props - The props for the LoginForm component.
+ * @param {React.Ref} props.emailRef - Reference to the email input element.
+ * @param {React.Ref} props.passwordRef - Reference to the password input element.
+ * 
+ * @returns {JSX.Element} The rendered LoginForm component.
+ */
 
 export const LoginForm = ({ emailRef, passwordRef }) => {
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to track password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false); 
 
   // Toggle password visibility function
   const togglePasswordVisibility = () => {
@@ -36,6 +46,8 @@ export const LoginForm = ({ emailRef, passwordRef }) => {
             placeholder="Password"
             ref={passwordRef}
           />
+          
+          {/* Eye Icon Button to toggle visibility */}
           <button
             type="button"
             className="absolute right-0 top-0 mt-3 mr-3"

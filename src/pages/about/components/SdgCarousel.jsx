@@ -9,9 +9,17 @@ import {
 
 import ListOfGoals from "@/components/ListOfGoals";
 
+/**
+ * SdgCarousel component
+ * A carousel that rotates through each of the 17 sdgs and navigates to UN website
+ * 
+ * @returns {JSX.Element} The rendered SdgCarousel component.
+ */
 const SdgCarousel = () => {
   return (
     <Carousel className="w-full max-w-3xl">
+      
+      {/* Mapping through the list of SDG goals to create individual carousel items */}
       <CarouselContent className="-ml-1">
         {ListOfGoals.map((goal) => (
           <CarouselItem key={goal.id} className="p-2 md:basis-1/2 lg:basis-1/3">
@@ -35,8 +43,11 @@ const SdgCarousel = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
+
+      {/* Previous and Next buttons for carousel navigation */}
       <CarouselPrevious className="w-12 h-12" />
       <CarouselNext className="w-12 h-12" />
+
     </Carousel>
   );
 };

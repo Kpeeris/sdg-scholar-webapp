@@ -12,14 +12,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * Dropdown menu in navbar to navigate to different sdg pages
+ * 
+ * @returns {JSX.Element} The rendered Dropdown component.
+ */
 function Dropdown() {
   const navigate = useNavigate(); // Hook for navigation
 
+  /**
+   * Navigates to a specified path if provided.
+   * 
+   * @param {string} path - The path to navigate to.
+   */
   const handleNavigation = (path) => {
     if (path) {
       navigate(path); // Redirect to the specified path
     }
   };
+
   return (
     <DropdownMenu>
       {/* dropdown button */}

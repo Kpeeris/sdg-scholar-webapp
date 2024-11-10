@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
-import db from "../../../firebase/firebaseConfig";
+import db from "../../../../firebase/firebaseConfig";
 import {
   doc,
   getDoc,
@@ -20,13 +20,18 @@ import {
 } from "firebase/firestore";
 import { useAuthContext } from "@/AuthProvider";
 
-/* buildingName: name of the building
- id: the id of the target in the db
- dark_image: path to the "dark" image of the building 
- full_image: paths to the full sized image of the building
- left: the position of the button from the left of the screen 
- top: the position if the button for the top of the screen
- clipPath: the list of x,y coords that make the silhouette of the building */
+/**
+ *  BuildingComponent is a component that represents a building on the map.
+ * It is a button that when clicked opens a dialog box with the target number and description of the target.
+ * The dialog box also contains a button that when clicked navigates to the content page of the target.
+ * @param {string} buildingName - name of the building
+ * @param {string} id - the id of the target in the db
+ * @param {string} dark_image - path to the "dark" image of the building
+ * @param {string} full_image - paths to the full sized image of the building
+ * @param {string} left - the position of the button from the left of the screen
+ * @param {string} top - the position if the button for the top of the screen
+ * @param {string} clipPath - the list of x,y coords that make the silhouette of the building
+ */
 const BuildingComponent = ({
   id,
   buildingName,
@@ -44,14 +49,17 @@ const BuildingComponent = ({
   const [score, setScore] = useState(0);
 
   const [isVisible, setIsVisible] = useState(false);
-  // API call to get target description and title from the database
+
+  /**
+   * Gets the description of the target from the db
+   * @param {string} id - the id of the target in the db
+   */
   useEffect(() => {
     const getDescription = async (id) => {
       try {
         const docRef = doc(db, `quizzes/sdg11t${id}`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          //console.log(docSnap.data().targetText);
           setDescription(docSnap.data().targetText);
           setTargetNum(docSnap.data().targetNumber);
           console.log("Document text:", docSnap.data().targetText);
@@ -67,6 +75,10 @@ const BuildingComponent = ({
   });
 
   const lastLetter = targetNum.slice(-1);
+  /**
+   * Gets the lerner's score for the specific building from the db
+   * @param {string} id - the id of the target in the db
+   */
   const getScore = async (id) => {
     if (!userData) {
       console.log("No user data found");
@@ -76,10 +88,6 @@ const BuildingComponent = ({
       return;
     }
     let email = userData.email;
-    // console.log("the email is: ", email);
-    // console.log("the userData: ", userData);
-
-    //TODO: make the email from the db lowercase before comparing
     const learnersRef = collection(db, "learners");
     const queryByEmail = query(learnersRef, where("email", "==", email));
     const querySnapshot = await getDocs(queryByEmail);
@@ -107,13 +115,17 @@ const BuildingComponent = ({
     const fetchScore = async () => {
       await getScore(id);
     };
-    fetchScore();
+    if (role !== "admin") {
+      fetchScore();
+    }
+    console.log("score: ", score);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   return (
     <div>
-      {/* have to make it so that this image becomes invisible when the learner completes the quiz  */}
+      {/* Dark Buildign image */}
       {role !== "admin" && score !== 100 ? (
+        // only render the dark image if the learner has not completed the target
         <div
           data-testid={`dark-${buildingName}`}
           className="absolute top-0 left-0 w-full h-full pointer-events-none"
@@ -126,7 +138,8 @@ const BuildingComponent = ({
         </div>
       ) : null}
 
-      {/* this div covers the building so that when the mouse hovers over it the button becomes opaque */}
+      {/* this div covers the building image so that when the mouse hovers 
+      over it the button becomes opaque */}
       <div
         className="absolute w-full h-full"
         style={{
@@ -138,9 +151,9 @@ const BuildingComponent = ({
         onMouseLeave={() => setIsVisible(false)}
       ></div>
 
+      {/* pop-up with description about the target */}
       <Dialog>
         <DialogTrigger asChild>
-          {/* have to change the text in the button depending on start or restart */}
           <Button
             data-testid={`open-${buildingName}`}
             variant="success"
@@ -162,7 +175,7 @@ const BuildingComponent = ({
             <DialogTitle className="flex justify-center text-4xl pb-2">
               Target {targetNum}
             </DialogTitle>
-
+            {/* Description */}
             <DialogDescription className="text-center pb-2">
               {description}
             </DialogDescription>
@@ -172,6 +185,8 @@ const BuildingComponent = ({
             <DialogTitle className="flex justify-center pb-5">
               {buildingName}
             </DialogTitle>
+
+            {/* Link to content page */}
             <Button
               data-testid={`${buildingName}-navigate`}
               variant="success"

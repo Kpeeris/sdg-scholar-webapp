@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SideMenu from "../components/SideMenu";
+import SideMenu from "../../components/SideMenu";
 import { useParams } from "react-router-dom";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useAuthContext } from "@/AuthProvider";
@@ -9,7 +9,7 @@ import ReactQuill from "react-quill";
 import { Button } from "@/components/ui/button";
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "../../firebase/firebaseConfig.js";
+import db from "../../../firebase/firebaseConfig.js";
 
 import parse from "html-react-parser";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -19,6 +19,10 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import cityFooter from "/src/assets/images/city_footer.png";
 import sanitizeHtml from "sanitize-html";
 
+/**
+ * Content page
+ * This component is used to display the content of the target and allow the admin to edit the content
+ */
 const Content = () => {
   const { moduleId } = useParams(); // Capture the module ID from the URL
   const [image1Url, setImage1Url] = useState("");
@@ -43,37 +47,16 @@ const Content = () => {
   } else if (moduleId === "c") {
     dbModuleId = "10";
   }
-  {
-    /*  const deleteEmptyQuestions = async () => {
 
-    const docRef = collection(db, `quizzes/sdg11t4/questions`);
-    const docSnap = await getDocs(docRef);
-    docSnap.forEach((doc) => {
-      if((doc.id).slice(0,3) == "sdg"){
-        console.log("not wrong")
-      } else{
-        console.log(`DELETE!${doc.id}`)
-        console.log("DELETE THIS")
-        deleteDoc(doc.ref)
-      }
-      
-    })
-  }*/
-  }
-
-  {
-    /*const saveImage = () => {
-
-  }*/
-  }
-
+  /**
+   * Custom transformation for parsed HTML nodes to adjust styles.
+   * @param {Object} node - The HTML node to transform
+   */
   const transform = (node) => {
-    //console.log(`NAME IS: ${node.name}`)
     if (node.attribs) {
-      //console.log("ATTRIBS EXIST")
       if (typeof node.attribs.style === "string") {
         const styleObject = {};
-        //console.log("THIS STYLE IS A STRING")
+
         node.attribs.style.split(";").forEach((style) => {
           const [key, value] = style.split(":").map((s) => s.trim());
           console.log(`KEY: ${key} AND VALUE: ${value}`);
@@ -87,7 +70,6 @@ const Content = () => {
         });
         node.attribs.style = styleObject;
       } else if (!node.attribs.style && node.attribs.class) {
-        //console.log("CREATING A STYLE ATTRIB FOR CLASS ATTRIB")
         node.attribs.style = {};
       }
 
@@ -105,23 +87,19 @@ const Content = () => {
           node.attribs.style.fontSize = "1.25em";
         }
         if (node.attribs.class.includes("ql-size-huge")) {
-          //console.log("the size is: HUGE")
           node.attribs.style.fontSize = "2em";
         }
         if (node.attribs.class.includes("ql-indent-1")) {
           node.attribs.style.marginLeft = "3em";
         }
 
-        //node.attribs.className = node.attribs.class; // Convert class to className
         delete node.attribs.class; // Remove the old class attribute
       }
       if (node.name == "a") {
         node.attribs.style = { textDecoration: "underline", color: "blue" };
-        //node.attribs.style.textDecoration = "underline"
-        //node.attribs.style.color = "blue"
       }
     }
-    //console.log(`node name is ${node.name}`)
+
     if (
       node.name == "p" &&
       node.children.length === 1 &&
@@ -132,6 +110,11 @@ const Content = () => {
     }
   };
 
+  /**
+   * Retrieve content from the database from the specified module ID
+   * @async
+   * @param {string} moduleId - The module ID to retrieve content for
+   */
   const getContent = async (moduleId) => {
     try {
       const docRef = doc(db, `quizzes/sdg11t${moduleId}`);
@@ -153,10 +136,14 @@ const Content = () => {
   useEffect(() => {
     getContent(dbModuleId);
     console.log(`${content}`);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //text editor styling credit to https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
+  /**
+   * Text editor toolbar and format configurations
+   * Modules: toolbar options
+   * Formats: text formats allosed by ReactQuill
+   */
   var modules = {
     toolbar: [
       [{ size: ["small", false, "large", "huge"] }],
@@ -227,24 +214,24 @@ const Content = () => {
     "size",
   ];
 
+  /**
+   * Handle changes to the content in the text editor
+   * @param {string} newContent - The updated content from the text editor
+   */
   const handleProcedureContentChange = (newContent) => {
     setContent(newContent);
     console.log("content---->", newContent);
   };
 
-  //const [buttonState, setButtonState] = useState('Edit')
-
+  /**
+   * Write content to the database with sanitization
+   * @param {string} newContent - The new content to write to the database
+   */
   const adminContentWrite = async (newContent) => {
     const docRef = doc(db, `quizzes/sdg11t${dbModuleId}`);
-
-    console.log("trying to update");
-    console.log("module id is: ", moduleId);
-
-    console.log(`HTML IS UNSANITIZED: ${newContent}`);
-
     const writeableContent = sanitizeHtml(newContent, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-      //allowedAttributes: sanitizeHtml.defaults.allowedAttributes[ "img" ].concat(["src"])
+
       allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat(["data"]),
       allowedAttributes: {
         ...sanitizeHtml.defaults.allowedAttributes,
@@ -264,8 +251,6 @@ const Content = () => {
       },
     });
 
-    console.log(`WRITNG: ${writeableContent}`);
-
     try {
       console.log("doc reference is :  ", docRef);
       await updateDoc(docRef, { content: writeableContent });
@@ -276,25 +261,33 @@ const Content = () => {
     }
   };
 
+  /**
+   * Handle to toggle between edit and read mode
+   * @param {string} newContent - from editor to be saved
+   */
   const handleClick = (newContent) => {
     console.log("NEW CONTENT", newContent);
     setTextEditorShow(false);
-    //setButtonState('Edit')
     if (newContent) {
       console.log("new content is --->", newContent);
-      //transform(newContent)
       adminContentWrite(newContent);
     } else {
       console.log("NO NEW CONTENT");
     }
   };
 
+  /**
+   * Handle to cancel editing and revert to original content
+   */
   const handleCancelClick = () => {
     setTextEditorShow(false);
     setContent(pulledContent);
-    //setButtonState('Edit')
   };
 
+  /**
+   * Retrieve images from Firebase Storage
+   * @async
+   */
   const retrieveImages = async () => {
     console.log(`${isNaN(Number(dbModuleId))}`);
     try {
@@ -335,14 +328,13 @@ const Content = () => {
 
   useEffect(() => {
     retrieveImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // You can replace this with logic to dynamically retrieve module info
   const moduleTitle = `Target 11.${moduleId}`;
 
   return (
     <div className="flex">
+      {/* Sidebar */}
       <SideMenu moduleTitle={moduleTitle} moduleId={moduleId} />
       {databaseError ? (
         <div>
@@ -354,6 +346,7 @@ const Content = () => {
         </div>
       ) : (
         <div className="ml-[250px]">
+          {/* City Footer image */}
           <div className="">
             <img
               src={cityFooter}
@@ -362,15 +355,20 @@ const Content = () => {
               style={{ marginLeft: "250px", width: "calc(100% - 250px)" }}
             />
           </div>
+          {/* Sky background */}
           <div className="fixed h-full w-full ml-[250px] top-0 left-0 z-0 bg-custom-gradient pointer-events-none"></div>
+
           <div className="py-12 px-16 overflow-auto">
             <div className="flex justify-between">
+              {/* Title */}
               {textEditorShow ? (
                 <h1> Editing {moduleTitle} Content</h1>
               ) : (
                 <h1>{moduleTitle} Content</h1>
               )}
               <br />
+
+              {/* Edit Button */}
               {isAdmin && !textEditorShow ? (
                 <Button
                   className="text-lg"
@@ -382,6 +380,8 @@ const Content = () => {
               ) : null}
             </div>
             <br />
+
+            {/* Permanent images relating to the target*/}
             <div className="relative flex">
               <div>
                 <img src={image1Url} alt="Image 1" className="h-60" />
@@ -391,9 +391,11 @@ const Content = () => {
               </div>
             </div>
             <br />
+
+            {/* Content */}
             <div className="relative">
               {textEditorShow === false ? (
-                // content from ReactQuill
+                // Read mode
                 <div className="bg-white rounded-lg mb-32 p-11">
                   {content
                     ? parse(content, {
@@ -405,6 +407,7 @@ const Content = () => {
                     : null}
                 </div>
               ) : (
+                // Edit mode
                 <div>
                   <div className="bg-white pb-11">
                     <ReactQuill

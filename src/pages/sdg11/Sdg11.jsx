@@ -4,20 +4,27 @@ import db from "../../../firebase/firebaseConfig.js";
 import { useAuthContext } from "@/AuthProvider";
 
 import FULL_CITY from "/src/assets/images/City_scape.png";
-import BuildingComponent from "./BuildingComponent";
-import ListOfBuildings from "./ListOfBuildings";
-import GoalInfo from "./GoalInfo";
-import FullScreenDiv from "./FullScreenDiv";
+import BuildingComponent from "./components/BuildingComponent";
+import ListOfBuildings from "./components/ListOfBuildings";
+import GoalInfo from "./components/GoalInfo";
+import FullScreenDiv from "./components/FullScreenDiv";
 
+/**
+ * SDG11 page component
+ * This is the main page for SDG11 it displays the complete city as the background
+ * It has interactive buildings that users can click on.
+ */
 export const Sdg11 = () => {
   const { user, role } = useAuthContext();
   const [isFirstView, setIsFirstView] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
 
+  /**
+   * Check if it is the learners first time entering the page
+   */
   useEffect(() => {
     const checkFirstView = async () => {
-      // Skip if already checked in this session
-      // if (!user?.uid || hasChecked || role != "learner") return;
+      // Skip if already checked in this session or user is not a learner
       if (!user?.uid || hasChecked || role !== "learner") {
         console.log("Skipping database check.");
         return;
@@ -48,12 +55,14 @@ export const Sdg11 = () => {
 
   return (
     <FullScreenDiv>
+      {/* Background */}
       <img
         src={FULL_CITY}
         alt="full city"
         className="w-full h-full object-cover"
       />
 
+      {/* Buildings */}
       {ListOfBuildings.map((building) => (
         <BuildingComponent
           key={building.id}
@@ -67,6 +76,7 @@ export const Sdg11 = () => {
         />
       ))}
 
+      {/* Info button */}
       <GoalInfo isOpen={isFirstView} />
     </FullScreenDiv>
   );

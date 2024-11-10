@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-modal-body {
-  height: 400px; /* Adjust as needed */
-  overflow-y: auto; /* Allows scrolling if content overflows */
-  padding: 20px; /* Adjust padding as needed */
-  text-align: center; /* Center text horizontally */
-  position: relative; /* Ensure positioning context for absolute elements inside */
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

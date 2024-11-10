@@ -19,6 +19,7 @@ describe("Login Page", () => {
         <Login />
       </MemoryRouter>
     );
+    //check if email, password and login button are rendered
     const emailInput = screen.getByTestId("email");
     const passwordInput = screen.getByTestId("password");
     const loginButton = screen.getByTestId("login-button");
@@ -50,13 +51,12 @@ describe("Login Page", () => {
     fireEvent.change(passwordInput, { target: { value: "Abcd1234" } });
 
     //click login button
-
     fireEvent.click(loginButton);
 
+    //check if login function is called with the correct email and password
     await waitFor(() => {
       expect(login).toHaveBeenCalledTimes(1);
     });
-
     expect(login).toHaveBeenCalledWith("test@test.com", "Abcd1234");
   });
 
@@ -80,15 +80,13 @@ describe("Login Page", () => {
     fireEvent.change(passwordInput, { target: { value: "" } });
 
     //click login button
-    //screen.debug();
     fireEvent.click(loginButton);
-    //screen.debug();
 
+    //check if error message is displayed
     await waitFor(() => {
       expect(
         screen.getByText("Your email or password is invalid. Please try again.")
       ).toBeVisible();
-      //expect(screen.getByTestId("loginErrorMessage")).toBeInTheDocument();
     });
   });
 });

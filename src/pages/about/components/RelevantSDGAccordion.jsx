@@ -5,6 +5,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+/**
+ * An array of objects of content about how SDGs are related to each field of study
+ * Used to populate the Accordion on the About page.
+ */
 const LstAccordionContent = [
   {
     id: 1,
@@ -44,6 +48,12 @@ const LstAccordionContent = [
   },
 ];
 
+/**
+ * 
+ * Renders an Accordion with the SDG summary
+ * 
+ * @returns {JSX.Element} The rendered RelevantSDGAccordion component.
+ */
 const RelevantSDGAccodian = () => {
   return (
     <Accordion type="single" collapsible className="w-full p-6">

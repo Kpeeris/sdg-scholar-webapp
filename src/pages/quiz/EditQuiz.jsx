@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import db from "../../../firebase/firebaseConfig.js";
 
-import Question from "../../components/Question.jsx";
+import Question from "./components/Question.jsx";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -39,31 +39,35 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-//import { set } from "react-hook-form";
 
+/**
+ * EditQuiz
+ * This page allows the Admin to add and delete questions for a specific module.
+ */
 export const EditQuiz = () => {
   //gets the moduleId from the url
   const { moduleId } = useParams();
   const moduleTitle = `Target 11.${moduleId} Quiz`;
-
   const navigate = useNavigate();
 
+  // stores the data of a new question before it is written to the database
   const [questionText, setQuestionText] = useState("");
-  const [isValidQuestion, setIsValidQuestion] = useState(false);
   const [type, setType] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
+
+  const [isValidQuestion, setIsValidQuestion] = useState(false);
   const [questionError, setQuestionError] = useState("");
   const [questionSaved, setQuestionSaved] = useState(0);
   const [docs, setDocs] = useState({});
   const [isNewQuestionOpen, setIsNewQuestionOpen] = useState(false);
 
-  //const [tooManyAnswers, setTooManyAnswers] = useState(false)
-
+  // manages the deletion of questions
   const [deletionReload, setDeletionReload] = useState(0);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [questionToDelete, setQuestionToDelete] = useState(null);
 
+  // Convert the moduleId to the real module id used in the database
   let realModuleId = moduleId;
   if (moduleId == "a") {
     realModuleId = "8";
@@ -73,13 +77,20 @@ export const EditQuiz = () => {
     realModuleId = "10";
   }
 
-  // Function to handle opening the confirmation modal
+  /**
+   * Opens the confirmation dialog to delete a question
+   * @param {string} id The id of the question to delete
+   */
   const handleDeleteConfirm = (id) => {
     setQuestionToDelete(id); // Set the question to delete
     console.log("handleDeleteConfirm id = ", { id });
     setDeleteConfirmOpen(true); // Open the confirmation dialog
   };
 
+  /**
+   * Deletes the question from the database
+   * closes the delete confirmation dialog after deletion
+   */
   const handleDelete = async () => {
     if (!questionToDelete) return;
     try {
@@ -96,7 +107,10 @@ export const EditQuiz = () => {
       console.error("Error deleting question: ", e);
     }
   };
-  //gets the questions from the db and saves them in docs
+
+  /**
+   * Retrieves the questions for the current target from the database
+   */
   const getQuestions = async () => {
     try {
       let docRef = collection(db, `quizzes/sdg11t${realModuleId}`, "questions");
@@ -115,10 +129,12 @@ export const EditQuiz = () => {
 
   useEffect(() => {
     getQuestions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line
   }, [questionSaved, deletionReload]);
 
-  // saves the new question to the database
+  /**
+   * Saves the new question to the database and resets the form fields
+   */
   const saveNewQuestion = async () => {
     try {
       // Count the total announcement there are to generate the custom id
@@ -152,19 +168,28 @@ export const EditQuiz = () => {
     }
   };
 
-  //adds new option text to optionas array
+  /**
+   * Updates the options array with the new options
+   * @param {number} index - The index of the option to update
+   *  @param {string} value - The new value of the option
+   */
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
   };
 
-  //add new slot for an option
+  /**
+   * Adds a new empty option to the options array
+   */
   const handleAddOption = () => {
     setOptions([...options, ""]);
   };
 
-  //deletes the option
+  /**
+   * Deletes an option from the options array if there are more than 2 options
+   * @param {number} index - The index of the option to delete
+   */
   const handleOptionDelete = (index) => {
     if (options.length >= 3) {
       const newOptions = options.filter((_, i) => i !== index);
@@ -182,7 +207,11 @@ export const EditQuiz = () => {
     }, 5000);
   };
 
-  //if the checkbox is checked add ans to correctAnswers
+  /**
+   * Updates the correctAnswers array with the new correct answers
+   * @param {number} index - The index of the option to update
+   * @param {boolean} checked - checked status
+   */
   const handleCheckboxChange = (index, checked) => {
     const selectedOption = options[index];
 
@@ -199,6 +228,9 @@ export const EditQuiz = () => {
     setType(value);
   };
 
+  /**
+   * Resets the new question form fields for creating a new question
+   */
   const handlNewQuestionOpen = (open) => {
     setIsNewQuestionOpen(open);
 
@@ -212,7 +244,7 @@ export const EditQuiz = () => {
     }
   };
 
-  //everytime a field is updated see if it meets the minimun requirementrs for a question
+  //Valudate is a question meets the requirements to be saved
   useEffect(() => {
     //if there is no type selected the question is not valid
     let noTypeSelected = type === "";
@@ -239,6 +271,10 @@ export const EditQuiz = () => {
     }
   }, [questionText, type, options, correctAnswers]);
 
+  /**
+   * Handles the click event when the save button is disabled
+   * Displays an error message based on the reason the question is invalid
+   */
   const handleDisabledClick = () => {
     //if there is no type selected the question is not valid
     let noTypeSelected = type === "";
@@ -274,12 +310,9 @@ export const EditQuiz = () => {
   return (
     <div data-testid="EditQuizPage" className="flex">
       <div className="flex-1 mx-20">
+        {/* Title and Publish button */}
         <div className="flex justify-between">
           <h1>Editing {moduleTitle}</h1>
-          {/* <h2 style={{ fontSize: "3rem", lineHeight: "1rem" }}>
-            
-          </h2> */}
-
           <Button
             className="text-lg"
             onClick={() => navigate(`/module/${moduleId}/quiz`)}
@@ -289,6 +322,8 @@ export const EditQuiz = () => {
           </Button>
         </div>
         <br />
+
+        {/* Instructions */}
         <div>
           <h4>Instructions</h4>
           <ul style={{ marginTop: "0px" }}>
@@ -306,19 +341,21 @@ export const EditQuiz = () => {
 
         {/* Modal to build a new question */}
         <Dialog open={isNewQuestionOpen} onOpenChange={handlNewQuestionOpen}>
+          {/* Button to open the modal */}
           <DialogTrigger asChild>
             <Button variant="white" className="text-lg mb-6">
               <PlusIcon className="h-6 w-6 mr-2 text-black" strokeWidth="2" />
-              Add New Question
+              Add Question
             </Button>
           </DialogTrigger>
+
           <DialogContent className="lg:max-w-[1000px] px-20">
             <DialogTitle className="flex justify-center text-4xl">
-              New Question
+              Add Question
             </DialogTitle>
 
             {/* Add Question text */}
-            <div className="flex justify-start ">
+            <div className="flex justify-between ">
               <div className="mb-4 mr-8 w-4/6">
                 <label htmlFor="questionText" className="text-xl">
                   <strong>Question</strong>
@@ -331,12 +368,14 @@ export const EditQuiz = () => {
                   onChange={(e) => setQuestionText(e.target.value)}
                 />
                 {questionText === "" && (
-                  <span style={{ color: "red" }}>Please add a question</span>
+                  <p className="text-red-500 text-sm ml-1">
+                    Please add a question
+                  </p>
                 )}
               </div>
 
               {/* Choose Question type */}
-              <div>
+              <div className="flex-1">
                 <label htmlFor="questionType" className="text-xl">
                   <strong>Question Type</strong>
                 </label>
@@ -344,7 +383,7 @@ export const EditQuiz = () => {
                   id="questionType"
                   onValueChange={handleQuestionTypeSelect}
                 >
-                  <SelectTrigger className="w-auto mt-1">
+                  <SelectTrigger className="w-full mt-1">
                     <SelectValue placeholder="Select a Question Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -360,26 +399,24 @@ export const EditQuiz = () => {
                   </SelectContent>
                 </Select>
                 {type === "" && (
-                  <span style={{ color: "red" }}>Please selct a type</span>
+                  <p className="text-red-500 text-sm ml-1">
+                    Please select a question type
+                  </p>
                 )}
               </div>
             </div>
 
             {/* Add Options */}
-            <div className="flex justify-around">
+            <div className="flex justify-between items-center">
               <div>
-                <h4>
-                  <strong>Answer Choices</strong>
-                </h4>
-                <h6>
+                <p className="text-xl font-bold">Answer Choices</p>
+                <p className="text-base">
                   Select the correct answers below by checking the box next to
                   each option
-                </h6>
+                </p>
               </div>
               {/* create a new option */}
-              <Button varient="white" onClick={handleAddOption}>
-                Add Option
-              </Button>
+              <Button onClick={handleAddOption}>Add Option</Button>
             </div>
 
             {options.map((option, index) => (
@@ -414,7 +451,7 @@ export const EditQuiz = () => {
               </div>
             ))}
 
-            {/* Error message if user trues to delete when only 2 options left */}
+            {/* Error message*/}
             {questionError && (
               <Alert variant="destructive">
                 <ExclamationCircleIcon className="h-5 w-5" />
@@ -424,7 +461,6 @@ export const EditQuiz = () => {
             )}
 
             {/* Save the quiestion to database when you click save */}
-
             <div
               className="flex justify-center"
               onMouseDown={handleDisabledClick}
@@ -442,6 +478,7 @@ export const EditQuiz = () => {
           </DialogContent>
         </Dialog>
 
+        {/* Display all the questions */}
         <div>
           {Object.values(docs).map((question, index) => {
             return (
@@ -484,3 +521,5 @@ export const EditQuiz = () => {
     </div>
   );
 };
+
+export default EditQuiz;

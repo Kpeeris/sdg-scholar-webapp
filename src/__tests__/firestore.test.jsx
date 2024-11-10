@@ -9,6 +9,10 @@ import {
 import { describe, it, expect, afterEach } from "vitest";
 import { db } from "./setup";
 
+// TO RUN THESE TESTS YOU NEED TO HAVE FIRESTORE EMULATOR RUNNING
+// AND CHANGE FIRESTORE RULES TO ALLOW ALL READ AND WRITE
+
+// clear all data in Firestore
 const clearFirestoreData = async () => {
   const usersCollection = collection(db, "users");
   const userDocs = await getDocs(usersCollection);
@@ -22,20 +26,21 @@ describe("Firestore Emulator Tests", () => {
   });
 
   it("should add a user and retrieve it", async () => {
-    // Arrange
+    // define user data
     const userId = "user2";
     const userData = {
       name: "John Doe",
       email: "john@example.com",
     };
 
-    // Act
+    // write user data to Firestore
     await setDoc(doc(db, "users", userId), userData);
 
+    // read user data from Firestore
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
-    // Assert
+    //  check if the user data is the same
     expect(docSnap.exists()).toBe(true);
     expect(docSnap.data()).toEqual(userData);
   });
