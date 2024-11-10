@@ -1,7 +1,15 @@
-// This file consolidates and re-exports components from different files so
-// that they are easier to import in App.jsx
-export * from "./pages/home/Home";
-export * from "./pages/about/About";
-export * from "./pages/sdg11/Sdg11";
-export { default as Content } from "./pages/content/Content";
-export { default as Quiz } from "./pages/quiz/Quiz";
+import { createRoot } from "react-dom/client"; 
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css";
+
+// Get the root element from the HTML
+const container = document.getElementById("root");
+const root = createRoot(container); // Create a root using createRoot
+
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+

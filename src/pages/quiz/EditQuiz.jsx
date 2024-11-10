@@ -521,3 +521,5 @@ export const EditQuiz = () => {
     </div>
   );
 };
+
+export default EditQuiz;
