@@ -1,21 +1,27 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import { doc, getDoc } from "firebase/firestore";
 import db from "../../../firebase/firebaseConfig.js";
 
 import SignupSVG from "@/assets/images/Signup.svg";
-import { Link } from "react-router-dom";
 import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
+/**
+ * SignUpAdmin component for verifying admin invite codes to create an admin account.
+ * @returns {JSX.Element} The rendered SignUpAdmin component.
+ */
 export const SignUpAdmin = () => {
   const adminCodeRef = useRef(null);
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   // State to track the visibility of the invite code
@@ -25,6 +31,10 @@ export const SignUpAdmin = () => {
     setCodeVisible(!codeVisible); // Toggle between visible and hidden
   };
 
+  /**
+   * Verifies entered admin code with the Firestore database.
+   * If code is valid, navigate to admin signup page; otherwise, show an error.
+   */
   const verifyAdminCode = async () => {
     try {
       const codeRef = doc(db, "config/adminCodes"); // Admin codes stored in 'adminCodes' collection
@@ -32,13 +42,15 @@ export const SignUpAdmin = () => {
 
       const enteredCode = adminCodeRef.current.value;
 
+      // Check if document and document data exists
       if (docSnap.exists()) {
         const docData = docSnap.data();
         if (docData && docData.code) {
           const adminCodesArray = docData.code;
 
+          // Check if entered code is valid, otherwise, set error messages
           if (adminCodesArray.includes(enteredCode)) {
-            navigate("/signup", { state: { userType: "admin" } });
+            navigate("/signup", { state: { userType: "admin" } }); // Navigate to admin signup page if code is valid
           } else {
             setError("Invalid admin code. Please try again.");
           }
@@ -86,6 +98,7 @@ export const SignUpAdmin = () => {
             </button>
           </div>
 
+          {/* Display Error Messages */}
           {error && (
             <Alert variant="destructive" className="flex items-center">
               <ExclamationCircleIcon className="h-5 w-5 mr-2" />

@@ -4,24 +4,37 @@ import { useNavigate } from "react-router-dom"
 import SignupSVG from "@/assets/images/Signup.svg";
 import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 import { UserTypeCard } from "./components/UserTypeCard"; 
-import { Button } from "@/components/ui/button";
 import { LoginLink } from "./components/LoginLink";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
+/**
+ * SignUpUser component for user registration, allowing user to select a role 
+ * and navigate to the appropriate signup page.
+ * 
+ * @returns {JSX.Element} The rendered SignUpUser component.
+ */
 export const SignUpUser = () => {
   const [userType, setUserType] = useState(null); // Track selected user type
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  // Handle user type selection
+  /**
+   * Handles user role selection
+   * @param {string} type - The selected user role (admin or learner).
+   */
   const handleUserTypeSelection = (type) => {
     setUserType(type);
   };
 
-  // Handle confirmation action (e.g., navigating to next step)
+  /**
+   * Handles the confirmation action.
+   * If a user type is selected, navigate to appropriate signup page.
+   * If no user type is selected, sets an error message.
+   */
   const handleConfirm = () => {
     if (userType === "admin") {
       navigate("/signupadmin", { state: { userType: "admin" } });
@@ -36,6 +49,8 @@ export const SignUpUser = () => {
     <TwoColumnLayout
       imageSrc={SignupSVG}
       imageAlt="Signup SVG"
+
+      // Right side content
       rightContent={
         <div className="space-y-4">
           <div className="space-y-2 pb-2 text-center">
@@ -45,6 +60,8 @@ export const SignUpUser = () => {
 
           {/* Pass the handleUserTypeSelection to UserTypeCard */}
           <UserTypeCard onSelectType={handleUserTypeSelection} />
+
+          {/* Display error messages */}
           {error && (
             <Alert variant="destructive" className="flex items-center">
               <ExclamationCircleIcon className="h-5 w-5 mr-2" />
@@ -62,7 +79,6 @@ export const SignUpUser = () => {
             </Button>
           </div>
           
-          {/* <hr className="w-full mt-4 border-white" /> */}
           <hr className="w-full mt-4 border-gray-300" />
           <LoginLink />
         </div>

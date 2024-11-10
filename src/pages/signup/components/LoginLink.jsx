@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
+/**
+ * Login Link component displays a login link with a message
+ * 
+ * @returns {JSX.Element} The rendered LoginLink component.
+ */
 export const LoginLink = () => {
   return (
     <div className="flex justify-center items-center">

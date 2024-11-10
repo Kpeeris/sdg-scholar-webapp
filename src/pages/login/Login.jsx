@@ -1,30 +1,35 @@
-import { Icon } from "@iconify/react";
-
-import { useRef, useState } from "react"; // Ensure these hooks are imported
+import { useRef, useState } from "react"; 
 import { useNavigate } from "react-router-dom";
-
-import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
-
-import { LoginForm } from "./components/LoginForm";
-import { SignUpLink } from "./components/SignUpLink";
-
-import { Button } from "@/components/ui/button";
-import LoginSVG from "@/assets/images/Login.svg";
-
 import { Link } from "react-router-dom";
 
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
+import { LoginForm } from "./components/LoginForm";
+import { SignUpLink } from "./components/SignUpLink";
+import LoginSVG from "@/assets/images/Login.svg";
 import { login } from "../../../firebase/auth/firebaseAuth.js";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { Icon } from "@iconify/react";
+
+/**
+ * Login component that displays a login form 
+ * Handles login authentication using Firebase and provides error alerts.
+ * 
+ * @returns {JSX.Element} The rendered Login component.
+ */
 export const Login = () => {
+  // Creating references for input fields
   const emailRef = useRef();
   const passwordRef = useRef();
+
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Custom error messages for Firebase authentication errors
   const firebaseErrorMessages = {
     "auth/missing-email": "An email is required to sign up. Please try again.",
     "auth/missing-password":
@@ -34,6 +39,11 @@ export const Login = () => {
       "Your email or password is invalid. Please try again.",
   };
 
+   /**
+   * Handles login using Firebase authentication.
+   * When successful, navigate to the home page.
+   * On failure, set a custom error message.
+   */
   const handleLogin = async () => {
     setLoading(true);
     setError(null);
@@ -45,8 +55,9 @@ export const Login = () => {
       await login(email, password);
 
       setLoading(false);
-      navigate("/");
+      navigate("/"); // Navigate to Home Page
     } catch (error) {
+      // Get custom error message or set as default
       const customErrorMessage =
         firebaseErrorMessages[error.code] ||
         "An unexpected error occurred. Please try again.";
@@ -59,6 +70,8 @@ export const Login = () => {
     <TwoColumnLayout
       imageSrc={LoginSVG}
       imageAlt="Login SVG"
+
+      // Right side content with login form and buttons
       rightContent={
         <div className="space-y-4">
           <div className="space-y-3 pb-2">
@@ -77,6 +90,7 @@ export const Login = () => {
             <p>Redefining SDG Education, One Goal at a Time</p>
           </div>
 
+          {/* Login Form */}
           <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
           <div className="text-right">
             <Link to="/resetpassword">
@@ -86,6 +100,7 @@ export const Login = () => {
             </Link>
           </div>
 
+          {/* Display Error Alert */}
           {error && (
             <Alert variant="destructive" className="flex items-center">
               <ExclamationCircleIcon className="h-5 w-5 mr-2" />
@@ -96,6 +111,7 @@ export const Login = () => {
             </Alert>
           )}
 
+          {/* Login Button */}
           <Button
             className="w-full mt-2 mb-2"
             variant={loading ? "secondary" : "default"}
@@ -105,6 +121,7 @@ export const Login = () => {
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>
+
           <hr className="w-full mt-4 border-white" />
           <hr className="w-full mt-4 border-gray-300" />
           <SignUpLink />
