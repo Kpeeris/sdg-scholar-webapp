@@ -75,7 +75,7 @@ export const Home = () => {
           : "Hi!"}
       </h1>
 
-      <div className="bg-orange-200 -mx-12 h-96 flex items-center justify-around">
+      <div className="bg-orange-200 -mx-12 px-4 h-96 flex items-center justify-around">
         <div className="flex flex-col justify-around">
           <h1>
             Discover SDG 11: Sustainable
@@ -89,16 +89,11 @@ export const Home = () => {
           <Link to="/sdg11">
             <Button
               variant="white"
-              className="w-2/6 border-white mt-6 font-semibold text-lg"
+              className="border-white mt-6 font-semibold text-lg p-4"
             >
-              Explore SDG 11 <ArrowRightIcon className="h-6 w-6 mx-4 y" />
+              Explore SDG 11 <ArrowRightIcon className="h-6 w-6 ml-4 y" />
             </Button>
           </Link>
-
-          {/* <p className="text-9xl text-white opacity-100 p-4 border-b-4 ml-10">
-            Play Now!
-          </p>
-          <img src={Right_arrow} alt="right arrow" className="w-30 h-30" /> */}
         </div>
 
         <Link to="/sdg11">

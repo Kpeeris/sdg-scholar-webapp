@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { resetPassword } from "../../firebase/auth/firebaseAuth";
 
-import { TwoColumnLayout } from "../TwoColumnLayout";
+import { TwoColumnLayout } from "../layouts/TwoColumnLayout";
 
 import { Button } from "@/components/ui/button";
 import ForgotPasswordSVG from "@/assets/images/Forgotpassword.svg";

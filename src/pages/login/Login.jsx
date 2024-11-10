@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { useRef, useState } from "react"; // Ensure these hooks are imported
 import { useNavigate } from "react-router-dom";
 
-import { TwoColumnLayout } from "../../TwoColumnLayout";
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 
 import { LoginForm } from "./components/LoginForm";
 import { SignUpLink } from "./components/SignUpLink";

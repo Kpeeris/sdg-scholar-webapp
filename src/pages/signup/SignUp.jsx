@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SignupSVG from "@/assets/images/Signup.svg";
 import { SignUpForm } from "./components/SignUpForm";
 import { LoginLink } from "./components/LoginLink";
-import { TwoColumnLayout } from "../../TwoColumnLayout";
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 

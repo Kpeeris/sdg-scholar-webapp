@@ -5,7 +5,7 @@ import db from "../../../firebase/firebaseConfig.js";
 
 import SignupSVG from "@/assets/images/Signup.svg";
 import { Link } from "react-router-dom";
-import { TwoColumnLayout } from "../../TwoColumnLayout";
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

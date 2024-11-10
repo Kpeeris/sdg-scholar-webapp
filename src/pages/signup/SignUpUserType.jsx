@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 
 import SignupSVG from "@/assets/images/Signup.svg";
-import { TwoColumnLayout } from "../../TwoColumnLayout";
+import { TwoColumnLayout } from "../../layouts/TwoColumnLayout";
 import { UserTypeCard } from "./components/UserTypeCard"; 
 import { Button } from "@/components/ui/button";
 import { LoginLink } from "./components/LoginLink";

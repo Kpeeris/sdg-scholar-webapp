@@ -1,5 +1,5 @@
 import "./index.css";
-import Layout from "./Layout";
+import Layout from "./layouts/Layout";
 
 import { Route, Routes } from "react-router-dom";
 import { Home, Sdg11, Quiz, Content, About } from "./index";
